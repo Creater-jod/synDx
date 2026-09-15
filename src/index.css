@@ -1,0 +1,362 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #080d1a;
+    background-image: linear-gradient(135deg, #060b17 0%, #0c1427 50%, #080d1a 100%);
+    background-attachment: fixed;
+    color: #f8fafc;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, .font-serif {
+    font-family: 'Lora', 'Instrument Serif', Georgia, serif;
+  }
+  
+  .font-sans-header {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Liquid Glass Core Utilities (Clean Without Glow Lighting Effects) */
+.liquid-glass-card {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  transition: all 0.25s ease;
+}
+
+.liquid-glass-card:hover {
+  background: rgba(15, 23, 42, 0.80);
+  border-color: rgba(45, 212, 191, 0.4);
+  border-top-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 14px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.liquid-glass-pill {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+}
+
+.liquid-glass-input {
+  background: rgba(10, 16, 30, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 14px;
+  color: #ffffff;
+  transition: all 0.25s ease;
+}
+
+.liquid-glass-input:focus {
+  background: rgba(12, 20, 38, 0.85);
+  border-color: rgba(45, 212, 191, 0.6);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.7);
+  outline: none;
+}
+
+.liquid-glass-btn {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.9) 0%, rgba(6, 182, 212, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  color: #0f172a;
+  font-weight: 800;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass-btn:hover {
+  background: linear-gradient(135deg, rgba(45, 212, 191, 1) 0%, rgba(34, 211, 238, 1) 100%);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 28px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+.liquid-glass-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Floating Animations (Disabled or clean) */
+.animate-liquid-blob-1,
+.animate-liquid-blob-2 {
+  display: none;
+}
+
+/* 3D Rotating Avatar Styles */
+.avatar-3d-wrapper {
+  perspective: 800px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.avatar-3d-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  border-radius: 9999px;
+}
+
+.avatar-3d-wrapper:hover .avatar-3d-card {
+  transform: rotateY(360deg) scale(1.08);
+  box-shadow: 
+    0 0 20px rgba(45, 212, 191, 0.6),
+    0 0 35px rgba(249, 115, 22, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* 3D Tactile & Neumorphic Utilities */
+.perspective-container {
+  perspective: 1200px;
+}
+
+/* 3D Elevated Raised Card */
+.card-3d {
+  background: linear-gradient(145deg, #ffffff, #e6ebf1);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    8px 8px 20px rgba(0, 0, 0, 0.25),
+    -6px -6px 16px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 0px rgba(255, 255, 255, 1);
+  border-radius: 16px;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-3d:hover {
+  transform: translateY(-3px) scale(1.002);
+  box-shadow: 
+    12px 16px 28px rgba(0, 0, 0, 0.3),
+    -8px -8px 22px rgba(255, 255, 255, 0.9),
+    inset 1px 1px 0px rgba(255, 255, 255, 1);
+}
+
+/* Dark Mode 3D Card */
+.card-3d-dark {
+  background: linear-gradient(145deg, #1e2532, #111622);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 16px 32px -4px rgba(0, 0, 0, 0.7),
+    0 4px 12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  transition: all 0.25s ease;
+}
+
+.card-3d-dark:hover {
+  border-color: rgba(45, 212, 191, 0.3);
+}
+
+/* 3D Sunken/Inset Input Field */
+.input-3d {
+  background: #e8ecf1;
+  box-shadow: 
+    inset 3px 3px 6px rgba(166, 180, 200, 0.6),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(200, 210, 222, 0.8);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.input-3d:focus {
+  background: #ffffff;
+  box-shadow: 
+    inset 2px 2px 4px rgba(166, 180, 200, 0.4),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.9),
+    0 0 0 3px rgba(42, 92, 130, 0.25);
+  border-color: #2a5c82;
+}
+
+/* Dark Mode 3D Inset Input Field */
+.input-3d-dark {
+  background: #090d16;
+  color: #f8fafc;
+  box-shadow: 
+    inset 3px 3px 6px rgba(0, 0, 0, 0.8),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.input-3d-dark:focus {
+  background: #0d1322;
+  box-shadow: 
+    inset 2px 2px 5px rgba(0, 0, 0, 0.9),
+    0 0 0 2px rgba(45, 212, 191, 0.35);
+  border-color: #2dd4bf;
+  outline: none;
+}
+
+/* 3D Tactile Action Buttons */
+.btn-3d {
+  background: linear-gradient(180deg, #2b3038 0%, #14171c 100%);
+  color: #ffffff;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 5px 0px #0b0d0f,
+    0 8px 15px rgba(0, 0, 0, 0.35);
+  border-radius: 10px;
+  transition: all 0.15s ease;
+  position: relative;
+  top: 0;
+}
+
+.btn-3d:hover {
+  background: linear-gradient(180deg, #373d48 0%, #1d2128 100%);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 6px 0px #0b0d0f,
+    0 12px 20px rgba(0, 0, 0, 0.4);
+}
+
+.btn-3d:active {
+  transform: translateY(4px);
+  box-shadow: 
+    0 1px 0px #0b0d0f,
+    0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 3D Orange Highlight Button */
+.btn-3d-orange {
+  background: linear-gradient(180deg, #ff7a3d 0%, #e04e0a 100%);
+  color: #ffffff;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 5px 0px #a33200,
+    0 8px 18px rgba(255, 99, 33, 0.4);
+  border-radius: 10px;
+  transition: all 0.15s ease;
+}
+
+.btn-3d-orange:hover {
+  background: linear-gradient(180deg, #ff8c52 0%, #ed5711 100%);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 6px 0px #a33200,
+    0 12px 22px rgba(255, 99, 33, 0.5);
+}
+
+.btn-3d-orange:active {
+  transform: translateY(4px);
+  box-shadow: 
+    0 1px 0px #a33200,
+    0 3px 8px rgba(255, 99, 33, 0.3);
+}
+
+/* 3D Emerald Button */
+.btn-3d-emerald {
+  background: linear-gradient(180deg, #10b981 0%, #047857 100%);
+  color: #ffffff;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 5px 0px #064e3b,
+    0 8px 18px rgba(16, 185, 129, 0.35);
+  border-radius: 10px;
+  transition: all 0.15s ease;
+}
+
+.btn-3d-emerald:hover {
+  background: linear-gradient(180deg, #34d399 0%, #059669 100%);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 6px 0px #064e3b,
+    0 12px 22px rgba(16, 185, 129, 0.45);
+}
+
+.btn-3d-emerald:active {
+  transform: translateY(4px);
+  box-shadow: 
+    0 1px 0px #064e3b,
+    0 3px 8px rgba(16, 185, 129, 0.3);
+}
+
+/* 3D Glass Panel */
+.glass-3d {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 12px 36px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+}
+
+/* 3D Badge / Pill */
+.badge-3d {
+  background: linear-gradient(145deg, #ffffff, #e2e8f0);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    2px 2px 5px rgba(0, 0, 0, 0.2),
+    -2px -2px 5px rgba(255, 255, 255, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  border-radius: 9999px;
+}
+
+/* Custom 3D Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #334155, #1e293b);
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0d9488, #0f766e);
+}
+
+/* 3D Hinge Swing Slide-In Animation for Dashboard Drawer */
+@keyframes drawer3DSwing {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateY(15deg) translateX(-20px);
+    transform-origin: left center;
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(0deg) translateX(0);
+    transform-origin: left center;
+  }
+}
+
+.animate-drawer-3d {
+  animation: drawer3DSwing 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-style: preserve-3d;
+}

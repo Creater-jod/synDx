@@ -1,0 +1,6 @@
+{
+  "name": "SynDx",
+  "description": "Federated, Explainable, Blockchain-Audited Rare Disease Diagnosis & Referral System for Rural Healthcare with integrated ADR Early Warning.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
