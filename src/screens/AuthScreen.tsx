@@ -304,65 +304,65 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-6 px-4">
-      <div className="w-full max-w-4xl bg-white border-2 border-[#141414] shadow-[8px_8px_0px_0px_#141414] overflow-hidden grid grid-cols-1 md:grid-cols-12">
+    <div className="min-h-[85vh] flex items-center justify-center py-8 px-4">
+      <div className="w-full max-w-4xl bg-slate-900/90 border border-slate-800/90 shadow-2xl rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-12 backdrop-blur-xl">
         {/* Left Side: Branding, Project Information & Security Guarantee */}
-        <div className="md:col-span-5 bg-[#141414] text-white p-6 sm:p-8 flex flex-col justify-between border-b-2 md:border-b-0 md:border-r-2 border-[#141414]">
+        <div className="md:col-span-5 bg-slate-950/80 text-white p-6 sm:p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-800/80">
           <div className="space-y-6">
-            <div className="flex items-center gap-2.5">
-              <div className="p-2 bg-[#FF6321] text-white font-mono">
-                <HeartPulse className="w-6 h-6 stroke-[2.5]" />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-teal-400">
+                <HeartPulse className="w-5 h-5 stroke-[2.5]" />
               </div>
               <div>
-                <span className="text-2xl font-black uppercase tracking-tight font-sans text-white">
+                <span className="text-2xl font-bold font-heading text-slate-100">
                   SynDx
                 </span>
-                <span className="block text-[10px] font-mono tracking-widest text-[#FF6321] uppercase">
+                <span className="block text-[10px] font-mono tracking-widest text-teal-400 uppercase">
                   Edge AI Portal
                 </span>
               </div>
             </div>
 
-            <div className="space-y-2 border-t border-white/20 pt-4">
-              <h2 className="text-xl font-black text-white font-sans tracking-tight">
+            <div className="space-y-2 border-t border-slate-800/80 pt-4">
+              <h2 className="text-xl font-bold font-heading text-slate-100 leading-snug">
                 Healthcare Officer & Doctor Authentication
               </h2>
-              <p className="text-xs text-slate-300 font-sans leading-relaxed">
+              <p className="text-xs text-slate-400 font-sans leading-relaxed">
                 Log in to access the federated diagnostic decision console, local zero-trust audit trail, and rare disease knowledge workbench.
               </p>
             </div>
 
             <div className="space-y-3 font-mono text-xs text-slate-300 pt-2">
-              <div className="flex items-start gap-2.5 p-2.5 bg-white/5 border border-white/10">
-                <ShieldCheck className="w-4 h-4 text-[#4ADE80] shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-3 bg-slate-900/60 rounded-xl border border-slate-800/80">
+                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-white block">ABDM & HIPAA Compliant</span>
+                  <span className="font-bold text-slate-100 block">ABDM & HIPAA Compliant</span>
                   <span className="text-[10px] text-slate-400">Zero raw patient record storage on remote servers.</span>
                 </div>
               </div>
 
-              <div className="flex items-start gap-2.5 p-2.5 bg-white/5 border border-white/10">
-                <Globe className="w-4 h-4 text-[#38BDF8] shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-3 bg-slate-900/60 rounded-xl border border-slate-800/80">
+                <Globe className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-white block">Polygon Audit Ledger</span>
+                  <span className="font-bold text-slate-100 block">Polygon Audit Ledger</span>
                   <span className="text-[10px] text-slate-400">Tamper-proof diagnostic event hash verification.</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-8 pt-4 border-t border-white/20 font-mono text-[11px] text-slate-400 space-y-1">
-            <p className="font-bold text-teal-300 uppercase tracking-wider">SynDx Clinical AI Platform 3D</p>
-            <p className="text-[10px] text-slate-300">Edge AI Decision Architecture & Unified Patient Portal</p>
+          <div className="mt-8 pt-4 border-t border-slate-800/80 font-mono text-[11px] text-slate-400 space-y-1">
+            <p className="font-semibold text-teal-400 uppercase tracking-wider">SynDx Clinical AI Platform</p>
+            <p className="text-[10px] text-slate-400">Edge AI Decision Architecture & Unified Patient Portal</p>
           </div>
         </div>
 
         {/* Right Side: Tabbed Login / Sign Up Forms */}
-        <div className="md:col-span-7 bg-[#E4E3E0] p-6 sm:p-8 flex flex-col justify-between">
+        <div className="md:col-span-7 bg-slate-900/50 p-6 sm:p-8 flex flex-col justify-between">
           <div>
             {/* Top Auth Mode Toggle (Sign In vs Sign Up) */}
-            <div className="flex items-center justify-between border-b-2 border-[#141414] pb-3 mb-6">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+              <div className="flex items-center gap-2 p-1 bg-slate-950/70 rounded-xl border border-slate-800">
                 <button
                   type="button"
                   onClick={() => {
@@ -370,10 +370,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                     setError(null);
                     setSuccessMsg(null);
                   }}
-                  className={`px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider transition-all border border-[#141414] flex items-center gap-2 ${
+                  className={`px-4 py-2 rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 ${
                     mode === 'signin'
-                      ? 'bg-[#141414] text-white shadow-[2px_2px_0px_0px_#FF6321]'
-                      : 'bg-white text-[#141414] hover:bg-[#F0EEE9]'
+                      ? 'bg-teal-500 text-slate-950 shadow-md'
+                      : 'text-slate-400 hover:text-slate-100'
                   }`}
                 >
                   <LogIn className="w-3.5 h-3.5" />
@@ -387,10 +387,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                     setError(null);
                     setSuccessMsg(null);
                   }}
-                  className={`px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider transition-all border border-[#141414] flex items-center gap-2 ${
+                  className={`px-4 py-2 rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 ${
                     mode === 'signup'
-                      ? 'bg-[#141414] text-white shadow-[2px_2px_0px_0px_#FF6321]'
-                      : 'bg-white text-[#141414] hover:bg-[#F0EEE9]'
+                      ? 'bg-teal-500 text-slate-950 shadow-md'
+                      : 'text-slate-400 hover:text-slate-100'
                   }`}
                 >
                   <UserPlus className="w-3.5 h-3.5" />
@@ -402,7 +402,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                 <button
                   type="button"
                   onClick={onCancelGuest}
-                  className="text-xs font-mono font-bold text-[#141414]/70 hover:text-[#141414] underline"
+                  className="text-xs font-mono text-slate-400 hover:text-teal-400 underline transition-colors"
                 >
                   Guest Access
                 </button>
@@ -411,15 +411,15 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
 
             {/* Error and Success Alert Banners */}
             {error && (
-              <div className="mb-4 p-3 bg-[#F87171]/20 border-2 border-[#EF4444] text-[#7F1D1D] font-mono text-xs flex items-center gap-2.5">
-                <AlertCircle className="w-4 h-4 text-[#EF4444] shrink-0" />
+              <div className="mb-4 p-3 bg-rose-500/15 border border-rose-500/30 text-rose-300 rounded-xl font-mono text-xs flex items-center gap-2.5">
+                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
                 <span>{error}</span>
               </div>
             )}
 
             {successMsg && (
-              <div className="mb-4 p-3 bg-[#4ADE80]/20 border-2 border-[#22C55E] text-[#14532D] font-mono text-xs flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-[#22C55E] shrink-0" />
+              <div className="mb-4 p-3 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 rounded-xl font-mono text-xs flex items-center gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>{successMsg}</span>
               </div>
             )}
@@ -428,15 +428,15 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
             {mode === 'signin' && (
               <div className="space-y-5">
                 {/* Login Method Buttons */}
-                <div className="grid grid-cols-4 gap-1.5 p-1 bg-white border border-[#141414] font-mono text-[11px] font-bold">
+                <div className="grid grid-cols-4 gap-1.5 p-1 bg-slate-950/70 border border-slate-800 rounded-xl font-mono text-[11px] font-bold">
                   <button
                     type="button"
                     onClick={() => {
                       setMethod('google');
                       setError(null);
                     }}
-                    className={`py-2 text-center transition-all ${
-                      method === 'google' ? 'bg-[#141414] text-white' : 'text-[#141414] hover:bg-[#E4E3E0]'
+                    className={`py-2 text-center rounded-lg transition-all ${
+                      method === 'google' ? 'bg-slate-800 text-teal-300 shadow-sm' : 'text-slate-400 hover:text-slate-200'
                     }`}
                   >
                     Google
@@ -448,8 +448,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                       setMethod('mobile');
                       setError(null);
                     }}
-                    className={`py-2 text-center transition-all ${
-                      method === 'mobile' ? 'bg-[#141414] text-white' : 'text-[#141414] hover:bg-[#E4E3E0]'
+                    className={`py-2 text-center rounded-lg transition-all ${
+                      method === 'mobile' ? 'bg-slate-800 text-teal-300 shadow-sm' : 'text-slate-400 hover:text-slate-200'
                     }`}
                   >
                     Mobile #
@@ -461,11 +461,11 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                       setMethod('gmail');
                       setError(null);
                     }}
-                    className={`py-2 text-center transition-all ${
-                      method === 'gmail' ? 'bg-[#141414] text-white' : 'text-[#141414] hover:bg-[#E4E3E0]'
+                    className={`py-2 text-center rounded-lg transition-all ${
+                      method === 'gmail' ? 'bg-slate-800 text-teal-300 shadow-sm' : 'text-slate-400 hover:text-slate-200'
                     }`}
                   >
-                    Gmail / Email
+                    Gmail
                   </button>
 
                   <button
@@ -474,18 +474,18 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                       setMethod('sso');
                       setError(null);
                     }}
-                    className={`py-2 text-center transition-all ${
-                      method === 'sso' ? 'bg-[#141414] text-white' : 'text-[#141414] hover:bg-[#E4E3E0]'
+                    className={`py-2 text-center rounded-lg transition-all ${
+                      method === 'sso' ? 'bg-slate-800 text-teal-300 shadow-sm' : 'text-slate-400 hover:text-slate-200'
                     }`}
                   >
-                    Other SSO
+                    SSO
                   </button>
                 </div>
 
                 {/* METHOD 1: GOOGLE ACCOUNT LOGIN */}
                 {method === 'google' && (
                   <div className="space-y-4">
-                    <p className="text-xs text-slate-700 font-sans">
+                    <p className="text-xs text-slate-400 font-sans">
                       Sign in using your verified Google Account or select a registered clinical medical officer profile:
                     </p>
 
@@ -494,9 +494,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                       type="button"
                       onClick={() => handleGoogleLogin()}
                       disabled={loading}
-                      className="w-full py-3.5 px-4 bg-white hover:bg-[#F8F8F8] border-2 border-[#141414] shadow-[4px_4px_0px_0px_#141414] flex items-center justify-center gap-3 font-mono font-bold text-sm text-[#141414] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px]"
+                      className="w-full py-3 px-4 min-h-[44px] bg-slate-950/80 hover:bg-slate-950 border border-slate-700/80 rounded-xl flex items-center justify-center gap-3 font-mono font-bold text-sm text-slate-100 transition-all shadow-lg hover:border-teal-500/50"
                     >
-                      {/* SVG Google Logo */}
                       <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
                         <path
                           fill="#4285F4"
@@ -520,10 +519,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
 
                     <div className="relative my-4 text-center">
                       <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-[#141414]/30"></div>
+                        <div className="w-full border-t border-slate-800"></div>
                       </div>
-                      <span className="relative px-3 bg-[#E4E3E0] text-[10px] font-mono font-bold uppercase tracking-widest text-[#141414]/60">
-                        Or Pick Quick Demo Google Profile
+                      <span className="relative px-3 bg-slate-900 text-[10px] font-mono font-medium uppercase tracking-widest text-slate-400">
+                        Or Pick Quick Demo Profile
                       </span>
                     </div>
 
@@ -533,25 +532,25 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                         <div
                           key={idx}
                           onClick={() => handleGoogleLogin(acc)}
-                          className="p-3 bg-white border border-[#141414] hover:border-[#FF6321] hover:bg-[#FFF8F5] cursor-pointer transition-all flex items-center justify-between group"
+                          className="p-3 bg-slate-950/70 border border-slate-800 rounded-xl hover:border-teal-500/50 hover:bg-slate-950 cursor-pointer transition-all flex items-center justify-between group"
                         >
                           <div className="flex items-center gap-3">
                             <img
                               src={acc.avatar}
                               alt={acc.name}
-                              className="w-9 h-9 rounded-full border border-[#141414] object-cover"
+                              className="w-9 h-9 rounded-full border border-slate-700 object-cover"
                             />
                             <div>
-                              <div className="font-sans font-bold text-xs text-[#141414] group-hover:text-[#FF6321] flex items-center gap-1.5">
+                              <div className="font-sans font-bold text-xs text-slate-200 group-hover:text-teal-300 flex items-center gap-1.5">
                                 <span>{acc.name}</span>
-                                <span className="text-[9px] font-mono px-1.5 py-0.2 bg-[#141414] text-white">
+                                <span className="text-[9px] font-mono px-1.5 py-0.5 bg-slate-800 text-teal-300 rounded border border-teal-500/20">
                                   {acc.role.split(' ')[0]}
                                 </span>
                               </div>
-                              <div className="text-[10px] font-mono text-[#141414]/70">{acc.email}</div>
+                              <div className="text-[10px] font-mono text-slate-400">{acc.email}</div>
                             </div>
                           </div>
-                          <ChevronRight className="w-4 h-4 text-[#141414]/40 group-hover:text-[#FF6321] transition-transform group-hover:translate-x-1" />
+                          <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-teal-400 transition-transform group-hover:translate-x-1" />
                         </div>
                       ))}
                     </div>
@@ -563,35 +562,35 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                   <div>
                     {!otpSent ? (
                       <form onSubmit={handleSendOtp} className="space-y-4">
-                        <p className="text-xs text-[#141414]/80 font-sans">
+                        <p className="text-xs text-slate-400 font-sans">
                           Enter your registered 10-digit mobile number to receive a secure SMS verification code:
                         </p>
 
                         <div>
-                          <label className="block text-[11px] font-mono font-bold uppercase text-[#141414] mb-1">
+                          <label className="block text-[11px] font-mono font-bold uppercase text-slate-300 mb-1.5">
                             Mobile Phone Number
                           </label>
                           <div className="flex gap-2">
                             <select
                               value={countryCode}
                               onChange={(e) => setCountryCode(e.target.value)}
-                              className="px-3 py-2 bg-white border-2 border-[#141414] font-mono text-xs font-bold focus:outline-none"
+                              className="px-3 py-2 bg-slate-950/70 border border-slate-800 rounded-xl font-mono text-xs text-slate-200 focus:outline-none focus:border-teal-500"
                             >
-                              <option value="+91">🇮🇳 +91 (IN)</option>
-                              <option value="+1">🇺🇸 +1 (US)</option>
-                              <option value="+44">🇬🇧 +44 (UK)</option>
-                              <option value="+65">🇸🇬 +65 (SG)</option>
+                              <option value="+91">IN (+91)</option>
+                              <option value="+1">US (+1)</option>
+                              <option value="+44">UK (+44)</option>
+                              <option value="+65">SG (+65)</option>
                             </select>
 
                             <div className="relative flex-1">
-                              <Phone className="w-4 h-4 text-[#141414]/40 absolute left-3 top-2.5" />
+                              <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                               <input
                                 type="tel"
                                 value={mobileNumber}
                                 onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, ''))}
                                 placeholder="98422 10982"
                                 maxLength={10}
-                                className="w-full pl-9 pr-3 py-2 bg-white border-2 border-[#141414] font-mono text-xs text-[#141414] placeholder-[#141414]/40 focus:outline-none focus:border-[#FF6321]"
+                                className="w-full pl-9 pr-3 py-2 bg-slate-950/70 border border-slate-800 rounded-xl font-mono text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
                               />
                             </div>
                           </div>
@@ -600,7 +599,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                         <button
                           type="submit"
                           disabled={loading}
-                          className="w-full py-3 bg-[#141414] hover:bg-[#2A5C82] text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 border-2 border-[#141414]"
+                          className="w-full min-h-[44px] py-3 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-950 font-mono font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20"
                         >
                           {loading ? (
                             <RefreshCw className="w-4 h-4 animate-spin" />
@@ -613,13 +612,13 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                     ) : (
                       <form onSubmit={handleVerifyOtp} className="space-y-4">
                         <div className="flex items-center justify-between">
-                          <p className="text-xs text-[#141414]/80 font-sans">
-                            Enter the 6-digit code sent to <span className="font-mono font-bold">{countryCode} {mobileNumber}</span>:
+                          <p className="text-xs text-slate-400 font-sans">
+                            Enter the 6-digit code sent to <span className="font-mono font-bold text-slate-200">{countryCode} {mobileNumber}</span>:
                           </p>
                           <button
                             type="button"
                             onClick={() => setOtpSent(false)}
-                            className="text-[10px] font-mono font-bold text-[#FF6321] hover:underline"
+                            className="text-[10px] font-mono font-bold text-teal-400 hover:underline"
                           >
                             Change Number
                           </button>
@@ -639,20 +638,20 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                                 newOtp[i] = val;
                                 setOtpCode(newOtp);
                               }}
-                              className="w-11 h-12 text-center bg-white border-2 border-[#141414] font-mono font-black text-lg focus:border-[#FF6321] focus:outline-none"
+                              className="w-11 h-12 text-center bg-slate-950 border border-slate-700 rounded-xl font-mono font-bold text-lg text-teal-300 focus:border-teal-400 focus:outline-none"
                             />
                           ))}
                         </div>
 
                         <div className="flex items-center justify-between text-xs font-mono">
-                          <span className="text-[#141414]/60">
+                          <span className="text-slate-400">
                             {otpCountdown > 0 ? `Resend OTP in ${otpCountdown}s` : 'Code expired'}
                           </span>
                           {otpCountdown === 0 && (
                             <button
                               type="button"
                               onClick={handleSendOtp}
-                              className="text-[#FF6321] font-bold hover:underline"
+                              className="text-teal-400 font-bold hover:underline"
                             >
                               Resend OTP
                             </button>
@@ -662,7 +661,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                         <button
                           type="submit"
                           disabled={loading}
-                          className="w-full py-3 bg-[#FF6321] hover:bg-[#e05316] text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 border-2 border-[#141414]"
+                          className="w-full min-h-[44px] py-3 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-950 font-mono font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20"
                         >
                           {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Key className="w-4 h-4" />}
                           <span>Verify & Sign In</span>
@@ -676,24 +675,24 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                 {method === 'gmail' && (
                   <form onSubmit={handleGmailLogin} className="space-y-3.5">
                     <div>
-                      <label className="block text-[11px] font-mono font-bold uppercase text-[#141414] mb-1">
+                      <label className="block text-[11px] font-mono font-bold uppercase text-slate-300 mb-1.5">
                         Gmail or Clinical Email
                       </label>
                       <div className="relative">
-                        <Mail className="w-4 h-4 text-[#141414]/40 absolute left-3 top-2.5" />
+                        <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                         <input
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="doctor.rathiesh@gmail.com"
-                          className="w-full pl-9 pr-3 py-2 bg-white border-2 border-[#141414] font-mono text-xs text-[#141414] focus:outline-none focus:border-[#FF6321]"
+                          className="w-full pl-9 pr-3 py-2 bg-slate-950/70 border border-slate-800 rounded-xl font-mono text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <label className="block text-[11px] font-mono font-bold uppercase text-[#141414]">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-[11px] font-mono font-bold uppercase text-slate-300">
                           Password
                         </label>
                         <a
@@ -702,25 +701,25 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                             e.preventDefault();
                             setSuccessMsg('A password reset link has been dispatched to your Gmail address.');
                           }}
-                          className="text-[10px] font-mono text-[#2A5C82] hover:underline"
+                          className="text-[10px] font-mono text-teal-400 hover:underline"
                         >
                           Forgot Password?
                         </a>
                       </div>
 
                       <div className="relative">
-                        <Lock className="w-4 h-4 text-[#141414]/40 absolute left-3 top-2.5" />
+                        <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                         <input
                           type={showPassword ? 'text' : 'password'}
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           placeholder="••••••••••••"
-                          className="w-full pl-9 pr-9 py-2 bg-white border-2 border-[#141414] font-mono text-xs text-[#141414] focus:outline-none focus:border-[#FF6321]"
+                          className="w-full pl-9 pr-9 py-2 bg-slate-950/70 border border-slate-800 rounded-xl font-mono text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-2.5 text-[#141414]/50 hover:text-[#141414]"
+                          className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-200"
                         >
                           {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -733,9 +732,9 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                         id="remember"
                         checked={rememberMe}
                         onChange={(e) => setRememberMe(e.target.checked)}
-                        className="w-4 h-4 accent-[#141414] cursor-pointer"
+                        className="w-4 h-4 rounded accent-teal-500 cursor-pointer"
                       />
-                      <label htmlFor="remember" className="text-xs font-mono text-[#141414]/80 cursor-pointer">
+                      <label htmlFor="remember" className="text-xs font-mono text-slate-400 cursor-pointer">
                         Keep me signed in on this edge node
                       </label>
                     </div>
@@ -743,7 +742,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full py-3 bg-[#141414] hover:bg-[#2A5C82] text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 border-2 border-[#141414] shadow-[3px_3px_0px_0px_#FF6321]"
+                      className="w-full min-h-[44px] py-3 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-950 font-mono font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20"
                     >
                       {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <LogIn className="w-4 h-4" />}
                       <span>Sign In with Gmail</span>
@@ -755,78 +754,78 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                 {method === 'sso' && (
                   <form onSubmit={handleSSOLogin} className="space-y-4">
                     <div>
-                      <label className="block text-[11px] font-mono font-bold uppercase text-[#141414] mb-1">
+                      <label className="block text-[11px] font-mono font-bold uppercase text-slate-300 mb-2">
                         Select Institutional Platform
                       </label>
                       <div className="grid grid-cols-2 gap-2 font-mono text-xs">
                         <button
                           type="button"
                           onClick={() => setSelectedSSO('abha')}
-                          className={`p-2.5 border-2 text-left flex items-center gap-2 ${
+                          className={`p-3 rounded-xl border text-left flex items-center gap-2.5 transition-all ${
                             selectedSSO === 'abha'
-                              ? 'bg-[#141414] text-white border-[#141414]'
-                              : 'bg-white text-[#141414] border-[#141414]'
+                              ? 'bg-teal-500/15 border-teal-500/50 text-teal-300'
+                              : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
                           }`}
                         >
-                          <Hospital className="w-4 h-4 text-[#4ADE80]" />
+                          <Hospital className="w-4 h-4 text-emerald-400" />
                           <div>
-                            <span className="font-bold block">ABHA ID</span>
-                            <span className="text-[9px] opacity-70">Ayushman Bharat</span>
+                            <span className="font-bold block text-slate-100">ABHA ID</span>
+                            <span className="text-[9px] text-slate-400">Ayushman Bharat</span>
                           </div>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => setSelectedSSO('hospital')}
-                          className={`p-2.5 border-2 text-left flex items-center gap-2 ${
+                          className={`p-3 rounded-xl border text-left flex items-center gap-2.5 transition-all ${
                             selectedSSO === 'hospital'
-                              ? 'bg-[#141414] text-white border-[#141414]'
-                              : 'bg-white text-[#141414] border-[#141414]'
+                              ? 'bg-teal-500/15 border-teal-500/50 text-teal-300'
+                              : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
                           }`}
                         >
-                          <Building className="w-4 h-4 text-[#38BDF8]" />
+                          <Building className="w-4 h-4 text-cyan-400" />
                           <div>
-                            <span className="font-bold block">PSG Health</span>
-                            <span className="text-[9px] opacity-70">Hospital Network</span>
+                            <span className="font-bold block text-slate-100">PSG Health</span>
+                            <span className="text-[9px] text-slate-400">Hospital Network</span>
                           </div>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => setSelectedSSO('microsoft')}
-                          className={`p-2.5 border-2 text-left flex items-center gap-2 ${
+                          className={`p-3 rounded-xl border text-left flex items-center gap-2.5 transition-all ${
                             selectedSSO === 'microsoft'
-                              ? 'bg-[#141414] text-white border-[#141414]'
-                              : 'bg-white text-[#141414] border-[#141414]'
+                              ? 'bg-teal-500/15 border-teal-500/50 text-teal-300'
+                              : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
                           }`}
                         >
-                          <Globe className="w-4 h-4 text-[#F59E0B]" />
+                          <Globe className="w-4 h-4 text-amber-400" />
                           <div>
-                            <span className="font-bold block">Microsoft 365</span>
-                            <span className="text-[9px] opacity-70">Medical Portal</span>
+                            <span className="font-bold block text-slate-100">Microsoft 365</span>
+                            <span className="text-[9px] text-slate-400">Medical Portal</span>
                           </div>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => setSelectedSSO('github')}
-                          className={`p-2.5 border-2 text-left flex items-center gap-2 ${
+                          className={`p-3 rounded-xl border text-left flex items-center gap-2.5 transition-all ${
                             selectedSSO === 'github'
-                              ? 'bg-[#141414] text-white border-[#141414]'
-                              : 'bg-white text-[#141414] border-[#141414]'
+                              ? 'bg-teal-500/15 border-teal-500/50 text-teal-300'
+                              : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
                           }`}
                         >
-                          <Github className="w-4 h-4 text-[#C084FC]" />
+                          <Github className="w-4 h-4 text-purple-400" />
                           <div>
-                            <span className="font-bold block">GitHub</span>
-                            <span className="text-[9px] opacity-70">Auditor Login</span>
+                            <span className="font-bold block text-slate-100">GitHub</span>
+                            <span className="text-[9px] text-slate-400">Auditor Login</span>
                           </div>
                         </button>
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-mono font-bold uppercase text-[#141414] mb-1">
+                      <label className="block text-[11px] font-mono font-bold uppercase text-slate-300 mb-1.5">
                         {selectedSSO === 'abha'
                           ? '14-Digit ABHA Health ID'
                           : selectedSSO === 'hospital'
@@ -844,14 +843,14 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                             ? 'PSG-DOC-2026-09'
                             : 'user@institution.edu'
                         }
-                        className="w-full px-3 py-2 bg-white border-2 border-[#141414] font-mono text-xs text-[#141414] focus:outline-none focus:border-[#FF6321]"
+                        className="w-full px-3 py-2 bg-slate-950/70 border border-slate-800 rounded-xl font-mono text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
                       />
                     </div>
 
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full py-3 bg-[#2A5C82] hover:bg-[#1E4461] text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 border-2 border-[#141414]"
+                      className="w-full min-h-[44px] py-3 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-950 font-mono font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20"
                     >
                       {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
                       <span>Authenticate with {selectedSSO.toUpperCase()}</span>
@@ -863,32 +862,32 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
 
             {/* MODE 2: SIGN UP / MANUAL REGISTRATION FORM */}
             {mode === 'signup' && (
-              <form onSubmit={handleManualSignUp} className="space-y-3 font-mono text-xs">
-                <p className="text-xs text-[#141414]/80 font-sans mb-2">
+              <form onSubmit={handleManualSignUp} className="space-y-3.5 font-mono text-xs">
+                <p className="text-xs text-slate-400 font-sans mb-2">
                   Create a new healthcare officer account to register your clinic node into the SynDx federated network:
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-bold uppercase text-[10px] mb-0.5">Full Name</label>
+                    <label className="block font-bold uppercase text-[10px] text-slate-300 mb-1">Full Name</label>
                     <div className="relative">
-                      <User className="w-3.5 h-3.5 text-[#141414]/40 absolute left-2.5 top-2.5" />
+                      <User className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
                       <input
                         type="text"
                         value={signUpName}
                         onChange={(e) => setSignUpName(e.target.value)}
                         placeholder="Dr. Anand Kumar"
-                        className="w-full pl-8 pr-2.5 py-1.5 bg-white border-2 border-[#141414] focus:outline-none focus:border-[#FF6321]"
+                        className="w-full pl-8 pr-2.5 py-2 bg-slate-950/70 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block font-bold uppercase text-[10px] mb-0.5">Clinical Role</label>
+                    <label className="block font-bold uppercase text-[10px] text-slate-300 mb-1">Clinical Role</label>
                     <select
                       value={signUpRole}
                       onChange={(e) => setSignUpRole(e.target.value as UserProfile['role'])}
-                      className="w-full px-2.5 py-1.5 bg-white border-2 border-[#141414] focus:outline-none"
+                      className="w-full px-2.5 py-2 bg-slate-950/70 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-teal-500"
                     >
                       <option value="Health Worker (ANM)">Health Worker (ANM / CHO)</option>
                       <option value="Medical Officer (Doctor)">Medical Officer (Doctor)</option>
@@ -898,80 +897,80 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-bold uppercase text-[10px] mb-0.5">Gmail / Email</label>
+                    <label className="block font-bold uppercase text-[10px] text-slate-300 mb-1">Gmail / Email</label>
                     <div className="relative">
-                      <Mail className="w-3.5 h-3.5 text-[#141414]/40 absolute left-2.5 top-2.5" />
+                      <Mail className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
                       <input
                         type="email"
                         value={signUpEmail}
                         onChange={(e) => setSignUpEmail(e.target.value)}
                         placeholder="anand.psg@gmail.com"
-                        className="w-full pl-8 pr-2.5 py-1.5 bg-white border-2 border-[#141414] focus:outline-none focus:border-[#FF6321]"
+                        className="w-full pl-8 pr-2.5 py-2 bg-slate-950/70 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block font-bold uppercase text-[10px] mb-0.5">Mobile Number</label>
+                    <label className="block font-bold uppercase text-[10px] text-slate-300 mb-1">Mobile Number</label>
                     <div className="relative">
-                      <Phone className="w-3.5 h-3.5 text-[#141414]/40 absolute left-2.5 top-2.5" />
+                      <Phone className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
                       <input
                         type="tel"
                         value={signUpMobile}
                         onChange={(e) => setSignUpMobile(e.target.value)}
                         placeholder="+91 98421 00192"
-                        className="w-full pl-8 pr-2.5 py-1.5 bg-white border-2 border-[#141414] focus:outline-none focus:border-[#FF6321]"
+                        className="w-full pl-8 pr-2.5 py-2 bg-slate-950/70 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-bold uppercase text-[10px] mb-0.5">Clinic / Hospital Facility</label>
+                    <label className="block font-bold uppercase text-[10px] text-slate-300 mb-1">Clinic / Facility</label>
                     <input
                       type="text"
                       value={signUpClinic}
                       onChange={(e) => setSignUpClinic(e.target.value)}
                       placeholder="PSG Rural Health Centre"
-                      className="w-full px-2.5 py-1.5 bg-white border-2 border-[#141414] focus:outline-none focus:border-[#FF6321]"
+                      className="w-full px-2.5 py-2 bg-slate-950/70 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-bold uppercase text-[10px] mb-0.5">Medical License / ID #</label>
+                    <label className="block font-bold uppercase text-[10px] text-slate-300 mb-1">Medical License / ID #</label>
                     <input
                       type="text"
                       value={signUpLicense}
                       onChange={(e) => setSignUpLicense(e.target.value)}
                       placeholder="MCI-TN-2026-99"
-                      className="w-full px-2.5 py-1.5 bg-white border-2 border-[#141414] focus:outline-none focus:border-[#FF6321]"
+                      className="w-full px-2.5 py-2 bg-slate-950/70 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-bold uppercase text-[10px] mb-0.5">Password</label>
+                    <label className="block font-bold uppercase text-[10px] text-slate-300 mb-1">Password</label>
                     <input
                       type="password"
                       value={signUpPassword}
                       onChange={(e) => setSignUpPassword(e.target.value)}
                       placeholder="••••••••••••"
-                      className="w-full px-2.5 py-1.5 bg-white border-2 border-[#141414] focus:outline-none focus:border-[#FF6321]"
+                      className="w-full px-2.5 py-2 bg-slate-950/70 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-bold uppercase text-[10px] mb-0.5">Confirm Password</label>
+                    <label className="block font-bold uppercase text-[10px] text-slate-300 mb-1">Confirm Password</label>
                     <input
                       type="password"
                       value={signUpConfirmPassword}
                       onChange={(e) => setSignUpConfirmPassword(e.target.value)}
                       placeholder="••••••••••••"
-                      className="w-full px-2.5 py-1.5 bg-white border-2 border-[#141414] focus:outline-none focus:border-[#FF6321]"
+                      className="w-full px-2.5 py-2 bg-slate-950/70 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500"
                     />
                   </div>
                 </div>
@@ -982,17 +981,17 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
                     id="terms"
                     checked={termsAccepted}
                     onChange={(e) => setTermsAccepted(e.target.checked)}
-                    className="w-4 h-4 mt-0.5 accent-[#141414] cursor-pointer"
+                    className="w-4 h-4 mt-0.5 rounded accent-teal-500 cursor-pointer"
                   />
-                  <label htmlFor="terms" className="text-[10px] text-[#141414]/80 cursor-pointer font-sans leading-tight">
-                    I agree to the <span className="font-bold underline">SynDx ABDM Medical Ethics Policy</span> and agree to process anonymized patient symptoms strictly on-device.
+                  <label htmlFor="terms" className="text-[10px] text-slate-400 cursor-pointer font-sans leading-tight">
+                    I agree to the <span className="font-bold underline text-slate-300">SynDx ABDM Medical Ethics Policy</span> and agree to process anonymized patient symptoms strictly on-device.
                   </label>
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 mt-2 bg-[#FF6321] hover:bg-[#e05316] text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 border-2 border-[#141414] shadow-[3px_3px_0px_0px_#141414]"
+                  className="w-full min-h-[44px] py-3 mt-2 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-950 font-mono font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20"
                 >
                   {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
                   <span>Register & Create Account</span>
@@ -1001,7 +1000,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, onCancel
             )}
           </div>
 
-          <div className="mt-6 pt-3 border-t border-[#141414]/20 flex items-center justify-between text-[11px] font-mono text-[#141414]/60">
+          <div className="mt-6 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-400">
             <span>Powered by SynDx Edge Model v1.0</span>
             <span>256-bit Key Encryption</span>
           </div>

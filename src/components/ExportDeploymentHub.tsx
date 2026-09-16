@@ -213,24 +213,24 @@ QUICK COMMANDS:
               </h3>
 
               <ul className="space-y-2 text-xs font-mono text-slate-300">
-                <li className="flex items-center gap-2 p-2 rounded-xl bg-slate-950/40 border border-white/5">
-                  <span className="text-teal-400 font-bold">✓</span>
+                <li className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-950/40 border border-white/5">
+                  <Check className="w-3.5 h-3.5 text-teal-400 shrink-0" />
                   <span>Full React 19 + TypeScript Source Code</span>
                 </li>
-                <li className="flex items-center gap-2 p-2 rounded-xl bg-slate-950/40 border border-white/5">
-                  <span className="text-teal-400 font-bold">✓</span>
+                <li className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-950/40 border border-white/5">
+                  <Check className="w-3.5 h-3.5 text-teal-400 shrink-0" />
                   <span>Express Full-Stack Backend Server (<code className="text-slate-200">server.ts</code>)</span>
                 </li>
-                <li className="flex items-center gap-2 p-2 rounded-xl bg-slate-950/40 border border-white/5">
-                  <span className="text-teal-400 font-bold">✓</span>
+                <li className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-950/40 border border-white/5">
+                  <Check className="w-3.5 h-3.5 text-teal-400 shrink-0" />
                   <span>Automated Setup & Deployment Shell Scripts</span>
                 </li>
-                <li className="flex items-center gap-2 p-2 rounded-xl bg-slate-950/40 border border-white/5">
-                  <span className="text-teal-400 font-bold">✓</span>
+                <li className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-950/40 border border-white/5">
+                  <Check className="w-3.5 h-3.5 text-teal-400 shrink-0" />
                   <span>Production Dockerfile & GCP Cloud Run Specs</span>
                 </li>
-                <li className="flex items-center gap-2 p-2 rounded-xl bg-slate-950/40 border border-white/5">
-                  <span className="text-teal-400 font-bold">✓</span>
+                <li className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-950/40 border border-white/5">
+                  <Check className="w-3.5 h-3.5 text-teal-400 shrink-0" />
                   <span>Firebase Blueprint & Security Rules</span>
                 </li>
               </ul>

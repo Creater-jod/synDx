@@ -368,13 +368,14 @@ export const MedicalHistoryScreen: React.FC<MedicalHistoryScreenProps> = ({
                     setPatientLookupInput(code);
                     setFilterMode('patient_lookup');
                   }}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold border transition-all ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold border transition-all flex items-center gap-1.5 ${
                     selectedPatientCode === code
-                      ? 'bg-orange-500 text-white border-orange-400 shadow-md ring-2 ring-orange-400/30'
-                      : 'bg-slate-800 text-slate-300 border-slate-700 hover:border-orange-400 hover:text-white'
+                      ? 'bg-teal-500/20 text-teal-300 border-teal-400 shadow-md ring-2 ring-teal-400/30'
+                      : 'bg-slate-800 text-slate-300 border-slate-700 hover:border-teal-400 hover:text-white'
                   }`}
                 >
-                  📋 {code}
+                  <FileText className="w-3.5 h-3.5 text-teal-400" />
+                  <span>{code}</span>
                 </button>
               ))}
             </div>
@@ -503,8 +504,9 @@ export const MedicalHistoryScreen: React.FC<MedicalHistoryScreenProps> = ({
                     {/* Header Row */}
                     <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-800/80 pb-3">
                       <div className="flex items-center gap-3">
-                        <div className="p-2.5 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl font-mono font-black text-teal-400 text-sm shadow-md">
-                          📋 {caseItem.patientCode}
+                        <div className="p-2.5 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl font-mono font-bold text-teal-400 text-sm shadow-md flex items-center gap-1.5">
+                          <FileText className="w-4 h-4 text-teal-400" />
+                          <span>{caseItem.patientCode}</span>
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
@@ -717,7 +719,10 @@ export const MedicalHistoryScreen: React.FC<MedicalHistoryScreenProps> = ({
                 <div className="text-[10px] text-slate-300 break-all bg-slate-900 p-2 rounded border border-slate-800">
                   {activeCaseModal.blockchainTxHash}
                 </div>
-                <div className="text-[9px] text-emerald-400 font-bold">✓ Cryptographically Sealed</div>
+                <div className="text-[9px] text-emerald-400 font-bold flex items-center gap-1">
+                  <Check className="w-3 h-3 text-emerald-400" />
+                  <span>Cryptographically Sealed</span>
+                </div>
               </div>
             </div>
 

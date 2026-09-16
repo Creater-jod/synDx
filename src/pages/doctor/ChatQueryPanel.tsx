@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DoctorCaseReview } from '../../types/syndx';
-import { Bot, Send, User, Sparkles, Loader2 } from 'lucide-react';
+import { Bot, Send, User, Sparkles, Loader2, Search, Pill } from 'lucide-react';
 
 interface Props {
   activeCase?: DoctorCaseReview | null;
@@ -10,7 +10,7 @@ export const ChatQueryPanel: React.FC<Props> = ({ activeCase }) => {
   const [messages, setMessages] = useState<Array<{ sender: 'user' | 'ai'; text: string }>>([
     {
       sender: 'ai',
-      text: `Hello Doctor. I am SynDx AI Assistant powered by Gemini. You can ask me natural language queries about patient cases, rare disease clinical guidelines, or adverse drug reaction correlations.`
+      text: `Hello Doctor. I am the SynDx Clinical AI Assistant powered by Gemini. You can ask me natural language queries about active patient cases, rare disease guidelines, or adverse drug reaction correlations.`
     }
   ]);
   const [prompt, setPrompt] = useState<string>('');
@@ -49,7 +49,7 @@ export const ChatQueryPanel: React.FC<Props> = ({ activeCase }) => {
         ...prev,
         {
           sender: 'ai',
-          text: 'SynDx Local Assistant: Unable to reach Gemini cloud route. For Gaucher Type 1 and Fabry Disease, enzyme replacement therapy (ERT) requires monitoring liver transaminases (ALT/AST) and platelet recovery.'
+          text: 'SynDx Local Assistant: Unable to reach cloud route. For Gaucher Type 1 and Fabry Disease, enzyme replacement therapy (ERT) requires monitoring liver transaminases (ALT/AST) and platelet recovery.'
         }
       ]);
     } finally {
@@ -62,66 +62,68 @@ export const ChatQueryPanel: React.FC<Props> = ({ activeCase }) => {
   };
 
   return (
-    <div className="bg-[#F0EEE9] border-2 border-[#141414] p-4 space-y-3">
-      <div className="flex items-center justify-between border-b border-[#141414] pb-2.5">
+    <div className="rounded-2xl border border-slate-800/90 bg-slate-900/80 p-4 sm:p-5 backdrop-blur-xl space-y-3.5 shadow-xl">
+      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-[#2A5C82]" />
-          <h3 className="text-xs font-mono font-black uppercase tracking-wider text-[#141414]">
-            Doctor AI Natural Language Query Console (Gemini 3.6 Flash)
+          <Sparkles className="w-4 h-4 text-teal-400" />
+          <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-white">
+            Physician AI Clinical Query Console
           </h3>
         </div>
         {activeCase && (
-          <span className="text-[10px] text-white font-mono font-bold bg-[#141414] px-2 py-0.5">
-            Active Context: {activeCase.patientCode}
+          <span className="text-[10px] text-teal-300 font-mono font-bold border border-teal-500/30 bg-teal-500/10 px-2.5 py-0.5 rounded-full">
+            Context: {activeCase.patientCode}
           </span>
         )}
       </div>
 
       {/* Suggested Quick Queries */}
-      <div className="flex flex-wrap gap-1.5 text-[10px] font-mono">
+      <div className="flex flex-wrap gap-2 text-[11px] font-mono">
         <button
           onClick={() => handlePresetQuery('What are the key differential markers between Gaucher Type 1 and Niemann-Pick?')}
-          className="bg-white hover:bg-[#E4E3E0] text-[#141414] font-bold px-2.5 py-1 border border-[#141414]"
+          className="rounded-lg border border-slate-700/80 bg-slate-950/80 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 flex items-center gap-1.5 transition-colors"
         >
-          🔍 Gaucher vs Niemann-Pick differential
+          <Search className="w-3.5 h-3.5 text-teal-400" />
+          <span>Gaucher vs Niemann-Pick differential</span>
         </button>
         <button
           onClick={() => handlePresetQuery('Is ALT elevation common 14 days after Imiglucerase ERT start?')}
-          className="bg-white hover:bg-[#E4E3E0] text-[#141414] font-bold px-2.5 py-1 border border-[#141414]"
+          className="rounded-lg border border-slate-700/80 bg-slate-950/80 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 flex items-center gap-1.5 transition-colors"
         >
-          💊 Imiglucerase ERT liver transaminase risk
+          <Pill className="w-3.5 h-3.5 text-orange-400" />
+          <span>Imiglucerase ERT transaminase risk</span>
         </button>
       </div>
 
       {/* Messages Thread */}
-      <div className="bg-white border border-[#141414] p-3 space-y-3 max-h-[220px] overflow-y-auto text-xs">
+      <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3.5 space-y-3 max-h-[240px] overflow-y-auto text-xs custom-scrollbar">
         {messages.map((msg, idx) => (
-          <div key={idx} className={`flex items-start gap-2 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+          <div key={idx} className={`flex items-start gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
             {msg.sender === 'ai' && (
-              <div className="p-1 bg-[#141414] text-white shrink-0 mt-0.5">
-                <Bot className="w-3.5 h-3.5 text-emerald-400" />
+              <div className="w-6 h-6 rounded-lg bg-teal-500/10 border border-teal-500/30 text-teal-400 flex items-center justify-center shrink-0 mt-0.5">
+                <Bot className="w-3.5 h-3.5" />
               </div>
             )}
             <div
-              className={`p-2.5 max-w-[85%] leading-relaxed border ${
+              className={`p-3 rounded-xl max-w-[85%] leading-relaxed ${
                 msg.sender === 'user'
-                  ? 'bg-[#141414] text-white font-mono text-[11px] font-bold border-[#141414]'
-                  : 'bg-[#F0EEE9] text-[#141414] font-serif italic text-xs border-[#141414]'
+                  ? 'bg-teal-500/15 border border-teal-500/40 text-teal-200'
+                  : 'bg-slate-900 border border-slate-800 text-slate-300'
               }`}
             >
               {msg.text}
             </div>
             {msg.sender === 'user' && (
-              <div className="p-1 bg-[#2A5C82] text-white shrink-0 mt-0.5">
+              <div className="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center shrink-0 mt-0.5">
                 <User className="w-3.5 h-3.5" />
               </div>
             )}
           </div>
         ))}
         {isLoading && (
-          <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#2A5C82] p-2">
+          <div className="flex items-center gap-2 text-xs font-mono text-teal-400">
             <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            <span>Consulting Gemini AI knowledge base...</span>
+            <span>Consulting clinical model...</span>
           </div>
         )}
       </div>
@@ -132,16 +134,16 @@ export const ChatQueryPanel: React.FC<Props> = ({ activeCase }) => {
           type="text"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Ask AI query about rare diseases, drug interactions, or active case..."
-          className="flex-1 bg-white border border-[#141414] p-2 text-xs font-mono text-[#141414] focus:outline-none"
+          placeholder="Ask a clinical question about this case or guideline..."
+          className="flex-1 rounded-xl border border-slate-700/80 bg-slate-950 px-3.5 py-2.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-teal-400 font-mono"
         />
         <button
           type="submit"
-          disabled={isLoading}
-          className="bg-[#141414] hover:bg-[#2A5C82] text-white font-mono font-bold uppercase px-4 py-2 text-xs flex items-center gap-1.5 transition-all disabled:opacity-50"
+          disabled={isLoading || !prompt.trim()}
+          className="px-4 py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-teal-400 to-emerald-400 text-slate-950 hover:brightness-105 disabled:opacity-40 transition-all flex items-center gap-1.5"
         >
-          <Send className="w-3.5 h-3.5 text-[#FF6321]" />
-          <span>Ask</span>
+          <Send className="w-3.5 h-3.5" />
+          <span>Send</span>
         </button>
       </form>
     </div>

@@ -23,7 +23,8 @@ import {
   Pill,
   Dna,
   FileText,
-  Copy
+  Copy,
+  X
 } from 'lucide-react';
 
 interface Props {
@@ -100,7 +101,7 @@ export const RareDiseaseCsvWorkflow: React.FC<Props> = ({ onLoadIntoIntake, clas
 
         const merged = RareDiseaseCsvService.mergeDataset(dataset, parsed);
         setDataset(merged);
-        setUploadNotice(`✓ Successfully imported ${parsed.length} rows! Dataset merged (${merged.length} total rare diseases).`);
+        setUploadNotice(`Successfully imported ${parsed.length} rows! Dataset merged (${merged.length} total rare diseases).`);
         setTimeout(() => setUploadNotice(null), 5000);
       } catch (err) {
         setUploadNotice('Error parsing CSV file. Please verify CSV schema.');
@@ -194,7 +195,7 @@ export const RareDiseaseCsvWorkflow: React.FC<Props> = ({ onLoadIntoIntake, clas
     if (!researchedRecord) return;
     const merged = RareDiseaseCsvService.mergeDataset(dataset, [researchedRecord]);
     setDataset(merged);
-    setUploadNotice(`✓ Pulled "${researchedRecord.diseaseName}" into active CSV dataset workflow!`);
+    setUploadNotice(`Pulled "${researchedRecord.diseaseName}" into active CSV dataset workflow!`);
     setResearchedRecord(null);
     setResearchQuery('');
     setTimeout(() => setUploadNotice(null), 4000);
@@ -274,9 +275,10 @@ export const RareDiseaseCsvWorkflow: React.FC<Props> = ({ onLoadIntoIntake, clas
             </span>
             <button
               onClick={() => setUploadNotice(null)}
-              className="text-slate-400 hover:text-white text-xs"
+              aria-label="Dismiss notice"
+              className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800/60 transition-colors"
             >
-              ✕
+              <X className="w-4 h-4" />
             </button>
           </div>
         )}
@@ -510,7 +512,7 @@ export const RareDiseaseCsvWorkflow: React.FC<Props> = ({ onLoadIntoIntake, clas
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
                             <div className="space-y-2">
                               <span className="text-[10px] font-bold uppercase text-teal-400 block">
-                                🧬 HPO Phenotypic Terms & Synonyms:
+                                HPO Phenotypic Terms & Synonyms:
                               </span>
                               <div className="p-3 bg-slate-900 rounded-lg border border-slate-800 text-slate-300">
                                 <p className="mb-2"><strong className="text-white">Synonyms:</strong> {record.synonyms}</p>
@@ -520,7 +522,7 @@ export const RareDiseaseCsvWorkflow: React.FC<Props> = ({ onLoadIntoIntake, clas
 
                             <div className="space-y-2">
                               <span className="text-[10px] font-bold uppercase text-amber-400 block">
-                                🔬 Primary Diagnostic Biomarker Pattern:
+                                Primary Diagnostic Biomarker Pattern:
                               </span>
                               <div className="p-3 bg-slate-900 rounded-lg border border-slate-800 text-slate-300">
                                 <p className="mb-2"><strong className="text-white">Lab Markers:</strong> {record.labMarkers}</p>

@@ -3,7 +3,7 @@ import { PatientIntake, DiagnosisResult } from '../types/syndx';
 import { InferenceService } from '../services/inferenceService';
 import { LocalStoreService } from '../services/localStore';
 import { MOCK_PATIENT_SAMPLES } from '../services/mockData';
-import { Stethoscope, Activity, FileText, Zap, User, AlertCircle, HeartPulse } from 'lucide-react';
+import { Stethoscope, Activity, FileText, Zap, User, AlertCircle, HeartPulse, CheckCircle2, ArrowRight, Check } from 'lucide-react';
 
 interface Props {
   onDiagnosisComplete: (result: DiagnosisResult, intake: PatientIntake) => void;
@@ -14,8 +14,8 @@ const COMMON_RARE_SYMPTOMS = [
   'Severe Bone Pain (Bones/Joints)',
   'Persistent Fatigue',
   'Easy Bruising / Petechiae',
-  'Acroparesthesia (Burning sensation in palms & soles)',
-  'Dark reddish skin spots (Angiokeratomas)',
+  'Acroparesthesia (Burning palms & soles)',
+  'Angiokeratomas (Dark reddish spots)',
   'Hypohidrosis (Inability to sweat in heat)',
   'Proteinuria',
   'Proximal Muscle Weakness',
@@ -131,40 +131,40 @@ export const IntakeScreen: React.FC<Props> = ({ onDiagnosisComplete }) => {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header Banner */}
-      <div className="card-3d p-6 relative overflow-hidden">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="btn-3d px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-md">
-                <Stethoscope className="w-3.5 h-3.5 text-teal-300" />
-                Layer 1: Point-of-Care Offline Intake
+      <div className="rounded-3xl border border-slate-800/90 bg-slate-900/70 p-6 sm:p-8 backdrop-blur-xl space-y-4 shadow-xl">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="px-3 py-1 rounded-full border border-teal-500/30 bg-teal-500/10 text-teal-300 text-[11px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
+                <Stethoscope className="w-3.5 h-3.5 text-teal-400" />
+                Step 1: Point-of-Care Clinical Intake
               </span>
-              <span className="badge-3d px-3 py-1 text-[10px] font-mono font-bold text-slate-800">
-                Latent Engine: TFLite Edge 3D
+              <span className="px-3 py-1 rounded-full border border-slate-700 bg-slate-800/80 text-[11px] font-mono font-semibold text-slate-300">
+                Engine: Offline Edge AI
               </span>
             </div>
-            <h1 className="text-2xl font-black uppercase tracking-tight text-slate-900 drop-shadow-xs">
-              Rural Clinic Rare Disease Intake & Vitals Assessment
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-heading">
+              Patient Intake &amp; Biomarker Assessment
             </h1>
-            <p className="text-xs font-serif italic text-slate-600 mt-1 max-w-2xl">
-              Captures clinical markers offline in remote sub-centers. Evaluates 20+ rare genetic storage and metabolic conditions in under 2 seconds without requiring internet.
+            <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              Captures clinical markers offline in remote health posts. Evaluates rare genetic storage and metabolic conditions in under 2 seconds without requiring an internet connection.
             </p>
           </div>
 
-          {/* Quick Demo Pre-fill triggers */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-mono font-bold uppercase text-slate-700 block w-full md:w-auto">Load Sample Case:</span>
+          {/* Quick Pre-fill triggers */}
+          <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-start sm:items-center gap-2 shrink-0">
+            <span className="text-xs font-mono text-slate-400 font-semibold block">Load Sample:</span>
             <button
               type="button"
               onClick={() => handleLoadSample(0)}
-              className="btn-3d px-3.5 py-2 text-xs font-mono font-bold shadow-md"
+              className="px-3.5 py-2 rounded-xl border border-teal-500/30 bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 text-xs font-mono font-semibold transition-colors"
             >
               Gaucher Case (PAT-8821)
             </button>
             <button
               type="button"
               onClick={() => handleLoadSample(1)}
-              className="btn-3d-orange px-3.5 py-2 text-xs font-mono font-bold shadow-md"
+              className="px-3.5 py-2 rounded-xl border border-orange-500/30 bg-orange-500/10 hover:bg-orange-500/20 text-orange-300 text-xs font-mono font-semibold transition-colors"
             >
               Fabry Case (PAT-4412)
             </button>
@@ -174,28 +174,28 @@ export const IntakeScreen: React.FC<Props> = ({ onDiagnosisComplete }) => {
 
       <form onSubmit={handleSubmitInference} className="space-y-6">
         {/* Section 1: Demographic & Location Info */}
-        <div className="card-3d p-6 space-y-4">
-          <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
-            <User className="w-4 h-4 text-[#2A5C82]" />
-            <h2 className="text-xs font-black text-slate-900 uppercase tracking-wider font-mono">
-              [01] Patient Identification & Clinic Location
+        <div className="rounded-3xl border border-slate-800/90 bg-slate-900/70 p-6 sm:p-8 backdrop-blur-xl space-y-4 shadow-xl">
+          <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+            <User className="w-4 h-4 text-teal-400" />
+            <h2 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+              [01] Patient Identification &amp; Clinic Location
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
             <div>
-              <label className="block text-slate-600 mb-1 font-bold uppercase text-[10px] font-mono">Patient Code / ID</label>
+              <label className="block text-slate-400 mb-1.5 font-bold uppercase text-[10px] font-mono">Patient Code / ID</label>
               <input
                 type="text"
                 value={patientCode}
                 onChange={(e) => setPatientCode(e.target.value)}
                 required
-                className="w-full input-3d p-2.5 font-mono text-slate-900 font-bold focus:outline-none"
+                className="w-full rounded-xl border border-slate-700/80 bg-slate-950/80 px-3.5 py-2.5 font-mono text-white text-xs font-bold focus:outline-none focus:border-teal-400"
               />
             </div>
 
             <div>
-              <label className="block text-slate-600 mb-1 font-bold uppercase text-[10px] font-mono">Age (Years)</label>
+              <label className="block text-slate-400 mb-1.5 font-bold uppercase text-[10px] font-mono">Age (Years)</label>
               <input
                 type="number"
                 value={age}
@@ -203,16 +203,16 @@ export const IntakeScreen: React.FC<Props> = ({ onDiagnosisComplete }) => {
                 required
                 min={0}
                 max={110}
-                className="w-full input-3d p-2.5 text-slate-900 font-mono font-bold focus:outline-none"
+                className="w-full rounded-xl border border-slate-700/80 bg-slate-950/80 px-3.5 py-2.5 text-white font-mono text-xs font-bold focus:outline-none focus:border-teal-400"
               />
             </div>
 
             <div>
-              <label className="block text-slate-600 mb-1 font-bold uppercase text-[10px] font-mono">Gender</label>
+              <label className="block text-slate-400 mb-1.5 font-bold uppercase text-[10px] font-mono">Gender</label>
               <select
                 value={gender}
                 onChange={(e) => setGender(e.target.value as any)}
-                className="w-full input-3d p-2.5 text-slate-900 font-mono font-bold focus:outline-none"
+                className="w-full rounded-xl border border-slate-700/80 bg-slate-950/80 px-3.5 py-2.5 text-white font-mono text-xs font-bold focus:outline-none focus:border-teal-400"
               >
                 <option value="Female">Female</option>
                 <option value="Male">Male</option>
@@ -221,111 +221,111 @@ export const IntakeScreen: React.FC<Props> = ({ onDiagnosisComplete }) => {
             </div>
 
             <div>
-              <label className="block text-slate-600 mb-1 font-bold uppercase text-[10px] font-mono">Rural Clinic Sub-Center</label>
+              <label className="block text-slate-400 mb-1.5 font-bold uppercase text-[10px] font-mono">Rural Clinic Sub-Center</label>
               <input
                 type="text"
                 value={clinicName}
                 onChange={(e) => setClinicName(e.target.value)}
-                className="w-full input-3d p-2.5 text-slate-900 font-mono font-bold focus:outline-none"
+                className="w-full rounded-xl border border-slate-700/80 bg-slate-950/80 px-3.5 py-2.5 text-white font-mono text-xs font-bold focus:outline-none focus:border-teal-400"
               />
             </div>
           </div>
         </div>
 
         {/* Section 2: Vitals & Key Lab Biomarkers */}
-        <div className="card-3d p-6 space-y-4">
-          <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
-            <Activity className="w-4 h-4 text-[#FF6321]" />
-            <h2 className="text-xs font-black text-slate-900 uppercase tracking-wider font-mono">
-              [02] Point-of-Care Vitals & Lab Biomarkers
+        <div className="rounded-3xl border border-slate-800/90 bg-slate-900/70 p-6 sm:p-8 backdrop-blur-xl space-y-4 shadow-xl">
+          <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+            <Activity className="w-4 h-4 text-cyan-400" />
+            <h2 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+              [02] Point-of-Care Vitals &amp; Lab Biomarkers
             </h2>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 text-xs">
-            <div className="input-3d p-3">
-              <span className="text-slate-600 block mb-1 text-[10px] font-mono font-bold uppercase">Heart Rate (bpm)</span>
+            <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-3.5">
+              <span className="text-slate-400 block mb-1 text-[10px] font-mono font-semibold uppercase">Heart Rate (bpm)</span>
               <input
                 type="number"
                 value={heartRate}
                 onChange={(e) => setHeartRate(Number(e.target.value))}
-                className="w-full bg-transparent font-mono font-black text-slate-900 text-sm focus:outline-none"
+                className="w-full bg-transparent font-mono font-bold text-white text-base focus:outline-none"
               />
             </div>
 
-            <div className="input-3d p-3">
-              <span className="text-slate-600 block mb-1 text-[10px] font-mono font-bold uppercase">BP Systolic (mmHg)</span>
+            <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-3.5">
+              <span className="text-slate-400 block mb-1 text-[10px] font-mono font-semibold uppercase">BP Systolic (mmHg)</span>
               <input
                 type="number"
                 value={sysBP}
                 onChange={(e) => setSysBP(Number(e.target.value))}
-                className={`w-full bg-transparent font-mono font-black text-sm focus:outline-none ${
-                  sysBP > 180 || sysBP < 80 ? 'text-[#FF6321]' : 'text-slate-900'
+                className={`w-full bg-transparent font-mono font-bold text-base focus:outline-none ${
+                  sysBP > 180 || sysBP < 80 ? 'text-rose-400' : 'text-white'
                 }`}
               />
             </div>
 
-            <div className="input-3d p-3">
-              <span className="text-slate-600 block mb-1 text-[10px] font-mono font-bold uppercase">O2 Saturation (%)</span>
+            <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-3.5">
+              <span className="text-slate-400 block mb-1 text-[10px] font-mono font-semibold uppercase">O2 Saturation (%)</span>
               <input
                 type="number"
                 value={oxygenSat}
                 onChange={(e) => setOxygenSat(Number(e.target.value))}
-                className={`w-full bg-transparent font-mono font-black text-sm focus:outline-none ${
-                  oxygenSat < 88 ? 'text-[#FF6321]' : 'text-[#2A5C82]'
+                className={`w-full bg-transparent font-mono font-bold text-base focus:outline-none ${
+                  oxygenSat < 88 ? 'text-rose-400' : 'text-teal-400'
                 }`}
               />
             </div>
 
-            <div className="input-3d p-3">
-              <span className="text-slate-600 block mb-1 text-[10px] font-mono font-bold uppercase">Platelets (x10^3/µL)</span>
+            <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-3.5">
+              <span className="text-slate-400 block mb-1 text-[10px] font-mono font-semibold uppercase">Platelets (x10^3/µL)</span>
               <input
                 type="number"
                 value={platelets}
                 onChange={(e) => setPlatelets(Number(e.target.value))}
-                className={`w-full bg-transparent font-mono font-black text-sm focus:outline-none ${
-                  platelets < 100 ? 'text-[#FF6321]' : 'text-slate-900'
+                className={`w-full bg-transparent font-mono font-bold text-base focus:outline-none ${
+                  platelets < 100 ? 'text-amber-400' : 'text-white'
                 }`}
               />
             </div>
 
-            <div className="input-3d p-3">
-              <span className="text-slate-600 block mb-1 text-[10px] font-mono font-bold uppercase">ALT / AST (U/L)</span>
+            <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-3.5">
+              <span className="text-slate-400 block mb-1 text-[10px] font-mono font-semibold uppercase">ALT / AST (U/L)</span>
               <input
                 type="number"
                 value={altAst}
                 onChange={(e) => setAltAst(Number(e.target.value))}
-                className="w-full bg-transparent font-mono font-black text-slate-900 text-sm focus:outline-none"
+                className="w-full bg-transparent font-mono font-bold text-white text-base focus:outline-none"
               />
             </div>
 
-            <div className="input-3d p-3">
-              <span className="text-slate-600 block mb-1 text-[10px] font-mono font-bold uppercase">Serum Creatinine</span>
+            <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-3.5">
+              <span className="text-slate-400 block mb-1 text-[10px] font-mono font-semibold uppercase">Serum Creatinine</span>
               <input
                 type="number"
                 step="0.1"
                 value={serumCreatinine}
                 onChange={(e) => setSerumCreatinine(Number(e.target.value))}
-                className="w-full bg-transparent font-mono font-black text-slate-900 text-sm focus:outline-none"
+                className="w-full bg-transparent font-mono font-bold text-white text-base focus:outline-none"
               />
             </div>
           </div>
         </div>
 
         {/* Section 3: Rare Symptom Checklist & History */}
-        <div className="card-3d p-6 space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+        <div className="rounded-3xl border border-slate-800/90 bg-slate-900/70 p-6 sm:p-8 backdrop-blur-xl space-y-4 shadow-xl">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-[#2A5C82]" />
-              <h2 className="text-xs font-black text-slate-900 uppercase tracking-wider font-mono">
-                [03] Rare Disease Phenotype & Symptom Checklist
+              <FileText className="w-4 h-4 text-emerald-400" />
+              <h2 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+                [03] Rare Disease Phenotype &amp; Symptom Checklist
               </h2>
             </div>
-            <span className="badge-3d px-3 py-1 text-xs text-[#2A5C82] font-mono font-bold">
+            <span className="px-3 py-1 rounded-full border border-teal-500/30 bg-teal-500/10 text-xs text-teal-300 font-mono font-semibold">
               {selectedSymptoms.length} Selected
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs">
             {COMMON_RARE_SYMPTOMS.map((symptom) => {
               const isSelected = selectedSymptoms.includes(symptom);
               return (
@@ -333,19 +333,19 @@ export const IntakeScreen: React.FC<Props> = ({ onDiagnosisComplete }) => {
                   type="button"
                   key={symptom}
                   onClick={() => handleSymptomToggle(symptom)}
-                  className={`p-3 rounded-xl border text-left flex items-start justify-between transition-all shadow-sm ${
+                  className={`p-3 rounded-xl border text-left flex items-start justify-between transition-all ${
                     isSelected
-                      ? 'btn-3d text-white font-bold'
-                      : 'bg-white/80 border-slate-200 text-slate-800 hover:bg-white hover:shadow-md'
+                      ? 'border-teal-500/50 bg-teal-500/15 text-white font-semibold shadow-sm'
+                      : 'border-slate-800 bg-slate-950/60 text-slate-300 hover:border-slate-700 hover:bg-slate-800/50'
                   }`}
                 >
-                  <span className="text-[11px] leading-tight font-sans">{symptom}</span>
+                  <span className="text-xs leading-tight">{symptom}</span>
                   <span
-                    className={`w-4 h-4 rounded-md border shrink-0 ml-1.5 flex items-center justify-center text-[10px] font-mono ${
-                      isSelected ? 'border-white bg-white text-slate-900 font-black' : 'border-slate-400'
+                    className={`w-4 h-4 rounded border shrink-0 ml-2 flex items-center justify-center text-[10px] font-mono ${
+                      isSelected ? 'border-teal-400 bg-teal-400 text-slate-950 font-black' : 'border-slate-700 bg-slate-900'
                     }`}
                   >
-                    {isSelected ? '✓' : ''}
+                    {isSelected ? <Check className="w-3 h-3 text-slate-950 stroke-[3]" /> : null}
                   </span>
                 </button>
               );
@@ -359,58 +359,58 @@ export const IntakeScreen: React.FC<Props> = ({ onDiagnosisComplete }) => {
               value={customSymptomInput}
               onChange={(e) => setCustomSymptomInput(e.target.value)}
               placeholder="Enter additional clinical phenotype or symptom..."
-              className="flex-1 input-3d p-2.5 text-xs text-slate-900 font-mono focus:outline-none"
+              className="flex-1 rounded-xl border border-slate-700/80 bg-slate-950/80 px-3.5 py-2.5 text-xs text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-teal-400"
             />
             <button
               type="button"
               onClick={handleAddCustomSymptom}
-              className="btn-3d px-4 py-2.5 font-mono font-bold text-xs"
+              className="px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-750 text-slate-200 font-mono font-semibold text-xs transition-colors"
             >
               Add Symptom
             </button>
           </div>
 
           {/* Additional details */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-slate-200 text-xs font-mono">
-            <div className="flex items-center gap-3 input-3d p-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-slate-800 text-xs font-mono">
+            <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/60 p-3.5">
               <input
                 type="checkbox"
                 id="familyHistory"
                 checked={familyHistory}
                 onChange={(e) => setFamilyHistory(e.target.checked)}
-                className="w-4 h-4 accent-slate-900 rounded"
+                className="w-4 h-4 accent-teal-400 rounded cursor-pointer"
               />
-              <label htmlFor="familyHistory" className="text-slate-800 font-bold cursor-pointer text-xs">
-                Family History of Unexplained Consanguinity or Similar Rare Symptoms
+              <label htmlFor="familyHistory" className="text-slate-300 font-medium cursor-pointer text-xs">
+                Family History of Unexplained Consanguinity or Rare Symptoms
               </label>
             </div>
 
-            <div className="flex items-center justify-between input-3d p-3">
-              <span className="text-slate-600 font-bold uppercase text-[10px]">Symptom Duration:</span>
+            <div className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/60 p-3.5">
+              <span className="text-slate-400 uppercase text-[10px] font-semibold">Symptom Duration:</span>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
                   value={symptomDurationDays}
                   onChange={(e) => setSymptomDurationDays(Number(e.target.value))}
-                  className="w-20 bg-white border border-slate-300 rounded p-1 text-center font-mono font-bold text-slate-900 shadow-inner"
+                  className="w-20 bg-slate-900 border border-slate-700 rounded-lg p-1 text-center font-mono font-bold text-white"
                 />
-                <span className="text-slate-800 font-bold">Days</span>
+                <span className="text-slate-300 font-semibold">Days</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Submit Action */}
-        <div className="card-3d-dark p-5 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl">
-          <div className="flex items-center gap-2 text-xs font-mono">
-            <Zap className="w-4 h-4 text-emerald-400" />
-            <span>Local TFLite model active • Memory footprint: ~12.4 MB • Zero Cloud Dependency</span>
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-5 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl">
+          <div className="flex items-center gap-2.5 text-xs font-mono text-slate-300">
+            <Zap className="w-4 h-4 text-teal-400" />
+            <span>Local TFLite model active • ~12.4 MB • Zero Cloud Latency</span>
           </div>
 
           <button
             type="submit"
             disabled={isEvaluating}
-            className="w-full sm:w-auto btn-3d-emerald px-8 py-3.5 font-black uppercase tracking-wider text-xs flex items-center justify-center gap-2 shadow-xl"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-gradient-to-r from-teal-400 via-emerald-400 to-teal-400 text-slate-950 hover:brightness-105 transition-all flex items-center justify-center gap-2.5 shadow-lg shadow-teal-500/20"
           >
             {isEvaluating ? (
               <>
@@ -419,8 +419,8 @@ export const IntakeScreen: React.FC<Props> = ({ onDiagnosisComplete }) => {
               </>
             ) : (
               <>
-                <Zap className="w-4 h-4 fill-current text-teal-300" />
-                <span>Execute Local Edge AI Diagnosis & Push to Step 2 →</span>
+                <Zap className="w-4 h-4 fill-current text-slate-950" />
+                <span>Execute Local Edge AI Diagnosis &amp; Proceed →</span>
               </>
             )}
           </button>

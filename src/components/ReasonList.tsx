@@ -8,24 +8,28 @@ interface Props {
   title?: string;
 }
 
-export const ReasonList: React.FC<Props> = ({ shapReasons, limeReasons = [], title = 'XAI Explainability Breakdown (SHAP & LIME)' }) => {
+export const ReasonList: React.FC<Props> = ({ 
+  shapReasons, 
+  limeReasons = [], 
+  title = 'Explainable AI Biomarker Breakdown (SHAP & LIME)' 
+}) => {
   const [activeTab, setActiveTab] = useState<'SHAP' | 'LIME'>('SHAP');
 
   const currentList = activeTab === 'SHAP' ? shapReasons : limeReasons;
 
   return (
-    <div className="bg-[#F0EEE9] border border-[#141414] p-5 shadow-sm">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[#141414]">
+    <div className="rounded-2xl border border-slate-800/90 bg-slate-900/60 p-5 sm:p-6 backdrop-blur-xl space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-[#2A5C82]" />
-          <h3 className="text-sm font-black uppercase tracking-tight text-[#141414]">{title}</h3>
+          <Sparkles className="w-4 h-4 text-teal-400" />
+          <h3 className="text-sm font-bold text-white font-heading tracking-wide uppercase">{title}</h3>
         </div>
 
-        <div className="flex items-center bg-white border border-[#141414] p-0.5 text-xs">
+        <div className="flex items-center rounded-lg border border-slate-800 bg-slate-950 p-1 text-xs">
           <button
             onClick={() => setActiveTab('SHAP')}
-            className={`px-3 py-1 font-mono font-bold text-[10px] uppercase tracking-wider transition-colors flex items-center gap-1.5 ${
-              activeTab === 'SHAP' ? 'bg-[#141414] text-white' : 'text-[#141414] hover:bg-[#E4E3E0]'
+            className={`px-3 py-1 font-mono font-semibold text-[11px] rounded-md transition-colors flex items-center gap-1.5 ${
+              activeTab === 'SHAP' ? 'bg-teal-500/20 text-teal-300 border border-teal-500/30' : 'text-slate-400 hover:text-white'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -34,8 +38,8 @@ export const ReasonList: React.FC<Props> = ({ shapReasons, limeReasons = [], tit
           {limeReasons.length > 0 && (
             <button
               onClick={() => setActiveTab('LIME')}
-              className={`px-3 py-1 font-mono font-bold text-[10px] uppercase tracking-wider transition-colors flex items-center gap-1.5 ${
-                activeTab === 'LIME' ? 'bg-[#141414] text-white' : 'text-[#141414] hover:bg-[#E4E3E0]'
+              className={`px-3 py-1 font-mono font-semibold text-[11px] rounded-md transition-colors flex items-center gap-1.5 ${
+                activeTab === 'LIME' ? 'bg-teal-500/20 text-teal-300 border border-teal-500/30' : 'text-slate-400 hover:text-white'
               }`}
             >
               <HelpCircle className="w-3.5 h-3.5" />
@@ -45,46 +49,40 @@ export const ReasonList: React.FC<Props> = ({ shapReasons, limeReasons = [], tit
         </div>
       </div>
 
-      <p className="text-xs font-serif italic text-[#141414]/80 mb-4">
+      <p className="text-xs text-slate-400 leading-relaxed">
         {activeTab === 'SHAP'
-          ? 'Shapley Additive Explanations calculate the exact mathematical contribution of each patient vital and lab marker toward the model decision.'
-          : 'LIME fits an interpretable local linear surrogate around this specific patient profile to verify edge model consistency.'}
+          ? 'Shapley Additive Explanations calculate the exact mathematical contribution of each patient vital sign and biomarker toward the diagnostic decision.'
+          : 'LIME fits an interpretable local linear surrogate around this specific patient profile to verify edge model decision boundaries.'}
       </p>
 
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         {currentList.map((item, idx) => {
           const isPositive = item.impact >= 0;
           const absImpact = Math.abs(item.impact);
 
           return (
-            <div key={idx} className="bg-white border border-[#141414] p-3.5">
-              <div className="flex items-center justify-between gap-2 mb-1.5">
+            <div key={idx} className="rounded-xl border border-slate-800/80 bg-slate-950/60 p-3.5">
+              <div className="flex items-center justify-between gap-2 mb-2">
                 <div className="flex items-center gap-2">
-                  {isPositive ? (
-                    <span className="p-1 bg-[#141414] text-white">
-                      <TrendingUp className="w-3.5 h-3.5" />
-                    </span>
-                  ) : (
-                    <span className="p-1 bg-[#2A5C82] text-white">
-                      <TrendingDown className="w-3.5 h-3.5" />
-                    </span>
-                  )}
-                  <span className="text-xs font-bold text-[#141414] uppercase tracking-wide">{item.feature}</span>
+                  <span className={`p-1 rounded-md ${isPositive ? 'bg-teal-500/10 text-teal-400' : 'bg-rose-500/10 text-rose-400'}`}>
+                    {isPositive ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
+                  </span>
+                  <span className="text-xs font-semibold text-slate-200">{item.feature}</span>
                 </div>
-                <span className={`text-xs font-mono font-black ${isPositive ? 'text-[#141414]' : 'text-[#2A5C82]'}`}>
+                <span className={`text-xs font-mono font-bold ${isPositive ? 'text-teal-400' : 'text-rose-400'}`}>
                   {isPositive ? `+${absImpact}%` : `-${absImpact}%`}
                 </span>
               </div>
 
               {/* Progress bar visualizer */}
-              <div className="w-full bg-[#E4E3E0] h-3 border border-[#141414] mb-2 relative">
+              <div className="w-full bg-slate-900 h-2 rounded-full border border-slate-800 mb-2 overflow-hidden">
                 <div
-                  className={`h-full ${isPositive ? 'bg-[#141414]' : 'bg-[#2A5C82]'}`}
+                  className={`h-full rounded-full transition-all duration-500 ${isPositive ? 'bg-teal-400' : 'bg-rose-400'}`}
                   style={{ width: `${Math.min(100, absImpact * 2.5)}%` }}
                 />
               </div>
 
-              <p className="text-xs font-serif italic text-[#141414]/90 leading-relaxed">{item.description}</p>
+              <p className="text-xs text-slate-400 leading-relaxed">{item.description}</p>
             </div>
           );
         })}

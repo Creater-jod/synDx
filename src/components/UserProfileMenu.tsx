@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { UserProfile } from '../types/auth';
 import {
   User,
@@ -25,17 +25,34 @@ interface UserProfileMenuProps {
   onOpenDoctorProfile?: () => void;
 }
 
-export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ user, onOpenAuth, onLogout, onOpenMedicalHistory, onOpenDoctorProfile }) => {
+export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ 
+  user, 
+  onOpenAuth, 
+  onLogout, 
+  onOpenMedicalHistory, 
+  onOpenDoctorProfile 
+}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   if (!user) {
     return (
       <button
         onClick={onOpenAuth}
-        className="btn-3d-orange px-3.5 py-2 font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg"
+        className="px-4 py-2 rounded-xl font-bold text-xs font-mono uppercase tracking-wider bg-gradient-to-r from-teal-400 to-emerald-400 text-slate-950 hover:brightness-105 active:scale-95 transition-all flex items-center gap-1.5 shadow-md shadow-teal-500/10"
       >
         <LogIn className="w-3.5 h-3.5" />
-        <span>Sign In / Register</span>
+        <span>Sign In</span>
       </button>
     );
   }
@@ -43,82 +60,71 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ user, onOpenAu
   const getProviderBadge = (provider: UserProfile['provider']) => {
     switch (provider) {
       case 'google':
-        return { label: 'Google', bg: 'bg-[#4285F4]', text: 'text-white' };
+        return { label: 'Google', bg: 'bg-blue-500/20 border-blue-500/30 text-blue-300' };
       case 'mobile':
-        return { label: 'Mobile OTP', bg: 'bg-[#10B981]', text: 'text-white' };
+        return { label: 'Mobile OTP', bg: 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300' };
       case 'gmail':
-        return { label: 'Gmail', bg: 'bg-[#EA4335]', text: 'text-white' };
+        return { label: 'Gmail', bg: 'bg-rose-500/20 border-rose-500/30 text-rose-300' };
       case 'abha':
-        return { label: 'ABHA ID', bg: 'bg-[#8B5CF6]', text: 'text-white' };
+        return { label: 'ABHA ID', bg: 'bg-purple-500/20 border-purple-500/30 text-purple-300' };
       default:
-        return { label: 'Manual Sign Up', bg: 'bg-[#2A5C82]', text: 'text-white' };
+        return { label: 'Registered', bg: 'bg-slate-700/40 border-slate-600 text-slate-300' };
     }
   };
 
   const badge = getProviderBadge(user.provider);
 
   return (
-    <div className="relative font-mono">
+    <div className="relative font-mono" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2.5 p-1.5 pr-3 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-slate-700/80 rounded-2xl text-xs font-bold shadow-xl hover:border-teal-400/50 transition-all text-white group"
+        className="flex items-center gap-2.5 px-3 py-1.5 bg-slate-900 border border-slate-700/80 hover:border-teal-500/50 rounded-xl text-xs font-semibold shadow-md transition-all text-white group"
+        aria-expanded={isOpen}
       >
-        {/* 3D Rotating Avatar Wrapper */}
-        <div className="avatar-3d-wrapper">
-          <div className="avatar-3d-card w-7 h-7 flex items-center justify-center">
-            {user.avatarUrl ? (
-              <img src={user.avatarUrl} alt={user.name} className="w-7 h-7 rounded-full border-2 border-teal-400 object-cover" />
-            ) : (
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-teal-500 to-indigo-600 text-white flex items-center justify-center font-black text-[11px] border border-white/40 shadow-inner">
-                {user.name.charAt(0)}
-              </div>
-            )}
-          </div>
+        <div className="w-7 h-7 rounded-full bg-teal-400 text-slate-950 flex items-center justify-center font-bold text-xs shrink-0 overflow-hidden">
+          {user.avatarUrl ? (
+            <img src={user.avatarUrl} alt={user.name} className="w-7 h-7 object-cover" />
+          ) : (
+            <span>{user.name.charAt(0)}</span>
+          )}
         </div>
 
         <div className="text-left hidden sm:block">
-          <div className="text-[11px] font-sans font-bold text-slate-100 leading-tight truncate max-w-[120px]">
+          <div className="text-xs font-semibold text-slate-100 truncate max-w-[130px]">
             {user.name}
           </div>
-          <div className="text-[9px] text-slate-400 leading-tight flex items-center gap-1">
-            <span className={`px-1.5 py-0.2 rounded ${badge.bg} ${badge.text} font-bold text-[8px] uppercase shadow-xs`}>
-              {badge.label}
-            </span>
+          <div className="text-[10px] text-teal-400 font-medium">
+            {user.role}
           </div>
         </div>
 
         <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-teal-300 transition-colors ml-0.5" />
       </button>
 
-      {/* Profile Dropdown Drawer */}
+      {/* Profile Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-80 card-3d-dark z-50 p-5 space-y-4 shadow-2xl border border-teal-500/30 backdrop-blur-xl">
-          <div className="flex items-start justify-between border-b border-slate-700/60 pb-3.5">
+        <div className="absolute right-0 mt-2.5 w-80 rounded-2xl border border-slate-800 bg-slate-900/95 backdrop-blur-2xl z-50 p-4 space-y-3.5 shadow-2xl">
+          <div className="flex items-start justify-between border-b border-slate-800 pb-3">
             <div className="flex items-center gap-3">
-              {/* Large 3D Rotating Avatar */}
-              <div className="avatar-3d-wrapper">
-                <div className="avatar-3d-card w-12 h-12 flex items-center justify-center">
-                  {user.avatarUrl ? (
-                    <img src={user.avatarUrl} alt={user.name} className="w-12 h-12 rounded-full border-2 border-teal-400 object-cover shadow-lg" />
-                  ) : (
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 via-teal-500 to-indigo-600 text-white flex items-center justify-center font-black text-base border-2 border-white/50 shadow-lg">
-                      {user.name.charAt(0)}
-                    </div>
-                  )}
-                </div>
+              <div className="w-10 h-10 rounded-full bg-teal-400 text-slate-950 flex items-center justify-center font-bold text-sm shrink-0 overflow-hidden">
+                {user.avatarUrl ? (
+                  <img src={user.avatarUrl} alt={user.name} className="w-10 h-10 object-cover" />
+                ) : (
+                  <span>{user.name.charAt(0)}</span>
+                )}
               </div>
 
-              <div>
-                <div className="font-sans font-bold text-sm text-white leading-tight">{user.name}</div>
-                <div className="text-[10px] text-teal-300 font-bold font-mono mt-0.5">{user.role}</div>
+              <div className="min-w-0">
+                <div className="font-bold text-sm text-white truncate">{user.name}</div>
+                <div className="text-xs text-teal-400 truncate">{user.role}</div>
               </div>
             </div>
-            <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${badge.bg} ${badge.text} shadow-sm`}>
+            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase border ${badge.bg}`}>
               {badge.label}
             </span>
           </div>
 
-          <div className="space-y-2 text-xs text-slate-300 border-b border-slate-700/60 pb-3.5">
+          <div className="space-y-2 text-xs text-slate-300 border-b border-slate-800 pb-3 font-mono">
             <div className="flex items-center gap-2.5 text-[11px]">
               <Mail className="w-3.5 h-3.5 text-teal-400 shrink-0" />
               <span className="truncate">{user.email}</span>
@@ -139,41 +145,43 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ user, onOpenAu
             {user.medicalLicense && (
               <div className="flex items-center gap-2.5 text-[11px]">
                 <Award className="w-3.5 h-3.5 text-teal-400 shrink-0" />
-                <span className="font-bold text-amber-300">{user.medicalLicense}</span>
+                <span className="font-bold text-teal-300">{user.medicalLicense}</span>
               </div>
             )}
           </div>
 
-          {onOpenDoctorProfile && (
-            <button
-              onClick={() => {
-                setIsOpen(false);
-                onOpenDoctorProfile();
-              }}
-              className="w-full py-2 px-3 bg-gradient-to-r from-[#FF6321]/20 to-amber-500/20 hover:from-[#FF6321]/30 hover:to-amber-500/30 border border-[#FF6321]/40 text-[#FF6321] rounded-xl text-xs font-mono font-bold uppercase flex items-center justify-center gap-2 transition-all shadow-md"
-            >
-              <Stethoscope className="w-3.5 h-3.5 text-[#FF6321]" />
-              <span>Doctor Profile & Credentials</span>
-            </button>
-          )}
+          <div className="space-y-1.5">
+            {onOpenDoctorProfile && (
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  onOpenDoctorProfile();
+                }}
+                className="w-full py-2 px-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:bg-slate-800 text-slate-200 hover:text-white text-xs font-mono font-medium flex items-center gap-2 transition-colors"
+              >
+                <Stethoscope className="w-3.5 h-3.5 text-teal-400" />
+                <span>Practitioner Credentials &amp; Profile</span>
+              </button>
+            )}
 
-          {onOpenMedicalHistory && (
-            <button
-              onClick={() => {
-                setIsOpen(false);
-                onOpenMedicalHistory();
-              }}
-              className="w-full py-2 px-3 bg-gradient-to-r from-orange-500/20 to-amber-500/20 hover:from-orange-500/30 hover:to-amber-500/30 border border-orange-500/40 text-orange-300 rounded-xl text-xs font-mono font-bold uppercase flex items-center justify-center gap-2 transition-all shadow-md"
-            >
-              <FolderHeart className="w-3.5 h-3.5 text-orange-400" />
-              <span>View Medical History</span>
-            </button>
-          )}
+            {onOpenMedicalHistory && (
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  onOpenMedicalHistory();
+                }}
+                className="w-full py-2 px-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:bg-slate-800 text-slate-200 hover:text-white text-xs font-mono font-medium flex items-center gap-2 transition-colors"
+              >
+                <FolderHeart className="w-3.5 h-3.5 text-orange-400" />
+                <span>Patient Differential History</span>
+              </button>
+            )}
+          </div>
 
-          <div className="pt-1 flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-bold">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Verified Node Officer</span>
+          <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
+            <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-semibold">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>Verified Node Practitioner</span>
             </div>
 
             <button
@@ -181,7 +189,7 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ user, onOpenAu
                 setIsOpen(false);
                 onLogout();
               }}
-              className="btn-3d px-3 py-1.5 text-white text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 hover:bg-rose-600 transition-all"
+              className="px-3 py-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
             >
               <LogOut className="w-3 h-3 text-rose-400" />
               <span>Sign Out</span>

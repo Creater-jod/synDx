@@ -478,9 +478,10 @@ export const DoctorProfileScreen: React.FC<DoctorProfileScreenProps> = ({
                   ]).map((spec, sIdx) => (
                     <span
                       key={sIdx}
-                      className="px-3 py-1.5 bg-gradient-to-r from-teal-500/20 to-indigo-500/20 text-teal-200 border border-teal-500/40 rounded-xl font-mono text-xs font-bold"
+                      className="px-3 py-1.5 bg-gradient-to-r from-teal-500/20 to-indigo-500/20 text-teal-200 border border-teal-500/40 rounded-xl font-mono text-xs font-bold flex items-center gap-1.5"
                     >
-                      ⚕️ {spec}
+                      <Stethoscope className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+                      <span>{spec}</span>
                     </span>
                   ))}
                 </div>

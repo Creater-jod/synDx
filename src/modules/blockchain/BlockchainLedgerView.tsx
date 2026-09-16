@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LocalStoreService } from '../../services/localStore';
 import { AuditBlock } from '../../types/syndx';
-import { ShieldCheck, Search, Link, CheckCircle2, Lock, ExternalLink, RefreshCw } from 'lucide-react';
+import { ShieldCheck, Search, Link, CheckCircle2, Lock, ExternalLink, RefreshCw, AlertCircle } from 'lucide-react';
 
 export const BlockchainLedgerView: React.FC = () => {
   const [blocks, setBlocks] = useState<AuditBlock[]>([]);
@@ -35,117 +35,117 @@ export const BlockchainLedgerView: React.FC = () => {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header Banner */}
-      <div className="bg-[#F0EEE9] border-2 border-[#141414] p-6 shadow-sm">
+      <div className="rounded-3xl border border-slate-800/90 bg-slate-900/70 p-6 sm:p-8 backdrop-blur-xl shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <span className="bg-[#141414] text-white text-[10px] font-mono px-2.5 py-1 font-bold uppercase tracking-wider">
+          <div className="space-y-1.5">
+            <span className="px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-[11px] font-mono font-bold uppercase tracking-wider">
               Layer 5b: Immutable Blockchain Audit Ledger (Polygon Amoy Testnet)
             </span>
-            <h1 className="text-2xl font-black uppercase tracking-tight text-[#141414] mt-2">
-              Cryptographic SHA-256 Verification & Audit Explorer
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-heading">
+              Cryptographic SHA-256 Audit Explorer
             </h1>
-            <p className="text-xs font-serif italic text-[#141414]/80 mt-0.5 max-w-2xl">
-              Zero raw health data on-chain. Only cryptographic case hashes, clinic identifiers, and timestamp proofs are immutably logged to ensure complete tamper-proof accountability.
+            <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              Zero raw health data on-chain. Only cryptographic case hashes, clinic identifiers, and timestamp proofs are immutably logged for tamper-proof accountability.
             </p>
           </div>
 
           <button
             onClick={loadBlocks}
-            className="p-2.5 bg-white text-[#141414] border border-[#141414] hover:bg-[#E4E3E0] text-xs font-mono font-bold uppercase flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs font-mono font-semibold uppercase flex items-center gap-2 transition-colors self-start sm:self-center"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className="w-4 h-4 text-teal-400" />
             <span>Refresh Ledger</span>
           </button>
         </div>
       </div>
 
       {/* Verification Tool */}
-      <div className="bg-white border border-[#141414] p-5 space-y-4">
-        <h2 className="text-xs font-mono font-black uppercase tracking-wider text-[#141414] flex items-center gap-1.5">
-          <ShieldCheck className="w-4 h-4 text-[#2A5C82]" />
-          On-Chain SHA-256 Audit Verification Tool:
+      <div className="rounded-3xl border border-slate-800/90 bg-slate-900/70 p-6 sm:p-8 backdrop-blur-xl space-y-4 shadow-xl">
+        <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+          <ShieldCheck className="w-4 h-4 text-teal-400" />
+          <span>On-Chain SHA-256 Audit Verification Tool</span>
         </h2>
 
-        <form onSubmit={handleVerifyHash} className="flex gap-2">
+        <form onSubmit={handleVerifyHash} className="flex flex-col sm:flex-row gap-2">
           <input
             type="text"
             value={verifyInput}
             onChange={(e) => setVerifyInput(e.target.value)}
             placeholder="Paste Tx Hash or Case SHA-256 Hash to verify on-chain..."
-            className="flex-1 bg-[#F0EEE9] border border-[#141414] p-2.5 font-mono text-xs text-[#141414] focus:outline-none"
+            className="flex-1 rounded-xl border border-slate-700/80 bg-slate-950 px-4 py-2.5 font-mono text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-teal-400"
           />
           <button
             type="submit"
-            className="bg-[#141414] hover:bg-[#2A5C82] text-white font-mono font-bold uppercase px-5 py-2.5 text-xs flex items-center gap-1.5 transition-all"
+            className="px-6 py-2.5 rounded-xl font-mono font-bold text-xs uppercase bg-gradient-to-r from-teal-400 to-emerald-400 text-slate-950 hover:brightness-105 transition-all flex items-center justify-center gap-2 shadow-md shadow-teal-500/10"
           >
-            <Search className="w-4 h-4 text-[#FF6321]" />
+            <Search className="w-4 h-4" />
             <span>Verify Record</span>
           </button>
         </form>
 
         {verificationResult && (
-          <div className="animate-fade-in">
+          <div className="pt-2">
             {verificationResult.match ? (
-              <div className="bg-[#F0EEE9] border-2 border-emerald-700 p-4 text-xs space-y-2 font-mono">
-                <div className="flex items-center gap-2 text-emerald-800 font-bold">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+              <div className="rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-4 text-xs space-y-2 font-mono">
+                <div className="flex items-center gap-2 text-emerald-400 font-bold">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   <span>RECORD VERIFIED ON POLYGON TESTNET (Block #{verificationResult.block?.blockNumber})</span>
                 </div>
-                <p className="text-[#141414] text-[11px]">
-                  Record Type: <strong className="text-[#141414]">{verificationResult.block?.recordType}</strong> • Clinic: {verificationResult.block?.clinicId} • Timestamp: {verificationResult.block?.timestamp}
+                <p className="text-slate-300 text-xs">
+                  Record Type: <strong className="text-white">{verificationResult.block?.recordType}</strong> • Clinic: {verificationResult.block?.clinicId} • Timestamp: {verificationResult.block?.timestamp}
                 </p>
               </div>
             ) : (
-              <div className="bg-[#F0EEE9] border-2 border-rose-700 p-4 text-xs text-rose-800 font-mono font-bold">
-                ✕ Hash not found in current local Polygon Amoy block cache.
+              <div className="rounded-2xl border border-rose-500/40 bg-rose-500/10 p-4 text-xs text-rose-300 font-mono font-bold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                <span>Hash not found in current local Polygon Amoy block cache.</span>
               </div>
             )}
           </div>
         )}
       </div>
 
-      {/* Live Polygon Block Feed */}
-      <div className="bg-white border border-[#141414] p-5 space-y-4">
-        <div className="flex items-center justify-between border-b border-[#141414] pb-3">
-          <h2 className="text-xs font-mono font-black uppercase tracking-wider text-[#141414] flex items-center gap-1.5">
-            <Lock className="w-4 h-4 text-[#2A5C82]" />
-            Recent SynDx Polygon Audit Transactions:
-          </h2>
-          <span className="text-xs font-mono font-bold text-[#141414]/70">Total On-Chain Logs: {blocks.length}</span>
-        </div>
+      {/* Blocks Feed */}
+      <div className="rounded-3xl border border-slate-800/90 bg-slate-900/70 p-6 sm:p-8 backdrop-blur-xl space-y-4 shadow-xl">
+        <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2 border-b border-slate-800 pb-3">
+          <Link className="w-4 h-4 text-teal-400" />
+          <span>Latest Immutable Audit Blocks (Polygon Amoy Testnet):</span>
+        </h2>
 
         <div className="space-y-3">
           {blocks.map((b) => (
-            <div key={b.txHash} className="bg-[#F0EEE9] border border-[#141414] p-4 text-xs space-y-2">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#141414]/30 pb-2">
-                <div className="flex items-center gap-2 font-mono">
-                  <span className="px-2 py-0.5 bg-[#141414] text-white font-bold text-[10px]">
+            <div
+              key={b.blockNumber}
+              className="p-4 rounded-2xl border border-slate-800 bg-slate-950/70 space-y-2 text-xs font-mono transition-all hover:border-slate-700"
+            >
+              <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-2 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-[10px] font-bold">
                     Block #{b.blockNumber}
                   </span>
-                  <span className="font-bold text-[#141414]">{b.recordType}</span>
+                  <span className="text-white font-bold">{b.recordType}</span>
                 </div>
-
-                <span className="text-[10px] text-[#141414]/70 font-mono">{b.timestamp}</span>
+                <span className="text-slate-500 text-[11px]">{b.timestamp}</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px] font-mono">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1">
                 <div>
-                  <span className="text-[#141414]/60 block uppercase font-bold">Tx Hash:</span>
-                  <span className="text-[#2A5C82] font-bold truncate block">{b.txHash}</span>
+                  <span className="text-slate-500 uppercase text-[10px] font-bold block">Case Hash:</span>
+                  <span className="text-teal-300 font-mono break-all">{b.caseHash}</span>
                 </div>
                 <div>
-                  <span className="text-[#141414]/60 block uppercase font-bold">Case SHA-256 Payload Hash:</span>
-                  <span className="text-[#141414] font-bold truncate block">{b.caseHash}</span>
+                  <span className="text-slate-500 uppercase text-[10px] font-bold block">Tx Hash (Polygon):</span>
+                  <span className="text-slate-300 font-mono break-all">{b.txHash}</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-1 text-[10px] font-mono text-[#141414]/80">
-                <span>Clinic ID: {b.clinicId} • Gas Used: {b.polygonGasUsed} MATIC</span>
+              <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-800/80">
+                <span>PHC Node: <strong className="text-slate-300">{b.clinicId}</strong></span>
                 <a
                   href={`https://amoy.polygonscan.com/tx/${b.txHash}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-[#2A5C82] hover:text-[#141414] font-bold flex items-center gap-1 uppercase"
+                  className="inline-flex items-center gap-1 font-semibold text-teal-400 hover:text-teal-300 transition-colors"
                 >
                   <span>PolygonScan</span>
                   <ExternalLink className="w-3 h-3" />

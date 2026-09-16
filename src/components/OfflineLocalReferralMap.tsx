@@ -23,7 +23,8 @@ import {
   Ambulance,
   Car,
   Bus,
-  ExternalLink
+  ExternalLink,
+  X
 } from 'lucide-react';
 
 interface Props {
@@ -475,7 +476,7 @@ export const OfflineLocalReferralMap: React.FC<Props> = ({
               {/* Transit & Travel Time Estimates */}
               <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-2">
                 <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block">
-                  ⚡ Cached Offline Travel Time Matrix:
+                  Cached Offline Travel Time Matrix:
                 </span>
 
                 <div className="grid grid-cols-3 gap-2 text-center text-xs font-mono">
@@ -513,7 +514,7 @@ export const OfflineLocalReferralMap: React.FC<Props> = ({
               {/* Emergency Contacts & Phone Actions */}
               <div className="space-y-2">
                 <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block">
-                  📞 Direct Contact Hotlines (Cached Offline):
+                  Direct Contact Hotlines (Cached Offline):
                 </span>
 
                 <div className="space-y-2 text-xs font-mono">
@@ -655,9 +656,10 @@ export const OfflineLocalReferralMap: React.FC<Props> = ({
               </h3>
               <button
                 onClick={() => setDispatchSmsModal(false)}
-                className="text-slate-400 hover:text-white text-xs font-mono font-bold"
+                className="text-slate-400 hover:text-white text-xs font-mono font-bold flex items-center gap-1 min-h-[44px] min-w-[44px] justify-center"
               >
-                ✕ CLOSE
+                <X className="w-4 h-4" />
+                <span>Close</span>
               </button>
             </div>
 
@@ -700,8 +702,9 @@ export const OfflineLocalReferralMap: React.FC<Props> = ({
             </div>
 
             {smsSentNotice && (
-              <div className="p-3 bg-emerald-950/90 border border-emerald-500 text-emerald-300 text-xs font-mono font-bold rounded-xl text-center animate-fade-in">
-                ✓ Offline SMS Dispatch Transmitted to {selectedFacility.contactPhone}!
+              <div className="p-3 bg-emerald-950/90 border border-emerald-500 text-emerald-300 text-xs font-mono font-bold rounded-xl text-center animate-fade-in flex items-center justify-center gap-2">
+                <Check className="w-4 h-4 text-emerald-400" />
+                <span>Offline SMS Dispatch Transmitted to {selectedFacility.contactPhone}!</span>
               </div>
             )}
           </div>

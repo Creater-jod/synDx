@@ -2,21 +2,20 @@
 
 @layer base {
   body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    background-color: #080d1a;
-    background-image: linear-gradient(135deg, #060b17 0%, #0c1427 50%, #080d1a 100%);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #070b14;
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(13, 148, 136, 0.15), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(14, 116, 144, 0.1), transparent);
     background-attachment: fixed;
-    color: #f8fafc;
+    color: #f1f5f9;
     min-height: 100vh;
     overflow-x: hidden;
   }
   
-  h1, h2, h3, h4, .font-serif {
-    font-family: 'Lora', 'Instrument Serif', Georgia, serif;
-  }
-  
-  .font-sans-header {
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  h1, h2, h3, h4, .font-heading {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.025em;
   }
 
   code, pre, .font-mono {
@@ -141,24 +140,29 @@
   perspective: 1200px;
 }
 
-/* 3D Elevated Raised Card */
+/* 3D Elevated Raised Card (Harmonized Dark Frosted Glass) */
 .card-3d {
-  background: linear-gradient(145deg, #ffffff, #e6ebf1);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow: 
-    8px 8px 20px rgba(0, 0, 0, 0.25),
-    -6px -6px 16px rgba(255, 255, 255, 0.8),
-    inset 1px 1px 0px rgba(255, 255, 255, 1);
-  border-radius: 16px;
+    0 16px 32px -4px rgba(0, 0, 0, 0.6),
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  color: #f1f5f9;
   transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .card-3d:hover {
-  transform: translateY(-3px) scale(1.002);
+  transform: translateY(-2px);
+  border-color: rgba(45, 212, 191, 0.35);
   box-shadow: 
-    12px 16px 28px rgba(0, 0, 0, 0.3),
-    -8px -8px 22px rgba(255, 255, 255, 0.9),
-    inset 1px 1px 0px rgba(255, 255, 255, 1);
+    0 20px 36px -4px rgba(0, 0, 0, 0.7),
+    0 6px 16px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
 }
 
 /* Dark Mode 3D Card */
@@ -177,24 +181,25 @@
   border-color: rgba(45, 212, 191, 0.3);
 }
 
-/* 3D Sunken/Inset Input Field */
+/* 3D Sunken/Inset Input Field (Harmonized Dark) */
 .input-3d {
-  background: #e8ecf1;
+  background: rgba(10, 16, 30, 0.75);
+  color: #f8fafc;
   box-shadow: 
-    inset 3px 3px 6px rgba(166, 180, 200, 0.6),
-    inset -3px -3px 6px rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(200, 210, 222, 0.8);
-  border-radius: 10px;
+    inset 2px 2px 5px rgba(0, 0, 0, 0.8),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
   transition: all 0.2s ease;
 }
 
 .input-3d:focus {
-  background: #ffffff;
+  background: rgba(13, 19, 34, 0.95);
+  border-color: #2dd4bf;
   box-shadow: 
-    inset 2px 2px 4px rgba(166, 180, 200, 0.4),
-    inset -2px -2px 4px rgba(255, 255, 255, 0.9),
-    0 0 0 3px rgba(42, 92, 130, 0.25);
-  border-color: #2a5c82;
+    inset 2px 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 0 2px rgba(45, 212, 191, 0.3);
+  outline: none;
 }
 
 /* Dark Mode 3D Inset Input Field */
@@ -313,15 +318,15 @@
   border-radius: 16px;
 }
 
-/* 3D Badge / Pill */
+/* 3D Badge / Pill (Harmonized Dark Glass) */
 .badge-3d {
-  background: linear-gradient(145deg, #ffffff, #e2e8f0);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 
-    2px 2px 5px rgba(0, 0, 0, 0.2),
-    -2px -2px 5px rgba(255, 255, 255, 0.8),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
+  color: #e2e8f0;
 }
 
 /* Custom 3D Scrollbar */

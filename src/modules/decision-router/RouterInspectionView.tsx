@@ -25,31 +25,32 @@ export const RouterInspectionView: React.FC = () => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      <div className="bg-[#F0EEE9] border-2 border-[#141414] p-6 shadow-sm">
-        <span className="bg-[#141414] text-white text-[10px] font-mono px-2.5 py-1 font-bold uppercase tracking-wider">
-          Layer 4: Decision Router & Emergency Override Engine
+      {/* Header Banner */}
+      <div className="rounded-3xl border border-slate-800/90 bg-slate-900/70 p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-2">
+        <span className="px-3 py-1 rounded-full border border-teal-500/30 bg-teal-500/10 text-teal-300 text-[11px] font-mono font-bold uppercase tracking-wider">
+          Layer 4: Decision Router &amp; Emergency Override Engine
         </span>
-        <h1 className="text-2xl font-black uppercase tracking-tight text-[#141414] mt-2">
-          Confidence & Vital Severity Routing Test Bench
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-heading">
+          Confidence &amp; Vital Severity Routing Test Bench
         </h1>
-        <p className="text-xs font-serif italic text-[#141414]/80 mt-0.5">
+        <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
           Guarantees patient safety by routing high-confidence cases directly to care, triaging moderate cases to doctor review, and enforcing instant vital overrides.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Sliders Input */}
-        <div className="md:col-span-6 bg-white border border-[#141414] p-5 space-y-5">
-          <h2 className="text-xs font-mono font-black uppercase tracking-wider text-[#141414] flex items-center gap-1.5 border-b border-[#141414] pb-2">
-            <Sliders className="w-4 h-4 text-[#2A5C82]" />
-            Simulate Edge Model Inputs & Vitals:
+        <div className="md:col-span-6 rounded-3xl border border-slate-800/90 bg-slate-900/70 p-6 sm:p-7 space-y-5 shadow-xl backdrop-blur-xl">
+          <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+            <Sliders className="w-4 h-4 text-teal-400" />
+            <span>Simulate Edge Model Inputs &amp; Vitals</span>
           </h2>
 
           <div className="space-y-4 text-xs font-mono">
             <div>
-              <div className="flex justify-between text-[#141414] mb-1 font-bold uppercase text-[10px]">
+              <div className="flex justify-between text-slate-300 mb-1.5 font-semibold text-xs">
                 <span>Model Confidence Score:</span>
-                <span className="font-bold text-[#2A5C82] text-xs">{modelConfidence}%</span>
+                <span className="font-bold text-teal-400 text-sm">{modelConfidence}%</span>
               </div>
               <input
                 type="range"
@@ -57,14 +58,14 @@ export const RouterInspectionView: React.FC = () => {
                 max={99}
                 value={modelConfidence}
                 onChange={(e) => setModelConfidence(Number(e.target.value))}
-                className="w-full accent-[#141414] bg-[#F0EEE9] h-2 rounded-none cursor-pointer"
+                className="w-full accent-teal-400 bg-slate-800 h-2 rounded-lg cursor-pointer"
               />
             </div>
 
             <div>
-              <div className="flex justify-between text-[#141414] mb-1 font-bold uppercase text-[10px]">
+              <div className="flex justify-between text-slate-300 mb-1.5 font-semibold text-xs">
                 <span>O2 Saturation (%):</span>
-                <span className={`font-bold text-xs ${oxygenSat < 88 ? 'text-rose-600' : 'text-emerald-700'}`}>
+                <span className={`font-bold text-sm ${oxygenSat < 88 ? 'text-rose-400' : 'text-emerald-400'}`}>
                   {oxygenSat}%
                 </span>
               </div>
@@ -74,14 +75,14 @@ export const RouterInspectionView: React.FC = () => {
                 max={100}
                 value={oxygenSat}
                 onChange={(e) => setOxygenSat(Number(e.target.value))}
-                className="w-full accent-[#FF6321] bg-[#F0EEE9] h-2 rounded-none cursor-pointer"
+                className="w-full accent-cyan-400 bg-slate-800 h-2 rounded-lg cursor-pointer"
               />
             </div>
 
             <div>
-              <div className="flex justify-between text-[#141414] mb-1 font-bold uppercase text-[10px]">
+              <div className="flex justify-between text-slate-300 mb-1.5 font-semibold text-xs">
                 <span>Systolic Blood Pressure (mmHg):</span>
-                <span className={`font-bold text-xs ${sysBP > 180 || sysBP < 80 ? 'text-rose-600' : 'text-emerald-700'}`}>
+                <span className={`font-bold text-sm ${sysBP > 180 || sysBP < 80 ? 'text-rose-400' : 'text-emerald-400'}`}>
                   {sysBP} mmHg
                 </span>
               </div>
@@ -91,34 +92,34 @@ export const RouterInspectionView: React.FC = () => {
                 max={200}
                 value={sysBP}
                 onChange={(e) => setSysBP(Number(e.target.value))}
-                className="w-full accent-[#FF6321] bg-[#F0EEE9] h-2 rounded-none cursor-pointer"
+                className="w-full accent-orange-400 bg-slate-800 h-2 rounded-lg cursor-pointer"
               />
             </div>
           </div>
         </div>
 
         {/* Live Router Output */}
-        <div className="md:col-span-6 bg-white border border-[#141414] p-5 flex flex-col justify-between space-y-4">
+        <div className="md:col-span-6 rounded-3xl border border-slate-800/90 bg-slate-900/70 p-6 sm:p-7 flex flex-col justify-between space-y-5 shadow-xl backdrop-blur-xl">
           <div>
-            <h2 className="text-xs font-mono font-black uppercase tracking-wider text-[#141414] flex items-center gap-1.5 border-b border-[#141414] pb-2 mb-3">
-              <Network className="w-4 h-4 text-[#2A5C82]" />
-              Dynamic Router Output:
+            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white flex items-center gap-2 border-b border-slate-800 pb-3 mb-4">
+              <Network className="w-4 h-4 text-teal-400" />
+              <span>Dynamic Router Output</span>
             </h2>
 
-            <div className="my-4 text-center space-y-2">
+            <div className="my-4 text-center space-y-3">
               <ConfidenceTierBadge tier={evaluatedTier} size="lg" />
-              <p className="text-xs font-serif italic text-[#141414] bg-[#F0EEE9] p-3 border border-[#141414] mt-3">
+              <p className="text-xs text-slate-300 bg-slate-950/80 p-4 rounded-2xl border border-slate-800 mt-3 font-mono leading-relaxed">
                 {triggerReason}
               </p>
             </div>
           </div>
 
-          <div className="bg-[#F0EEE9] p-3 border border-[#141414] text-[10px] font-mono text-[#141414]/90 space-y-1">
-            <span className="font-bold text-[#141414] block uppercase">Router Architecture Logic:</span>
-            <p>• Tier A (&gt;=85%): Instant local specialist booking & offline referral letter generation.</p>
-            <p>• Tier B (60-85%): Enters doctor console queue for expert confirmation before referral.</p>
-            <p>• Tier C (&lt;60%): Flags high diagnostic uncertainty for multi-specialty tele-board.</p>
-            <p>• Emergency Override: Overrides model output if critical vital limits are breached.</p>
+          <div className="bg-slate-950/80 p-4 rounded-2xl border border-slate-800 text-xs font-mono text-slate-400 space-y-1.5">
+            <span className="font-bold text-slate-300 block uppercase tracking-wider text-[10px]">Router Logic Matrix:</span>
+            <p>• Tier A (&gt;=85%): Instant local specialist booking &amp; referral authorization.</p>
+            <p>• Tier B (60-85%): Enters doctor console queue for expert confirmation.</p>
+            <p>• Tier C (&lt;60%): Flags high diagnostic uncertainty for tele-consult panel.</p>
+            <p>• Emergency Override: Overrides model if critical vitals breach physiological safety thresholds.</p>
           </div>
         </div>
       </div>
