@@ -1,0 +1,43 @@
+feature,importance
+Cr,24
+TT,23
+Age,23
+WBC,19
+CP,15
+Brainstem damage(es/No),13
+IBIL,12
+TBA,12
+BUN,11
+Thalamus damage (es/No),10
+Psychiatric symptom score,10
+AKP,9
+RBC,9
+PLT,8
+lenticular nucleus damage  (es/No),8
+ALB,7
+FBG,7
+24-hour urine copper,6
+Hb,5
+DBIL,5
+ALT,5
+TBIL,4
+AST),4
+APTT,4
+Deepening of the sulci and fissures of the brain(es/No),4
+GGT,4
+Cerebral ventricular system dilation(es/No),3
+Liver symptom score,2
+Gender,1
+Qther brain regions damage(es/No),1
+Cerebral peduncle damage(es/No),1
+TP,1
+PT,1
+Cirrhosis(es/No),0
+Cerebral cortex damage(es/No),0
+Ascites(es/No),0
+INR,0
+Liver capsule smoothing(es/No),0
+Clear internal blood vessels in the liver(es/No),0
+Homogeneous echogenicity in the liver(es/No),0
+Enhanced internal echo in the liver(es/No),0
+K-F ring(es/No),0

@@ -1,0 +1,5 @@
+{
+  "java.jdt.ls.enabled": false,
+  "java.autobuild.enabled": false,
+  "java.configuration.checkProjectSettingsExclusions": false
+}

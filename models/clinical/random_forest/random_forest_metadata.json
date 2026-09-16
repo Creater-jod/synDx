@@ -1,0 +1,83 @@
+{
+  "model_name": "synDx_clinical_random_forest",
+  "model_type": "RandomForestClassifier",
+  "training_datetime_utc": "2026-09-10T04:00:25.222176+00:00",
+  "random_seed": 42,
+  "feature_names": [
+    "Cirrhosis(es/No)",
+    "Ascites(es/No)",
+    "lenticular nucleus damage  (es/No)",
+    "Thalamus damage (es/No)",
+    "Brainstem damage(es/No)",
+    "Cerebral ventricular system dilation(es/No)",
+    "Deepening of the sulci and fissures of the brain(es/No)",
+    "Cerebral peduncle damage(es/No)",
+    "Cerebral cortex damage(es/No)",
+    "Qther brain regions damage(es/No)",
+    "Liver capsule smoothing(es/No)",
+    "Enhanced internal echo in the liver(es/No)",
+    "Homogeneous echogenicity in the liver(es/No)",
+    "Clear internal blood vessels in the liver(es/No)",
+    "WBC",
+    "RBC",
+    "Hb",
+    "PLT",
+    "PT",
+    "INR",
+    "APTT",
+    "FBG",
+    "TT",
+    "ALT",
+    "AST)",
+    "TBA",
+    "TBIL",
+    "DBIL",
+    "IBIL",
+    "TP",
+    "ALB",
+    "GGT",
+    "AKP",
+    "BUN",
+    "Cr",
+    "24-hour urine copper",
+    "CP",
+    "Psychiatric symptom score",
+    "Liver symptom score",
+    "Gender",
+    "Age",
+    "K-F ring(es/No)"
+  ],
+  "number_of_features": 42,
+  "training_rows": 111,
+  "validation_rows": 37,
+  "test_rows": 37,
+  "class_distribution": {
+    "train": {
+      "0": 13,
+      "1": 98
+    },
+    "val": {
+      "0": 5,
+      "1": 32
+    },
+    "test": {
+      "0": 4,
+      "1": 33
+    }
+  },
+  "hyperparameters": {
+    "n_estimators": 300,
+    "max_depth": 5,
+    "min_samples_split": 4,
+    "min_samples_leaf": 2,
+    "max_features": "sqrt",
+    "random_state": 42,
+    "n_jobs": -1,
+    "class_weight": null
+  },
+  "scikit_learn_version": "1.9.0",
+  "joblib_version": "1.6.0",
+  "target_column": "label",
+  "target_description": "neurological-symptom phenotype within Wilson-disease cohort (0=absence, 1=presence)",
+  "medical_disclaimer": "This dataset consists of Wilson-disease patients and the current label represents neurological-symptom phenotype classification, not Wilson disease versus healthy/control diagnosis. Therefore, performance from this experiment must not be interpreted as validated Wilson disease diagnostic performance or as evidence for clinical deployment."
+}

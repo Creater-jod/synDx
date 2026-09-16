@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  syndx-platform:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: syndx_clinical_platform
+    ports:
+      - "3000:3000" # Express Web Portal, SQLite & Auth
+      - "8000:8000" # FastAPI Edge ML Inference Service
+    volumes:
+      - ./data:/app/data
+      - ./reports:/app/reports
+      - ./models:/app/models
+    environment:
+      - PORT=3000
+      - JWT_SECRET=syndx-clinical-secure-secret-2026
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

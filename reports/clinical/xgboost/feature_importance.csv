@@ -1,0 +1,43 @@
+feature,importance
+Qther brain regions damage(es/No),0.091396645
+lenticular nucleus damage  (es/No),0.08324457
+Brainstem damage(es/No),0.05847607
+Psychiatric symptom score,0.057331048
+K-F ring(es/No),0.046139542
+Age,0.043279883
+Thalamus damage (es/No),0.040841192
+WBC,0.03903953
+Cerebral ventricular system dilation(es/No),0.037013087
+24-hour urine copper,0.03581866
+Liver symptom score,0.035601303
+IBIL,0.03438522
+TT,0.03392682
+Cr,0.032306626
+APTT,0.027944608
+ALB,0.02562464
+PT,0.024223931
+RBC,0.023597734
+DBIL,0.022254696
+PLT,0.02195441
+TBIL,0.021606024
+ALT,0.017998397
+BUN,0.017811269
+CP,0.017045794
+Gender,0.01677723
+TBA,0.015969409
+TP,0.01503639
+AKP,0.014989455
+AST),0.013498122
+Hb,0.013150832
+FBG,0.00877263
+GGT,0.007833415
+INR,0.005110822
+Cirrhosis(es/No),0.0
+Cerebral cortex damage(es/No),0.0
+Cerebral peduncle damage(es/No),0.0
+Deepening of the sulci and fissures of the brain(es/No),0.0
+Ascites(es/No),0.0
+Clear internal blood vessels in the liver(es/No),0.0
+Homogeneous echogenicity in the liver(es/No),0.0
+Enhanced internal echo in the liver(es/No),0.0
+Liver capsule smoothing(es/No),0.0

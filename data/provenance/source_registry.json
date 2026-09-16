@@ -1,0 +1,37 @@
+{
+  "registry_version": "1.0.0",
+  "updated_at": "2026-08-18T05:00:00Z",
+  "sources": [
+    {
+      "id": "orphadata_rare_diseases",
+      "name": "Orphadata Rare Disease & Phenotype Database",
+      "provider": "Inserm / Orphadata",
+      "url": "https://www.orphadata.com/data/xml/en_product4.xml",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "type": "ontology_knowledge",
+      "format": "XML",
+      "target_dir": "data/raw/orphadata"
+    },
+    {
+      "id": "hpo_terms_and_annotations",
+      "name": "Human Phenotype Ontology (HPO)",
+      "provider": "Monarch Initiative / HPO Consortium",
+      "url": "https://purl.obolibrary.org/obo/hp.json",
+      "annotations_url": "http://purl.obolibrary.org/obo/hp/hpoa/phenotype.hpoa",
+      "license": "Custom Open / CC BY 4.0 equivalent",
+      "type": "phenotype_ontology",
+      "format": "JSON/TAB",
+      "target_dir": "data/raw/hpo"
+    },
+    {
+      "id": "mondo_disease_ontology",
+      "name": "MONDO Disease Ontology",
+      "provider": "Monarch Initiative / MONDO",
+      "url": "http://purl.obolibrary.org/obo/mondo.json",
+      "license": "CC BY 4.0",
+      "type": "disease_ontology",
+      "format": "JSON",
+      "target_dir": "data/raw/mondo"
+    }
+  ]
+}

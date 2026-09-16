@@ -1,0 +1,19 @@
+{
+  "roc_auc": 0.7875,
+  "pr_auc": 0.962054824127038,
+  "accuracy": 0.918918918918919,
+  "balanced_accuracy": 0.7,
+  "sensitivity_recall": 1.0,
+  "specificity": 0.4,
+  "precision": 0.9142857142857143,
+  "f1_score": 0.9552238805970149,
+  "log_loss": 0.3139561712741852,
+  "brier_score": 0.08725360780954361,
+  "confusion_matrix": {
+    "tn": 2,
+    "fp": 3,
+    "fn": 0,
+    "tp": 32
+  },
+  "threshold": 0.5
+}
