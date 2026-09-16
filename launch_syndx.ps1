@@ -26,6 +26,7 @@ try {
 if (-not $FastApiRunning) {
     Write-Host "[*] Launching Clinical ML Microservice (FastAPI Port 8000)..." -ForegroundColor Yellow
     $FastApiProcess = Start-Process -FilePath $PythonExe -ArgumentList "-m uvicorn pipeline.clinical_service:app --host 127.0.0.1 --port 8000" -PassThru
+    Write-Host "[+] Clinical ML Microservice started (PID: $($FastApiProcess.Id))." -ForegroundColor Green
     Start-Sleep -Seconds 3
 }
 
@@ -51,6 +52,7 @@ try {
 if (-not $ExpressRunning) {
     Write-Host "[*] Launching Express Production Server..." -ForegroundColor Yellow
     $ExpressProcess = Start-Process -FilePath "node" -ArgumentList "server.js" -PassThru
+    Write-Host "[+] Express Production Server started (PID: $($ExpressProcess.Id))." -ForegroundColor Green
     Start-Sleep -Seconds 2
     if (Test-Path $PortFile) {
         $SavedPort = Get-Content $PortFile -ErrorAction SilentlyContinue
