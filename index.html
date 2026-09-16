@@ -38,6 +38,19 @@
       </nav>
     </div>
 
+    <!-- V2.0 Dual Portal Mode Switcher -->
+    <div class="portal-mode-switcher" id="portalModeSwitcher" role="tablist" aria-label="Portal Navigation">
+      <button type="button" class="portal-tab-btn active-portal-tab" id="toggleDoctorPortal" onclick="PatientPortal.switchPortalMode('doctor')" role="tab" aria-selected="true">
+        <i data-lucide="stethoscope" style="width: 15px; height: 15px;"></i>
+        <span>Doctor Console</span>
+      </button>
+      <button type="button" class="portal-tab-btn" id="togglePatientPortal" onclick="PatientPortal.switchPortalMode('patient')" role="tab" aria-selected="false">
+        <i data-lucide="heart" style="width: 15px; height: 15px; color: var(--alert-rose);"></i>
+        <span>Patient Portal V2.0</span>
+        <span class="portal-new-badge">LIVE</span>
+      </button>
+    </div>
+
     <!-- Telemetry Badges & Auth -->
     <div class="header-actions">
       <div class="telemetry-pill">
@@ -60,6 +73,9 @@
 
   <!-- Master Workspace -->
   <main class="workspace-content">
+    
+    <!-- DOCTOR CLINICAL DECISION CONSOLE CONTAINER -->
+    <div id="doctorConsoleView">
     
     <!-- ====================================================================
          VIEW 1: SYNDEX DASHBOARD & HOME PORTAL
@@ -787,6 +803,515 @@
         </div>
       </div>
     </section>
+    </div> <!-- /#doctorConsoleView -->
+
+    <!-- ====================================================================
+         VIEW: PATIENT CARE & MULTIMODAL INTAKE PORTAL (V2.0)
+         ==================================================================== -->
+    <div id="patientPortalView" style="display: none;">
+      <!-- Emergency Critical Alert Banner (Triggers when vitals breach threshold) -->
+      <div id="emergencyAlertBanner" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--alert-rose); border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 24px; animation: pulseWave 2s infinite;">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <i data-lucide="alert-octagon" style="width: 28px; height: 28px; color: var(--alert-rose); flex-shrink: 0;"></i>
+          <div>
+            <div style="font-weight: 700; color: #fff; font-size: 15px;">CRITICAL CLINICAL VITAL THRESHOLD TRIGGERED</div>
+            <div style="font-size: 13px; color: #fca5a5; margin-top: 2px;" id="emergencyMessage">Abnormal physiological markers detected. Standard offline screening bypassed for emergency tertiary referral.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Header -->
+      <div class="hero-wrapper" style="padding: 36px 20px 28px;">
+        <div class="hero-pill-badge" style="background: rgba(20, 184, 166, 0.12); border-color: rgba(20, 184, 166, 0.3); color: var(--medical-teal);">
+          <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+          <span>SYNDX V2.0 • PATIENT CARE INTELLIGENCE • ZERO-KNOWLEDGE EDGE AI</span>
+        </div>
+        <h2 class="hero-title-main" style="font-size: 34px;">
+          Autonomous Rare Disease Diagnosis &amp;<br>
+          <span class="gradient-text">Patient Care Portal</span>
+        </h2>
+        <p class="hero-subtitle-desc" style="max-width: 760px;">
+          Speak your symptoms, scan laboratory blood reports, explore explainable AI diagnostic predictions, estimate your treatment expenses, and connect directly with India's accredited Centres of Excellence.
+        </p>
+      </div>
+
+      <!-- Section: Multimodal Symptom & Lab Intake -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+        
+        <!-- Intake Card 1: AI Voice Dictation & Speech Recognizer -->
+        <div class="glass-card" style="padding: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="background: rgba(20, 184, 166, 0.15); color: var(--medical-teal); width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="mic" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div>
+                <h3 style="color: #fff; font-size: 16px; font-weight: 700; margin: 0;">Voice Symptom Intake</h3>
+                <span style="color: var(--slate-400); font-size: 11px;">Web Speech API • Real-Time Keyword Extractor</span>
+              </div>
+            </div>
+            <span class="code-pill" id="voiceStatusText" style="color: var(--slate-400); font-size: 11px;">Click Mic to Dictate</span>
+          </div>
+
+          <!-- Microphone Trigger & Waveform Visualizer -->
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+            <button type="button" class="btn-primary-gradient" id="btnVoiceDictate" onclick="PatientPortal.toggleVoiceRecording()" style="width: 52px; height: 52px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i data-lucide="mic" style="width: 22px; height: 22px;"></i>
+            </button>
+            <div id="voiceWaveform" class="voice-wave-container" style="display: none; flex: 1; align-items: center; gap: 4px; height: 40px; background: rgba(15,23,42,0.6); border-radius: 8px; padding: 0 12px; border: 1px solid var(--glass-border-active);">
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span style="font-size: 11px; color: var(--medical-teal); margin-left: 8px; font-weight: 600;">Listening &amp; Extracting Clinical Entities...</span>
+            </div>
+          </div>
+
+          <!-- Voice Transcript Text Area -->
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label class="form-label" style="font-size: 12px;">Transcribed Symptoms &amp; Clinical Notes</label>
+            <textarea class="form-input" id="patientVoiceText" rows="3" placeholder="Speak or type your symptoms here (e.g., hand tremors, yellow eyes, dark urine, difficulty speaking)...">I have experienced resting tremors in both hands for 3 weeks, extreme fatigue, noticeable yellowing in my eyes, and difficulty with speech articulation.</textarea>
+          </div>
+
+          <!-- Quick-Add Phenotype Buttons -->
+          <div style="margin-bottom: 14px;">
+            <div style="font-size: 11px; color: var(--slate-400); margin-bottom: 6px;">Quick-Select Hallmark Symptoms:</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <button type="button" class="btn-glass-secondary" onclick="document.getElementById('patientVoiceText').value += ', Hand Tremor'; PatientPortal.toggleVoiceRecording();" style="padding: 4px 8px; font-size: 11px;">+ Hand Tremor</button>
+              <button type="button" class="btn-glass-secondary" onclick="document.getElementById('patientVoiceText').value += ', Scleral Icterus (Yellow Eyes)'; PatientPortal.toggleVoiceRecording();" style="padding: 4px 8px; font-size: 11px;">+ Yellow Eyes</button>
+              <button type="button" class="btn-glass-secondary" onclick="document.getElementById('patientVoiceText').value += ', Kayser-Fleischer corneal ring'; PatientPortal.toggleVoiceRecording();" style="padding: 4px 8px; font-size: 11px;">+ Kayser-Fleischer Ring</button>
+              <button type="button" class="btn-glass-secondary" onclick="document.getElementById('patientVoiceText').value += ', Dysarthria (Speech Slurring)'; PatientPortal.toggleVoiceRecording();" style="padding: 4px 8px; font-size: 11px;">+ Speech Slurring</button>
+            </div>
+          </div>
+
+          <!-- Detected Biomarkers Container -->
+          <div>
+            <div style="font-size: 11px; color: var(--slate-400); margin-bottom: 6px;">Extracted Medical Entities:</div>
+            <div id="extractedEntityBadges" style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <span class="code-pill" style="color: var(--medical-teal); background: rgba(20,184,166,0.12); border: 1px solid rgba(20,184,166,0.3); padding: 4px 10px; border-radius: 20px; font-size: 11px;">
+                <i data-lucide="activity" style="width: 12px; height: 12px; vertical-align: middle; margin-right: 4px;"></i>Neurological Tremor (Phenotype 1)
+              </span>
+              <span class="code-pill" style="color: var(--medical-teal); background: rgba(20,184,166,0.12); border: 1px solid rgba(20,184,166,0.3); padding: 4px 10px; border-radius: 20px; font-size: 11px;">
+                <i data-lucide="activity" style="width: 12px; height: 12px; vertical-align: middle; margin-right: 4px;"></i>Hepatic Scleral Icterus (Liver Marker)
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Intake Card 2: Laboratory Blood Report OCR Reader -->
+        <div class="glass-card" style="padding: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="background: rgba(6, 182, 212, 0.15); color: var(--gis-cyan); width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div>
+                <h3 style="color: #fff; font-size: 16px; font-weight: 700; margin: 0;">Lab Report OCR Scanner</h3>
+                <span style="color: var(--slate-400); font-size: 11px;">Tesseract OCR • Automated Biomarker Digitizer</span>
+              </div>
+            </div>
+            <span class="code-pill" style="color: var(--precision-emerald); font-size: 11px;">OCR Ready</span>
+          </div>
+
+          <!-- Document Dropzone & Laser Scan Area -->
+          <div class="ocr-scanner-box" style="position: relative; height: 140px; background: rgba(2, 6, 23, 0.7); border: 1px dashed var(--glass-border-active); border-radius: 10px; padding: 14px; overflow: hidden; margin-bottom: 14px;">
+            <div id="ocrScanLaser" class="scan-laser-line" style="display: none;"></div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--slate-400); line-height: 1.6; white-space: pre-wrap;" id="ocrDocumentText">SERUM CERULOPLASMIN: 0.018 g/L (Ref: 0.20-0.40) [CRITICAL LOW]
+24-HR URINARY COPPER: 468.6 ug/24h (Ref: 15-60) [HIGH ELEVATION]
+ALT: 58.4 U/L | AST: 62.1 U/L | TOTAL BILIRUBIN: 24.5 umol/L
+SLIT-LAMP OCULAR EXAM: Bilateral Kayser-Fleischer rings present.</div>
+          </div>
+
+          <!-- Quick Sample Report Presets -->
+          <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+            <button type="button" class="btn-glass-secondary" onclick="PatientPortal.loadSampleReport('wilson_copper')" style="flex: 1; padding: 8px; font-size: 11px; justify-content: center;">
+              <i data-lucide="file-check" style="width: 14px; height: 14px; color: var(--medical-teal);"></i>
+              <span>Load Wilson Panel (Low CP / Cu)</span>
+            </button>
+            <button type="button" class="btn-glass-secondary" onclick="PatientPortal.loadSampleReport('hepatic_panel')" style="flex: 1; padding: 8px; font-size: 11px; justify-content: center;">
+              <i data-lucide="file-text" style="width: 14px; height: 14px; color: var(--gis-cyan);"></i>
+              <span>Load Hepatic Panel</span>
+            </button>
+          </div>
+
+          <!-- Extracted Biomarkers Output -->
+          <div>
+            <div style="font-size: 11px; color: var(--slate-400); margin-bottom: 6px;">Digitized Quantitative Biomarkers:</div>
+            <div id="ocrExtractedList" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+              <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--glass-border-active); padding: 8px 12px; border-radius: 8px; font-size: 11px;">
+                <div style="color: var(--slate-400); font-family: 'JetBrains Mono', monospace;">Ceruloplasmin</div>
+                <div style="color: #fff; font-weight: 700; font-size: 13px; margin-top: 2px;">0.018 g/L</div>
+              </div>
+              <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--glass-border-active); padding: 8px 12px; border-radius: 8px; font-size: 11px;">
+                <div style="color: var(--slate-400); font-family: 'JetBrains Mono', monospace;">24h Copper</div>
+                <div style="color: #fff; font-weight: 700; font-size: 13px; margin-top: 2px;">468.6 ug</div>
+              </div>
+              <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--glass-border-active); padding: 8px 12px; border-radius: 8px; font-size: 11px;">
+                <div style="color: var(--slate-400); font-family: 'JetBrains Mono', monospace;">ALT / AST</div>
+                <div style="color: #fff; font-weight: 700; font-size: 13px; margin-top: 2px;">58.4 / 62.1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Section: Patient Demographics & Wearable Vitals -->
+      <div class="glass-card" style="padding: 20px 24px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="watch" style="width: 18px; height: 18px; color: var(--medical-teal);"></i>
+            <h4 style="color: #fff; font-size: 14px; font-weight: 700; margin: 0;">Patient Demographics &amp; Wearable Telemetry</h4>
+          </div>
+          <span class="code-pill" style="color: var(--precision-emerald); font-size: 11px;">IoT Bluetooth Stream Synced</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;">
+          <div class="form-group">
+            <label class="form-label" style="font-size: 11px;">Age</label>
+            <input type="number" class="form-input" id="patientAgeInput" value="29" style="padding: 8px 12px;">
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="font-size: 11px;">Gender</label>
+            <select class="form-input" id="patientGenderInput" style="padding: 8px 12px;">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="font-size: 11px;">SpO₂ Oxygen (%)</label>
+            <input type="number" class="form-input" id="spo2Input" value="98" style="padding: 8px 12px;">
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="font-size: 11px;">Heart Rate (BPM)</label>
+            <input type="number" class="form-input" id="hrInput" value="78" style="padding: 8px 12px;">
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="font-size: 11px;">Blood Pressure (Sys/Dia)</label>
+            <input type="text" class="form-input" id="bpInput" value="120/80" style="padding: 8px 12px;">
+          </div>
+        </div>
+
+        <!-- Master Submit Action Button -->
+        <button type="button" class="btn-primary-gradient" id="btnRunPatientAssessment" onclick="PatientPortal.runPatientAssessment()" style="width: 100%; padding: 16px; font-size: 16px; font-weight: 700; justify-content: center; box-shadow: 0 10px 30px rgba(20, 184, 166, 0.4); border-radius: 12px; margin-top: 18px;">
+          <i data-lucide="sparkles" style="width: 20px; height: 20px;"></i>
+          <span>Generate AI Diagnostic Impression &amp; Blockchain Passport</span>
+        </button>
+      </div>
+
+      <!-- ====================================================================
+           SECTION: DIAGNOSTIC RESULTS & DUAL-LAYER EXPLAINABILITY
+           ==================================================================== -->
+      <div id="patientResultsSection" style="display: block; margin-bottom: 24px;">
+        <div class="glass-card" style="padding: 28px; border-color: var(--medical-teal-glow);">
+          
+          <!-- Result Card Header -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+            <div>
+              <span class="code-pill" style="color: var(--medical-teal); font-size: 11px; margin-bottom: 6px; display: inline-block;">
+                Calibrated Edge AI Impression • NIH GARD 2026 Grounded
+              </span>
+              <h3 style="font-size: 24px; font-weight: 700; color: #fff; margin: 0;" id="patientConditionTitle">
+                Wilson Disease (ATP7B Hepato-Lenticular Degeneration)
+              </h3>
+              <div style="font-size: 13px; color: var(--slate-400); margin-top: 4px;">
+                ICD-11: 5C53.20 • OMIM: #277900 • Orphanet: ORPHA:905
+              </div>
+            </div>
+
+            <!-- Urgency Tier Badge -->
+            <div style="text-align: right;">
+              <span id="patientUrgencyBadge" class="code-pill" style="color: var(--alert-rose); border-color: rgba(244, 63, 94, 0.4); background: rgba(244, 63, 94, 0.1); padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: 20px;">
+                Tier A — Specialist Referral Required
+              </span>
+            </div>
+          </div>
+
+          <!-- Confidence Meter Gauge -->
+          <div style="background: rgba(2, 6, 23, 0.6); border: 1px solid var(--glass-border); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-size: 13px; font-weight: 600; color: #fff;">Calibrated Model Confidence:</span>
+              <span style="font-size: 18px; font-weight: 700; color: var(--precision-emerald); font-family: 'JetBrains Mono', monospace;" id="patientProbValue">94.8%</span>
+            </div>
+            <div style="height: 10px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden;">
+              <div id="patientConfidenceMeter" style="width: 95%; height: 100%; background: linear-gradient(90deg, var(--medical-teal), var(--precision-emerald)); border-radius: 5px; transition: width 0.6s ease;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--slate-400); margin-top: 6px;">
+              <span>Confidence Interval: 92.7% – 96.9%</span>
+              <span>Epistemic Uncertainty: ±2.1%</span>
+            </div>
+          </div>
+
+          <!-- Layman Empathetic AI Explanation Card -->
+          <div style="background: rgba(15, 23, 42, 0.7); border-left: 4px solid var(--medical-teal); border-radius: 8px; padding: 16px 20px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <i data-lucide="info" style="width: 16px; height: 16px; color: var(--medical-teal);"></i>
+              <strong style="color: #fff; font-size: 14px;">Clinical Impression Plain-Language Summary</strong>
+            </div>
+            <div id="patientLaymanSummary" style="font-size: 13px; line-height: 1.6; color: var(--slate-300);">
+              <p style="margin-bottom: 8px;"><strong>What this means:</strong> The SynDx ensemble analysis identified clinical biomarkers that strongly correlate with <em>copper metabolism accumulation</em> affecting basal ganglia and hepatic pathways.</p>
+              <p style="color: var(--slate-300);"><strong>Recommended Next Step:</strong> Please schedule an in-person slit-lamp eye examination and tertiary genetic consult with a certified clinical geneticist within 24 to 48 hours.</p>
+            </div>
+          </div>
+
+          <!-- Clinician Deep-Dive Toggle Button -->
+          <div style="margin-bottom: 16px;">
+            <button type="button" class="btn-glass-secondary" id="btnToggleClinician" onclick="const s = document.getElementById('clinicianDeepDiveSection'); s.style.display = s.style.display === 'none' ? 'block' : 'none';" style="font-size: 12px; padding: 8px 16px;">
+              <i data-lucide="layers" style="width: 14px; height: 14px; color: var(--gis-cyan);"></i>
+              <span>Toggle Clinician Deep-Dive (SHAP Waterfall &amp; Multi-AI Ensemble)</span>
+            </button>
+          </div>
+
+          <!-- Clinician Deep-Dive Section (Hidden by Default) -->
+          <div id="clinicianDeepDiveSection" style="display: none; background: rgba(2, 6, 23, 0.85); border: 1px solid var(--glass-border-active); border-radius: 12px; padding: 20px; margin-top: 14px;">
+            <div style="font-weight: 700; color: #fff; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+              <i data-lucide="cpu" style="width: 16px; height: 16px; color: var(--medical-teal);"></i>
+              <span>Explainable AI (SHAP &amp; LIME Feature Attribution)</span>
+            </div>
+
+            <!-- SHAP Waterfall Feature Bars -->
+            <div id="clinicianShapImpactList" style="margin-bottom: 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px;">
+                <span style="color: var(--slate-300);">Kayser-Fleischer Corneal Ring</span>
+                <span style="color: var(--precision-emerald); font-weight: 700; font-family: 'JetBrains Mono', monospace;">+28% Risk Contribution</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px;">
+                <span style="color: var(--slate-300);">Serum Ceruloplasmin (Low &lt; 0.02 g/L)</span>
+                <span style="color: var(--precision-emerald); font-weight: 700; font-family: 'JetBrains Mono', monospace;">+22% Risk Contribution</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px;">
+                <span style="color: var(--slate-300);">Elevated 24-hr Urinary Copper excretion</span>
+                <span style="color: var(--precision-emerald); font-weight: 700; font-family: 'JetBrains Mono', monospace;">+18% Risk Contribution</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px;">
+                <span style="color: var(--slate-300);">Resting Upper Limb Tremors</span>
+                <span style="color: var(--precision-emerald); font-weight: 700; font-family: 'JetBrains Mono', monospace;">+10% Risk Contribution</span>
+              </div>
+            </div>
+
+            <!-- Multi-AI Ensemble Consensus Breakdown -->
+            <div style="font-weight: 700; color: #fff; font-size: 13px; margin-bottom: 10px;">
+              Multi-AI Ensemble Model Consensus:
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+              <div style="background: rgba(15,23,42,0.8); padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border);">
+                <div style="font-size: 11px; color: var(--slate-400);">XGBoost Clinical</div>
+                <div style="font-size: 14px; font-weight: 700; color: var(--precision-emerald); margin-top: 2px;">95.2%</div>
+              </div>
+              <div style="background: rgba(15,23,42,0.8); padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border);">
+                <div style="font-size: 11px; color: var(--slate-400);">LightGBM Edge</div>
+                <div style="font-size: 14px; font-weight: 700; color: var(--precision-emerald); margin-top: 2px;">94.6%</div>
+              </div>
+              <div style="background: rgba(15,23,42,0.8); padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border);">
+                <div style="font-size: 11px; color: var(--slate-400);">Random Forest</div>
+                <div style="font-size: 14px; font-weight: 700; color: var(--precision-emerald); margin-top: 2px;">93.8%</div>
+              </div>
+              <div style="background: rgba(15,23,42,0.8); padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border);">
+                <div style="font-size: 11px; color: var(--slate-400);">BioBERT NLP</div>
+                <div style="font-size: 14px; font-weight: 700; color: var(--precision-emerald); margin-top: 2px;">92.1%</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           SECTION: TREATMENT COST PREDICTION & GOVERNMENT SCHEMES
+           ==================================================================== -->
+      <div class="glass-card" style="padding: 28px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div>
+            <span class="code-pill" style="color: var(--warning-amber); font-size: 11px; margin-bottom: 4px; display: inline-block;">
+              Healthcare Economics AI
+            </span>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin: 0;">
+              Treatment Cost Prediction &amp; Grant Assistance Calculator
+            </h3>
+          </div>
+          <div style="text-align: right; font-size: 12px; color: var(--slate-400);">
+            Indian Healthcare Schedule 2026
+          </div>
+        </div>
+
+        <!-- Interactive Insurance Coverage Slider -->
+        <div style="background: rgba(2, 6, 23, 0.6); border: 1px solid var(--glass-border); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <label class="form-label" style="font-size: 13px; font-weight: 600; color: #fff;">
+              Simulate Insurance Coverage:
+            </label>
+            <span style="font-size: 16px; font-weight: 700; color: var(--medical-teal); font-family: 'JetBrains Mono', monospace;" id="insuranceSliderValue">60%</span>
+          </div>
+          <input type="range" class="form-range" id="insuranceRangeInput" min="0" max="100" value="60" oninput="PatientPortal.fetchCostEstimate('wilson_disease', this.value)" style="width: 100%; cursor: pointer;">
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--slate-400); margin-top: 4px;">
+            <span>0% (Self Pay)</span>
+            <span>50% (Standard TPA)</span>
+            <span>100% (Full Comprehensive)</span>
+          </div>
+        </div>
+
+        <!-- 3-Card Financial Summary -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--glass-border); border-radius: 10px; padding: 16px;">
+            <div style="font-size: 12px; color: var(--slate-400);">Total Estimated Procedure Cost</div>
+            <div style="font-size: 24px; font-weight: 700; color: #fff; margin-top: 4px; font-family: 'JetBrains Mono', monospace;" id="costTotalValue">₹75,000</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--glass-border); border-radius: 10px; padding: 16px;">
+            <div style="font-size: 12px; color: var(--slate-400);">Insurance Covered Amount</div>
+            <div style="font-size: 24px; font-weight: 700; color: var(--medical-teal); margin-top: 4px; font-family: 'JetBrains Mono', monospace;" id="costInsuranceCovered">₹45,000</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--medical-teal-glow); border-radius: 10px; padding: 16px;">
+            <div style="font-size: 12px; color: var(--slate-400);">Estimated Net Out-of-Pocket</div>
+            <div style="font-size: 24px; font-weight: 700; color: var(--precision-emerald); margin-top: 4px; font-family: 'JetBrains Mono', monospace;" id="costOutOfPocket">₹30,000</div>
+          </div>
+        </div>
+
+        <!-- Government Assistance Scheme Cards -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+          <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <i data-lucide="award" style="width: 18px; height: 18px; color: var(--precision-emerald);"></i>
+              <strong style="color: #fff; font-size: 14px;">National Policy for Rare Diseases (NPRD 2021)</strong>
+            </div>
+            <div style="font-size: 12px; color: var(--slate-300); line-height: 1.5;">
+              Patients diagnosed with recognized rare conditions are eligible for one-time financial support of up to <strong style="color: var(--precision-emerald);">₹50 Lakhs (₹5,000,000)</strong> at designated Centres of Excellence.
+            </div>
+          </div>
+
+          <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 10px; padding: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <i data-lucide="shield-check" style="width: 18px; height: 18px; color: var(--gis-cyan);"></i>
+              <strong style="color: #fff; font-size: 14px;">Ayushman Bharat (PM-JAY Scheme)</strong>
+            </div>
+            <div style="font-size: 12px; color: var(--slate-300); line-height: 1.5;">
+              Secondary and tertiary hospitalizations covered up to <strong style="color: var(--gis-cyan);">₹5 Lakhs/year</strong> per family at empaneled government and private healthcare facilities.
+            </div>
+          </div>
+        </div>
+
+        <!-- Granular Itemized Cost Breakdown -->
+        <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 10px;">Itemized Cost Distribution:</div>
+        <div id="costBreakdownList" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #fff;">
+              <span>Diagnostic Assays</span>
+              <span style="color: var(--medical-teal); font-family: 'JetBrains Mono', monospace;">₹12,000</span>
+            </div>
+            <div style="font-size: 11px; color: var(--slate-400); margin-top: 4px;">Ceruloplasmin, 24h Copper, Genetic screen</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #fff;">
+              <span>Chelation Meds</span>
+              <span style="color: var(--medical-teal); font-family: 'JetBrains Mono', monospace;">₹18,000</span>
+            </div>
+            <div style="font-size: 11px; color: var(--slate-400); margin-top: 4px;">D-penicillamine / Trientine therapy</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #fff;">
+              <span>Inpatient Care</span>
+              <span style="color: var(--medical-teal); font-family: 'JetBrains Mono', monospace;">₹35,000</span>
+            </div>
+            <div style="font-size: 11px; color: var(--slate-400); margin-top: 4px;">Tertiary ICU &amp; Neurological observation</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #fff;">
+              <span>Follow-up</span>
+              <span style="color: var(--medical-teal); font-family: 'JetBrains Mono', monospace;">₹10,000</span>
+            </div>
+            <div style="font-size: 11px; color: var(--slate-400); margin-top: 4px;">Post-stabilization genetic review</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ====================================================================
+           SECTION: ACCREDITED CENTRES OF EXCELLENCE & SPECIALISTS
+           ==================================================================== -->
+      <div class="glass-card" style="padding: 28px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div>
+            <span class="code-pill" style="color: var(--gis-cyan); font-size: 11px; margin-bottom: 4px; display: inline-block;">
+              Geospatial Matching Engine
+            </span>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin: 0;">
+              Accredited Centres of Excellence &amp; Specialist Doctors
+            </h3>
+          </div>
+          <div style="font-size: 12px; color: var(--slate-400);">
+            Click any hospital to inspect specialist profile &amp; slot availability
+          </div>
+        </div>
+
+        <div id="specialistCardsList" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+          <!-- Populated dynamically via PatientPortal.fetchSpecialists() -->
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           SECTION: BLOCKCHAIN MEDICAL PASSPORT & 1-CLICK PDF REPORT
+           ==================================================================== -->
+      <div class="glass-card" style="padding: 28px; border-color: rgba(168, 85, 247, 0.4); margin-bottom: 32px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <i data-lucide="shield-check" style="width: 20px; height: 20px; color: var(--audit-purple);"></i>
+              <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin: 0;">
+                Blockchain Medical Passport
+              </h3>
+            </div>
+            <p style="font-size: 13px; color: var(--slate-300); max-width: 600px;">
+              Your clinical differential and consent are cryptographically anchored to the tamper-evident distributed ledger. Patient Health Information (PHI) stays locally encrypted.
+            </p>
+          </div>
+
+          <!-- 1-Click PDF Export Button -->
+          <button type="button" class="btn-primary-gradient" id="btnExportReport" onclick="PatientPortal.exportMedicalReportPdf()" style="padding: 12px 24px; font-weight: 600; box-shadow: 0 10px 25px rgba(20, 184, 166, 0.4);">
+            <i data-lucide="printer" style="width: 18px; height: 18px;"></i>
+            <span>Export Official Medical Report (PDF)</span>
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 24px; align-items: center; margin-top: 20px; background: rgba(2, 6, 23, 0.7); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px;">
+          <!-- SVG QR Code Container -->
+          <div id="passportQrContainer" style="flex-shrink: 0;">
+            <svg width="110" height="110" viewBox="0 0 100 100" style="background: #fff; padding: 6px; border-radius: 8px;">
+              <rect x="0" y="0" width="30" height="30" fill="#020617"/>
+              <rect x="5" y="5" width="20" height="20" fill="#fff"/>
+              <rect x="10" y="10" width="10" height="10" fill="#020617"/>
+              <rect x="70" y="0" width="30" height="30" fill="#020617"/>
+              <rect x="75" y="5" width="20" height="20" fill="#fff"/>
+              <rect x="80" y="10" width="10" height="10" fill="#020617"/>
+              <rect x="0" y="70" width="30" height="30" fill="#020617"/>
+              <rect x="5" y="75" width="20" height="20" fill="#fff"/>
+              <rect x="10" y="80" width="10" height="10" fill="#020617"/>
+              <rect x="36" y="12" width="6" height="6" fill="#020617"/>
+              <rect x="46" y="18" width="8" height="8" fill="#020617"/>
+              <rect x="58" y="12" width="6" height="6" fill="#020617"/>
+              <rect x="36" y="38" width="12" height="12" fill="#020617"/>
+              <rect x="52" y="44" width="8" height="8" fill="#020617"/>
+              <rect x="68" y="38" width="12" height="6" fill="#020617"/>
+              <rect x="36" y="68" width="8" height="12" fill="#020617"/>
+              <rect x="48" y="74" width="14" height="6" fill="#020617"/>
+              <rect x="72" y="68" width="16" height="16" fill="#020617"/>
+            </svg>
+          </div>
+
+          <!-- Ledger Metadata -->
+          <div style="flex: 1; font-size: 12px; font-family: 'JetBrains Mono', monospace; line-height: 1.8;">
+            <div>Case Identifier: <strong style="color: #fff;" id="passportCaseId">CASE-2026-WILSON-001</strong></div>
+            <div>Ledger SHA-256: <span style="color: var(--medical-teal);" id="passportBlockHash">0x7f83b1657ff1fc53b92dc18148a1d65...</span></div>
+            <div>Anchored Timestamp: <span style="color: var(--slate-300);" id="passportTimestamp">16-Sep-2026 15:30 IST</span></div>
+            <div>Consent Protocol: <span style="color: var(--precision-emerald);">Patient Zero-Knowledge Verified • FL Enrolled</span></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div> <!-- /#patientPortalView -->
 
   </main>
 
@@ -899,7 +1424,29 @@
   </div>
 </div>
 
+<!-- ====================================================================
+     SLIDE-OUT SPECIALIST DOCTOR DRAWER (V2.0)
+     ==================================================================== -->
+<div class="drawer-backdrop" id="specialistDrawer">
+  <div class="drawer-panel" id="specialistDrawerPanel">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--glass-border);">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="user-check" style="width: 20px; height: 20px; color: var(--medical-teal);"></i>
+        <h3 style="font-size: 18px; font-weight: 700; color: #fff; margin: 0;">Specialist Profile &amp; Scheduling</h3>
+      </div>
+      <button class="modal-close-btn" id="closeSpecialistDrawerBtn" onclick="PatientPortal.closeSpecialistDrawer()" style="position: static;">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+    </div>
+
+    <div id="specialistDrawerContent" style="padding: 24px; overflow-y: auto; max-height: calc(100vh - 80px);">
+      <!-- Populated dynamically via PatientPortal.openSpecialistDrawer() -->
+    </div>
+  </div>
+</div>
+
 <!-- Scripts -->
 <script src="js/app.js"></script>
+<script src="js/patient_portal.js"></script>
 </body>
 </html>

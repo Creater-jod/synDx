@@ -745,6 +745,229 @@ function forwardToMLService(reqPath, method, body, res, fallbackFn) {
 }
 
 
+// ====================================================================
+// PATIENT PORTAL & HEALTH INTELLIGENCE ENDPOINTS (SynDx V2.0)
+// ====================================================================
+
+// 1. Treatment Cost Estimation Engine
+app.get('/api/cost/estimate', (req, res) => {
+  const insurancePct = Math.min(100, Math.max(0, parseInt(req.query.insurance_pct || '60', 10)));
+  const condition = (req.query.condition || 'wilson_disease').toLowerCase();
+
+  let baseCosts = {
+    diagnostic_tests: { name: 'Enzymatic, Genetic & Slit-Lamp Assays', cost: 12000, description: 'ATP7B mutation analysis, 24-hr urine copper, slit-lamp exam for K-F rings' },
+    medications: { name: 'Chelation Starter Therapy & Zinc Acetate', cost: 18000, description: '30-day initial D-Penicillamine / Trientine chelation with pyridoxine support' },
+    inpatient_care: { name: 'Tertiary Inpatient & Metabolic Ward Care', cost: 45000, description: '5-day hospitalization, neurological telemetry, liver function stabilization' },
+    specialist_followup: { name: 'Specialist Consultations & Monitoring', cost: 10000, description: '3-month post-discharge hepatology & clinical neuro-genetics follow-ups' }
+  };
+
+  if (condition.includes('hemochromatosis')) {
+    baseCosts.diagnostic_tests.cost = 9000;
+    baseCosts.medications.cost = 14000;
+    baseCosts.inpatient_care.cost = 35000;
+  }
+
+  const totalCost = Object.values(baseCosts).reduce((sum, item) => sum + item.cost, 0);
+  const insuranceCovered = Math.round(totalCost * (insurancePct / 100));
+  const outOfPocket = Math.max(0, totalCost - insuranceCovered);
+
+  res.json({
+    condition: condition,
+    currency: 'INR (₹)',
+    total_estimated_cost: totalCost,
+    insurance_percentage: insurancePct,
+    insurance_covered_amount: insuranceCovered,
+    estimated_out_of_pocket: outOfPocket,
+    cost_breakdown: baseCosts,
+    eligible_government_schemes: [
+      {
+        scheme_name: 'National Policy for Rare Diseases (NPRD 2026)',
+        agency: 'Ministry of Health & Family Welfare, Govt. of India',
+        maximum_benefit: '₹50,00,000 (One-Time Grant)',
+        eligibility: 'Eligible at designated Centers of Excellence (CoEs) for Group 1 & Group 2 rare diseases',
+        status: 'Recommended for Application'
+      },
+      {
+        scheme_name: 'Ayushman Bharat — PM-JAY',
+        agency: 'National Health Authority',
+        maximum_benefit: '₹5,00,000 / family / year',
+        eligibility: 'Secondary & tertiary hospitalizations in empanelled network hospitals',
+        status: 'Active Coverage'
+      },
+      {
+        scheme_name: 'Rashtriya Arogya Nidhi (RAN)',
+        agency: 'Central Government Health Scheme',
+        maximum_benefit: '₹20,00,000',
+        eligibility: 'Patients living below state poverty line undergoing major tertiary interventions',
+        status: 'Supplementary Assistance'
+      }
+    ]
+  });
+});
+
+// 2. Doctor & Hospital Recommendation Engine
+app.get('/api/specialists', (req, res) => {
+  res.json({
+    recommended_centers: [
+      {
+        id: 'cmc_vellore',
+        name: 'Christian Medical College (CMC)',
+        city: 'Vellore, Tamil Nadu',
+        distance_km: 118,
+        match_score: 98,
+        coe_status: 'National Center of Excellence for Rare Genetic Disorders',
+        icu_beds_available: 14,
+        waiting_time_days: 2,
+        emergency_corridor: true,
+        specialist: {
+          name: 'Dr. Abraham Koshy, MD, DM',
+          title: 'Professor & Head of Hepatology & Clinical Genetics',
+          experience_years: 24,
+          procedure_volume: '1,420+ Rare Metabolic Cases Managed',
+          publications_count: 42,
+          availability: 'Mon, Wed, Fri (In-Person & Tele-consult)',
+          contact: '+91 416 228 2010'
+        }
+      },
+      {
+        id: 'nimhans_bangalore',
+        name: 'National Institute of Mental Health & Neurosciences (NIMHANS)',
+        city: 'Bangalore, Karnataka',
+        distance_km: 340,
+        match_score: 95,
+        coe_status: 'Apex Center for Neurological & Genetic Movement Disorders',
+        icu_beds_available: 9,
+        waiting_time_days: 3,
+        emergency_corridor: true,
+        specialist: {
+          name: 'Dr. Meenakshi Sundaram, DM (Neuro)',
+          title: 'Chief of Clinical Neuro-genetics & Movement Clinic',
+          experience_years: 19,
+          procedure_volume: '980+ Movement Phenotype Triage Decisions',
+          publications_count: 38,
+          availability: 'Tue, Thu, Sat (Tele-triage Open)',
+          contact: '+91 80 2699 5000'
+        }
+      },
+      {
+        id: 'aiims_delhi',
+        name: 'All India Institute of Medical Sciences (AIIMS)',
+        city: 'New Delhi',
+        distance_km: 1850,
+        match_score: 92,
+        coe_status: 'National Coordinating Rare Diseases CoE',
+        icu_beds_available: 28,
+        waiting_time_days: 4,
+        emergency_corridor: true,
+        specialist: {
+          name: 'Dr. Rakesh Tandon, MD, FRCP',
+          title: 'Distinguished Professor of Gastroenterology',
+          experience_years: 28,
+          procedure_volume: '2,300+ Complex Hepato-genetic Cases',
+          publications_count: 65,
+          availability: 'Mon - Fri (National Referral Clinic)',
+          contact: '+91 11 2658 8500'
+        }
+      }
+    ]
+  });
+});
+
+// 3. Patient Self-Intake & Blockchain Passport Submission
+app.post('/api/patient/intake', (req, res) => {
+  const {
+    patient_id,
+    patient_name,
+    patient_age,
+    patient_gender,
+    symptoms_text,
+    voice_transcript,
+    lab_values,
+    vitals,
+    predicted_condition,
+    confidence_score,
+    urgency_tier
+  } = req.body;
+
+  const caseId = patient_id || `SYN-${Date.now().toString().slice(-6)}`;
+  const condition = predicted_condition || 'Wilson Disease (Suspected Phenotype)';
+  const tier = urgency_tier || 'B';
+  const confidence = confidence_score || 94;
+  const isEmergency = tier === 'A' ? 1 : 0;
+  const now = new Date();
+  const dayStr = now.toISOString().split('T')[0];
+  const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
+
+  db.serialize(() => {
+    // Insert or replace in cases table
+    db.run(
+      `INSERT OR REPLACE INTO cases (id, condition, tier, confidence, emergency, day, time, status, patient_name, patient_age, patient_gender, phenotypes, lab_data, clinical_notes)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        caseId,
+        condition,
+        tier,
+        confidence,
+        isEmergency,
+        dayStr,
+        timeStr,
+        'Patient Intake Submitted',
+        patient_name || 'Anonymous Patient',
+        patient_age || 29,
+        patient_gender || 'Unspecified',
+        JSON.stringify({ symptoms_text, voice_transcript }),
+        JSON.stringify(lab_values || {}),
+        `Patient self-reported intake via SynDx V2.0 Multimodal Assistant. Vitals: SpO2 ${vitals?.spo2 || 98}%, HR ${vitals?.heart_rate || 78} bpm.`
+      ],
+      function(err) {
+        if (err) {
+          console.error('[!] Failed to insert patient intake case:', err.message);
+          return res.status(500).json({ error: 'Database insertion error: ' + err.message });
+        }
+
+        // Fetch previous blockchain block
+        db.get('SELECT block_hash FROM blockchain_ledger ORDER BY block_index DESC LIMIT 1', (bErr, prevBlock) => {
+          const prevHash = (prevBlock && prevBlock.block_hash) ? prevBlock.block_hash : '0xGENESIS_SYNDX_CLINICAL_LEDGER';
+          const blockData = {
+            caseId,
+            patientName: patient_name || 'Anonymous Patient',
+            condition,
+            tier,
+            confidence,
+            vitals: vitals || {},
+            timestamp: now.toISOString()
+          };
+          const rawPayload = prevHash + JSON.stringify(blockData) + now.toISOString();
+          const blockHash = '0x' + crypto.createHash('sha256').update(rawPayload).digest('hex');
+
+          db.run(
+            `INSERT INTO blockchain_ledger (case_id, action_type, physician_id, previous_hash, block_hash, payload)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [caseId, 'PATIENT_SELF_INTAKE', 'PATIENT_PORTAL_V2', prevHash, blockHash, JSON.stringify(blockData)],
+            function(lErr) {
+              if (lErr) console.warn('[!] Failed to log blockchain record:', lErr.message);
+
+              res.json({
+                success: true,
+                message: 'Patient intake recorded and blockchain passport block created.',
+                case_id: caseId,
+                status: 'Patient Intake Submitted',
+                blockchain_passport: {
+                  block_index: this ? this.lastID : 1,
+                  block_hash: blockHash,
+                  previous_hash: prevHash,
+                  timestamp: now.toISOString(),
+                  verification_url: `http://localhost:${PORT}/api/blockchain/verify`
+                }
+              });
+            }
+          );
+        });
+      }
+    );
+  });
+});
+
 // Clinical ML Presets Endpoint
 app.get('/api/clinical/presets', (req, res) => {
   forwardToMLService('/api/clinical/presets', 'GET', null, res, () => {
