@@ -33,6 +33,11 @@ data/*.db-shm
 *.swp
 *.swo
 
+# Gradle & Android build
+.gradle/
+local.properties
+app/build/
+
 # OS files
 .DS_Store
 Thumbs.db
