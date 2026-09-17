@@ -1,0 +1,8 @@
+{
+  "accuracy": 0.568,
+  "precision": 0.568,
+  "recall": 0.568,
+  "f1": 0.568,
+  "inference_latency_ms": 1.45,
+  "model_size_kb": 24.8
+}

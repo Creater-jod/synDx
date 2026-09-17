@@ -1,45 +1,17 @@
 {
-  "name": "syndx",
-  "private": true,
+  "name": "syndx-review-console",
   "version": "1.0.0",
-  "type": "module",
+  "description": "synDx Review Console - Diagnostic Case Decision Platform",
+  "main": "server.js",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "start": "tsx server.ts",
-    "setup": "bash setup.sh",
-    "export": "bash export.sh",
-    "deploy": "bash deploy.sh",
-    "lint": "tsc --noEmit",
-    "preview": "vite preview"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
-    "@google/genai": "^2.4.0",
-    "@types/three": "^0.185.3",
-    "dotenv": "^17.2.3",
-    "express": "^4.21.2",
-    "firebase": "^12.17.1",
-    "lucide-react": "^0.546.0",
-    "motion": "^12.23.24",
-    "react": "^19.0.1",
-    "react-dom": "^19.0.1",
-    "three": "^0.185.1"
-  },
-  "devDependencies": {
-    "@rollup/rollup-win32-x64-msvc": "^4.63.3",
-    "@tailwindcss/oxide-win32-x64-msvc": "^4.3.3",
-    "@tailwindcss/vite": "^4.1.14",
-    "@types/express": "^4.17.21",
-    "@types/node": "^22.14.0",
-    "@types/react": "^19.0.1",
-    "@types/react-dom": "^19.0.1",
-    "@vitejs/plugin-react": "^5.0.4",
-    "autoprefixer": "^10.4.21",
-    "esbuild": "^0.25.0",
-    "lightningcss-win32-x64-msvc": "^1.33.0",
-    "tailwindcss": "^4.1.14",
-    "tsx": "^4.21.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.3"
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.3",
+    "sqlite3": "^6.0.1"
   }
 }

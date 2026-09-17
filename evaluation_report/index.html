@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>synDx Clinical Model Evaluation Report</title>
+<style>
+  :root {
+    --primary: #1e3a8a;
+    --primary-light: #3b82f6;
+    --primary-dark: #0f172a;
+    --accent: #0284c7;
+    --success: #059669;
+    --warning: #d97706;
+    --danger: #dc2626;
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-family);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.65;
+    padding: 2rem 1rem;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
+    padding: 3.5rem 4rem;
+  }
+
+  header {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .badge-header {
+    display: inline-block;
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+    color: var(--primary-dark);
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    background: #f1f5f9;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+
+  .meta-item strong {
+    color: var(--primary-dark);
+    display: block;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.15rem;
+  }
+
+  .alert {
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    margin: 1.75rem 0;
+    border-left: 5px solid;
+    font-size: 0.95rem;
+  }
+
+  .alert-important {
+    background: #eff6ff;
+    border-color: #3b82f6;
+    color: #1e40af;
+  }
+
+  .alert-warning {
+    background: #fffbeb;
+    border-color: #f59e0b;
+    color: #92400e;
+  }
+
+  .alert-caution {
+    background: #fef2f2;
+    border-color: #ef4444;
+    color: #991b1b;
+  }
+
+  .alert-title {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  h2 {
+    font-size: 1.45rem;
+    color: var(--primary-dark);
+    font-weight: 700;
+    margin: 2.5rem 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  h3 {
+    font-size: 1.15rem;
+    color: var(--primary);
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem 0;
+  }
+
+  p { margin-bottom: 1rem; }
+
+  ul, ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  li { margin-bottom: 0.4rem; }
+
+  /* Stats Cards Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .stat-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    border-top: 4px solid var(--primary-light);
+  }
+
+  .stat-card.best {
+    border-top-color: var(--success);
+    background: #f0fdf4;
+  }
+
+  .stat-card-title {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-card-value {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0.35rem 0 0.2rem 0;
+  }
+
+  .stat-card-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.92rem;
+  }
+
+  th, td {
+    padding: 0.75rem 0.9rem;
+    text-align: left;
+    border: 1px solid var(--border-color);
+  }
+
+  th {
+    background: #f1f5f9;
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #f1f5f9; }
+
+  td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  th.num { text-align: right; }
+
+  .highlight-cell {
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  /* Figures */
+  .figure-container {
+    margin: 2rem 0;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    text-align: center;
+  }
+
+  .figure-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  .figure-caption {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: 0.85rem;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .figure-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .figure-grid .figure-container {
+    margin: 0;
+  }
+
+  /* Code / Pre blocks */
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    overflow-x: auto;
+    margin: 1.25rem 0;
+  }
+
+  code {
+    font-family: Consolas, Monaco, 'Courier New', monospace;
+    background: #f1f5f9;
+    color: #0f172a;
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+
+  pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border-color);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .seal-banner {
+    display: inline-block;
+    background: #fee2e2;
+    color: #991b1b;
+    font-weight: 800;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    border: 1px solid #f87171;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .container { padding: 1.5rem; }
+    h1 { font-size: 1.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="badge-header">synDx Clinical ML Research Pipeline</div>
+    <h1>synDx Clinical Model Evaluation Report</h1>
+    <div class="subtitle">Validation of Neurological Symptom Phenotype Classification in Wilson Disease Patients</div>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <strong>Document Type</strong>
+        Validation Phase Technical Report
+      </div>
+      <div class="meta-item">
+        <strong>Date &amp; Cohort</strong>
+        September 2026 | n = 185 Patients
+      </div>
+      <div class="meta-item">
+        <strong>Tested Models</strong>
+        XGBoost, LightGBM, Random Forest
+      </div>
+      <div class="meta-item">
+        <strong>Validation Sample</strong>
+        n = 37 (Stratified Holdout)
+      </div>
+    </div>
+  </header>
+
+  <!-- Critical Regulatory Alert -->
+  <div class="alert alert-important">
+    <div class="alert-title">Critical Clinical &amp; Regulatory Disclaimer</div>
+    <p>This technical evaluation investigates machine-learning classification of a <em>neurological-symptom phenotype</em> among individuals already diagnosed with Wilson disease (n = 185). <strong>The models evaluated in this report are NOT diagnostic models for Wilson disease.</strong> They do not differentiate Wilson disease patients from healthy individuals or from patients with other hepatic or neurological disorders. The reported validation metrics reflect exploratory baseline research and must not be construed as validated diagnostic efficacy, clinical utility, or readiness for clinical decision support or regulatory deployment.</p>
+  </div>
+
+  <!-- 1. Executive Summary -->
+  <h2>1. Executive Summary</h2>
+  <p>This technical report delivers a formal, rigorous assessment of three independent supervised machine-learning architectures—<strong>XGBoost</strong>, <strong>LightGBM</strong>, and <strong>Random Forest</strong>—trained to classify the presence or absence of a neurological symptom phenotype in 185 patients with confirmed Wilson disease. All experiments were conducted under identical data constraints using an isolated 20% validation split (n = 37), while the final 20% test partition (n = 37) remained strictly sealed to eliminate data leakage and selection bias.</p>
+
+  <div class="stats-grid">
+    <div class="stat-card best">
+      <div class="stat-card-title">Top Discriminator (ROC-AUC)</div>
+      <div class="stat-card-value">0.7875</div>
+      <div class="stat-card-desc">XGBoost Baseline (PR-AUC = 0.9621)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-title">Validation Accuracy</div>
+      <div class="stat-card-value">91.89%</div>
+      <div class="stat-card-desc">XGBoost &amp; LightGBM (34/37 correct)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-title">Balanced Accuracy</div>
+      <div class="stat-card-value">0.7000</div>
+      <div class="stat-card-desc">Macro-average recall on skewed cohort</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-title">Validation Sample</div>
+      <div class="stat-card-value">n = 37</div>
+      <div class="stat-card-desc">5 Class 0 vs. 32 Class 1 cases</div>
+    </div>
+  </div>
+
+  <p>Key validation takeaways include:</p>
+  <ul>
+    <li><strong>Gradient Boosting Leads Discrimination</strong>: Gradient-boosted decision trees outperformed the bagging ensemble. XGBoost demonstrated the highest discriminative ranking with an <strong>ROC-AUC of 0.7875</strong> and <strong>PR-AUC of 0.9621</strong>, followed by LightGBM (ROC-AUC <strong>0.7500</strong>, PR-AUC <strong>0.9501</strong>) and Random Forest (ROC-AUC <strong>0.7000</strong>, PR-AUC <strong>0.9364</strong>).</li>
+    <li><strong>High Raw Accuracy vs. Minority Phenotype Sensitivity</strong>: Due to substantial class skew (88.1% positive prevalence), raw accuracy reached 91.89% for XGBoost and LightGBM and 86.49% for Random Forest. However, Random Forest completely failed to detect any Class 0 instance at the 0.50 threshold (specificity = 0.0000, balanced accuracy = 0.5000), illustrating the deception of raw accuracy in imbalanced clinical data.</li>
+    <li><strong>Preliminary Nature</strong>: With only 5 minority phenotype patients in the validation cohort, individual classification errors induce large discrete metric shifts. These validation results must be considered preliminary baseline benchmarks that will inform downstream ensemble weighting, probability calibration, and threshold optimization.</li>
+  </ul>
+
+  <!-- 2. Research Objective -->
+  <h2>2. Research Objective</h2>
+  <p>Wilson disease presents with pronounced clinical heterogeneity, ranging from pure hepatic manifestations to complex movement disorders, cognitive changes, or mixed symptoms. The research objective is to evaluate standard machine-learning classifiers for predicting the expression of a neurological-symptom phenotype using routine admission biochemical tests, coagulation markers, cranial imaging observations, and abdominal ultrasound findings.</p>
+  <div class="alert alert-warning">
+    <div class="alert-title">Explicit Boundary of Investigation</div>
+    <p><strong>"The models are not being evaluated for diagnosis of Wilson disease itself."</strong> All 185 subjects have established, biochemically verified Wilson disease. The classification task distinguishes intracohort phenotypic presentations. Therefore, the models are correctly classified as <em>clinical phenotype research classifiers</em> rather than diagnostic screening instruments.</p>
+  </div>
+
+  <!-- 3. Dataset Description -->
+  <h2>3. Dataset Description</h2>
+  <p>The study utilized a well-characterized clinical cohort comprising 185 patient records and 42 predictive variables.</p>
+  <ul>
+    <li><strong>Total Patients</strong>: 185</li>
+    <li><strong>Predictor Variables</strong>: 42 clinical, imaging, and biochemical features</li>
+    <li><strong>Target Variable</strong>: <code>label</code> (0 = absence of neurological phenotype, 1 = presence of neurological phenotype)</li>
+    <li><strong>Class Distribution</strong>:
+      <ul>
+        <li><strong>Class 0</strong>: 22 patients (11.89%)</li>
+        <li><strong>Class 1</strong>: 163 patients (88.11%)</li>
+        <li><strong>Imbalance Ratio</strong>: 1 : 7.41 (Class 0 to Class 1)</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p><strong>Fidelity &amp; Cleaning Pipeline:</strong></p>
+  <ul>
+    <li><strong>Missing Values</strong>: 0 missing values across all 185 rows and 43 columns.</li>
+    <li><strong>Duplicate Records</strong>: 0 duplicate rows detected.</li>
+    <li><strong>No Synthetic Resampling</strong>: Strictly <strong>no SMOTE</strong>, ADASYN, or synthetic patient fabrication was performed. The data reflects authentic biological measurements without synthetic artifact generation.</li>
+    <li><strong>Feature Representation</strong>: Features were retained in their original numerical representation after trimming only leading/trailing whitespace from column headers during Stage 01 preprocessing.</li>
+  </ul>
+
+  <!-- 4. Data Splitting and Leakage Prevention -->
+  <h2>4. Data Splitting and Leakage Prevention</h2>
+  <p>To eliminate data snooping and maintain pristine evaluation standards, the dataset was partitioned using stratified sampling based on the binary target with <code>random_state = 42</code>:</p>
+  
+  <pre><code>Full Patient Cohort (N = 185)
+├── Training Partition   : 60% (n = 111 patients | Class 0 = 13, Class 1 = 98)
+├── Validation Partition : 20% (n =  37 patients | Class 0 =  5, Class 1 = 32)
+└── Final Test Partition : 20% (n =  37 patients | Class 0 =  4, Class 1 = 33) [SEALED]</code></pre>
+
+  <p><strong>Leakage Prevention Governance:</strong></p>
+  <ol>
+    <li>The <strong>validation partition</strong> (n = 37) was used exclusively for cross-model comparison, calibration inspection, and baseline verification.</li>
+    <li>The <strong>final test partition</strong> (n = 37) was sealed upon generation and remained untouched across all training and evaluation scripts (<code>RUN_FINAL_TEST = False</code>).</li>
+    <li>No model selection, hyperparameter adjustment, or feature screening procedure had access to the final test partition.</li>
+  </ol>
+
+  <!-- 5. Model Configuration -->
+  <h2>5. Model Configuration</h2>
+  <p>All three models were instantiated with conservative hyperparameter bounds designed to restrict empirical overfitting on a small training cohort (n = 111):</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Model</th>
+        <th>Key Configuration Parameters</th>
+        <th>Architectural Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>XGBoost</strong></td>
+        <td><code>n_estimators=100</code>, <code>learning_rate=0.05</code>, <code>max_depth=3</code>, <code>subsample=0.8</code>, <code>colsample_bytree=0.8</code>, <code>scale_pos_weight=1.0</code>, <code>random_state=42</code></td>
+        <td>Standard gradient-boosted decision tree baseline with second-order Taylor expansion loss approximation.</td>
+      </tr>
+      <tr>
+        <td><strong>LightGBM</strong></td>
+        <td><code>n_estimators=100</code>, <code>learning_rate=0.05</code>, <code>max_depth=3</code>, <code>num_leaves=7</code>, <code>subsample=0.8</code>, <code>subsample_freq=1</code>, <code>colsample_bytree=0.8</code>, <code>random_state=42</code></td>
+        <td>Histogram-binned leaf-wise boosting baseline with conservative leaf depth limits.</td>
+      </tr>
+      <tr>
+        <td><strong>Random Forest</strong></td>
+        <td><code>n_estimators=300</code>, <code>max_depth=5</code>, <code>min_samples_split=4</code>, <code>min_samples_leaf=2</code>, <code>max_features='sqrt'</code>, <code>class_weight=None</code>, <code>random_state=42</code>, <code>n_jobs=-1</code></td>
+        <td>Unweighted bagging ensemble baseline assessing variance reduction through orthogonal feature subsets.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 6. Evaluation Metrics -->
+  <h2>6. Evaluation Metrics</h2>
+  <p>Due to the pronounced class imbalance (88.1% positive prevalence), raw accuracy is fundamentally misleading. A naive majority-class predictor would achieve 86.49% validation accuracy while having zero clinical utility. A comprehensive ten-metric suite was therefore calculated at the default threshold of <strong>0.50</strong>:</p>
+
+  <ul>
+    <li><strong>ROC-AUC</strong>: Quantifies probability ranking quality across all decision thresholds.</li>
+    <li><strong>PR-AUC</strong>: Average Precision reflecting precision across recall thresholds; sensitive to positive predictive value in imbalanced cohorts.</li>
+    <li><strong>Accuracy</strong>: Ratio of total correct classifications to total subjects.</li>
+    <li><strong>Balanced Accuracy</strong>: Arithmetic mean of sensitivity and specificity, assigning equal weight to both phenotype classes.</li>
+    <li><strong>Sensitivity / Recall</strong>: Proportion of true neurological phenotype cases correctly detected.</li>
+    <li><strong>Specificity</strong>: Proportion of true negative cases correctly identified as absent.</li>
+    <li><strong>Precision</strong>: Proportion of positive predictions that represent true neurological phenotypes.</li>
+    <li><strong>F1-Score</strong>: Harmonic mean of precision and sensitivity.</li>
+    <li><strong>Log Loss (Binary Cross-Entropy)</strong>: Evaluates probability calibration and penalizes confident incorrect assignments.</li>
+    <li><strong>Brier Score</strong>: Mean squared difference between predicted continuous probability and binary outcome.</li>
+  </ul>
+
+  <!-- 7. Validation Results -->
+  <h2>7. Validation Results</h2>
+  <p>The empirical metrics below were extracted directly from the validated output artifact <a href="model_comparison.csv"><code>reports/clinical/model_comparison.csv</code></a> without manual adjustment or extrapolation:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Model</th>
+        <th class="num">ROC-AUC</th>
+        <th class="num">PR-AUC</th>
+        <th class="num">Accuracy</th>
+        <th class="num">Balanced Acc</th>
+        <th class="num">Sensitivity</th>
+        <th class="num">Specificity</th>
+        <th class="num">Precision</th>
+        <th class="num">F1</th>
+        <th class="num">Log Loss</th>
+        <th class="num">Brier</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>XGBoost</strong></td>
+        <td class="num highlight-cell">0.7875</td>
+        <td class="num highlight-cell">0.9621</td>
+        <td class="num highlight-cell">0.9189</td>
+        <td class="num highlight-cell">0.7000</td>
+        <td class="num">1.0000</td>
+        <td class="num highlight-cell">0.4000</td>
+        <td class="num highlight-cell">0.9143</td>
+        <td class="num highlight-cell">0.9552</td>
+        <td class="num highlight-cell">0.3132</td>
+        <td class="num highlight-cell">0.0875</td>
+      </tr>
+      <tr>
+        <td><strong>LightGBM</strong></td>
+        <td class="num">0.7500</td>
+        <td class="num">0.9501</td>
+        <td class="num highlight-cell">0.9189</td>
+        <td class="num highlight-cell">0.7000</td>
+        <td class="num">1.0000</td>
+        <td class="num highlight-cell">0.4000</td>
+        <td class="num highlight-cell">0.9143</td>
+        <td class="num highlight-cell">0.9552</td>
+        <td class="num">0.3410</td>
+        <td class="num">0.0909</td>
+      </tr>
+      <tr>
+        <td><strong>Random Forest</strong></td>
+        <td class="num">0.7000</td>
+        <td class="num">0.9364</td>
+        <td class="num">0.8649</td>
+        <td class="num">0.5000</td>
+        <td class="num">1.0000</td>
+        <td class="num">0.0000</td>
+        <td class="num">0.8649</td>
+        <td class="num">0.9275</td>
+        <td class="num">0.3587</td>
+        <td class="num">0.1057</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 8. Accuracy Comparison -->
+  <h2>8. Accuracy Comparison</h2>
+  <div class="figure-container">
+    <img src="graphs/accuracy_comparison.png" alt="Accuracy and Balanced Accuracy Comparison">
+    <div class="figure-caption">Figure 1: Validation Accuracy vs. Balanced Accuracy across the three baseline models on n = 37 holdout patients. Notice the drop in Balanced Accuracy for Random Forest caused by zero specificity.</div>
+  </div>
+  <p>Both <strong>XGBoost</strong> and <strong>LightGBM</strong> attained the highest raw validation accuracy at <strong>0.9189</strong> (34/37 patients correct), whereas <strong>Random Forest</strong> registered <strong>0.8649</strong> (32/37 correct).</p>
+  <div class="alert alert-caution">
+    <div class="alert-title">Accuracy is Not a Sufficient Criterion</div>
+    <p>The highest accuracy model must not be automatically designated as the optimal model. Random Forest's nominal accuracy of 0.8649 is <em>identical</em> to the natural positive class prevalence (32/37 = 0.8649). Because Random Forest failed to classify a single Class 0 patient correctly at threshold 0.50, its balanced accuracy collapsed to <strong>0.5000</strong> (no better than random guessing across classes). In contrast, XGBoost and LightGBM achieved a balanced accuracy of <strong>0.7000</strong>, confirming authentic non-trivial classification of both phenotypes.</p>
+  </div>
+
+  <!-- 9. ROC-AUC Analysis -->
+  <h2>9. ROC-AUC Analysis</h2>
+  <div class="figure-container">
+    <img src="graphs/roc_curves.png" alt="Validation ROC Curves">
+    <div class="figure-caption">Figure 2: Receiver Operating Characteristic (ROC) curves on the validation partition (n = 37). XGBoost achieved the leading AUC of 0.7875.</div>
+  </div>
+  <p>Threshold-independent discrimination was led by <strong>XGBoost (ROC-AUC = 0.7875)</strong>, followed by <strong>LightGBM (0.7500)</strong> and <strong>Random Forest (0.7000)</strong>. All three classifiers demonstrated performance well above random chance (0.5000). However, because the validation cohort has only 5 negative phenotype patients, each false positive produces a 20% step decrease in specificity. While XGBoost exhibited superior curve dominance, this difference must be interpreted with caution until verified on larger cohorts.</p>
+
+  <!-- 10. Precision-Recall Analysis -->
+  <h2>10. Precision-Recall Analysis</h2>
+  <div class="figure-container">
+    <img src="graphs/precision_recall_curves.png" alt="Validation Precision-Recall Curves">
+    <div class="figure-caption">Figure 3: Precision-Recall curves on the validation set. All three models substantially exceed the natural prevalence baseline (0.8649).</div>
+  </div>
+  <p>In highly imbalanced cohorts, Precision-Recall (PR) curves provide a more reliable picture than ROC curves because they do not reward models for true negatives in large majorities. The unskilled baseline equals the class prevalence: 32 / 37 &approx; 0.8649.</p>
+  <p>All three models exceeded this baseline significantly: <strong>XGBoost (PR-AUC = 0.9621)</strong>, <strong>LightGBM (0.9501)</strong>, and <strong>Random Forest (0.9364)</strong>. This confirms that all three classifiers possess genuine predictive capacity for the neurological symptom phenotype.</p>
+
+  <!-- 11. Sensitivity and Specificity -->
+  <h2>11. Sensitivity and Specificity</h2>
+  <div class="figure-container">
+    <img src="graphs/sensitivity_specificity.png" alt="Sensitivity and Specificity Comparison">
+    <div class="figure-caption">Figure 4: Sensitivity vs. Specificity at threshold 0.50. High sensitivity was universal, but specificity revealed substantial differences between boosting and bagging.</div>
+  </div>
+  <p>At threshold 0.50:</p>
+  <ul>
+    <li><strong>Sensitivity (Recall)</strong>: 1.0000 for all three models (32/32 positive phenotype patients correctly identified, 0 false negatives).</li>
+    <li><strong>Specificity</strong>: 0.4000 for XGBoost and LightGBM (2/5 negative phenotype patients correctly isolated, 3 false positives), compared to 0.0000 for Random Forest (0/5 isolated, 5 false positives).</li>
+  </ul>
+  <p>The inability of unweighted Random Forest to correctly identify negative patients at threshold 0.50 reflects the susceptibility of bagging methods to majority voting pull when individual trees are constructed without class weighting. Gradient boosting showed superior resilience in preserving separating margins.</p>
+
+  <!-- 12. Overall Metric Comparison -->
+  <h2>12. Overall Metric Comparison</h2>
+  <div class="figure-container">
+    <img src="graphs/overall_metrics.png" alt="Overall Multi-Metric Validation Profile">
+    <div class="figure-caption">Figure 5: Multi-metric validation profile comparing ROC-AUC, PR-AUC, Accuracy, Balanced Accuracy, and F1-score across models.</div>
+  </div>
+  <p><strong>XGBoost established the strongest overall validation profile</strong>, achieving top ranks in ROC-AUC (0.7875), PR-AUC (0.9621), Log Loss (0.3132), and Brier Score (0.0875), while tying LightGBM in Accuracy (0.9189), Balanced Accuracy (0.7000), Specificity (0.4000), and F1-Score (0.9552). However, formal statistical superiority cannot be claimed on n = 37 without risk of false discovery.</p>
+
+  <!-- 13. Confusion Matrix Analysis -->
+  <h2>13. Confusion Matrix Analysis</h2>
+  <div class="figure-grid">
+    <div class="figure-container">
+      <img src="graphs/xgboost_confusion_matrix.png" alt="XGBoost Confusion Matrix">
+      <div class="figure-caption"><strong>XGBoost</strong><br>TN = 2 | FP = 3<br>FN = 0 | TP = 32</div>
+    </div>
+    <div class="figure-container">
+      <img src="graphs/lightgbm_confusion_matrix.png" alt="LightGBM Confusion Matrix">
+      <div class="figure-caption"><strong>LightGBM</strong><br>TN = 2 | FP = 3<br>FN = 0 | TP = 32</div>
+    </div>
+    <div class="figure-container">
+      <img src="graphs/random_forest_confusion_matrix.png" alt="Random Forest Confusion Matrix">
+      <div class="figure-caption"><strong>Random Forest</strong><br>TN = 0 | FP = 5<br>FN = 0 | TP = 32</div>
+    </div>
+  </div>
+  <p>Across the 37 validation patients, zero false negatives were observed for any model. However, false positives (asymptomatic patients classified as symptomatic) accounted for all errors: 3 for XGBoost and LightGBM, and 5 for Random Forest. Future stages will evaluate threshold calibration to shift operating points toward optimal clinical trade-offs.</p>
+
+  <!-- 14. Feature Importance -->
+  <h2>14. Feature Importance</h2>
+  <div class="figure-grid">
+    <div class="figure-container">
+      <img src="graphs/xgboost_feature_importance.png" alt="XGBoost Feature Importance">
+      <div class="figure-caption">Figure 6: Top 12 predictors in XGBoost by split gain.</div>
+    </div>
+    <div class="figure-container">
+      <img src="graphs/lightgbm_feature_importance.png" alt="LightGBM Feature Importance">
+      <div class="figure-caption">Figure 7: Top 12 predictors in LightGBM by split count.</div>
+    </div>
+    <div class="figure-container">
+      <img src="graphs/random_forest_feature_importance.png" alt="Random Forest Feature Importance">
+      <div class="figure-caption">Figure 8: Top 12 predictors in Random Forest by Gini decrease.</div>
+    </div>
+  </div>
+
+  <p>Prominent predictive features recurrently selected across all architectures included:</p>
+  <ul>
+    <li><strong>Serum Creatinine (<code>Cr</code>)</strong>: Consistently ranked as the top predictive variable in both XGBoost and LightGBM, and third in Random Forest.</li>
+    <li><strong>Thrombin Time (<code>TT</code>)</strong>: Ranked among the top four features in all three models, indicating strong association with neurological phenotype partitions.</li>
+    <li><strong>Age</strong>: Third in XGBoost and LightGBM, second in Random Forest.</li>
+    <li><strong>Neuroimaging Findings</strong>: <code>Brainstem damage</code> and <code>lenticular nucleus damage</code> emerged as prominent structural decision drivers.</li>
+  </ul>
+
+  <div class="alert alert-caution">
+    <div class="alert-title">Critical Methodological Note on Feature Importance</div>
+    <p>Tree-based feature importance reflects statistical splitting contributions within this specific dataset. <strong>These features contributed strongly to the model's predictive behavior within this dataset</strong>, but this does not prove biological causation, pathophysiological etiology, or standalone diagnostic utility. Formal game-theoretic auditing using SHAP will be conducted in Stage 06.</p>
+  </div>
+
+  <!-- 15. Model Comparison -->
+  <h2>15. Model Comparison</h2>
+  <p><em>"The validation results indicate differences in predictive behavior among the three baseline classifiers. However, model selection should not be based on accuracy alone, particularly given the class imbalance and limited validation sample size."</em></p>
+
+  <p>Summary of leading models by validation metric:</p>
+  <ul>
+    <li><strong>Strongest ROC-AUC</strong>: <strong>XGBoost (0.7875)</strong> vs. LightGBM (0.7500) vs. Random Forest (0.7000)</li>
+    <li><strong>Strongest PR-AUC</strong>: <strong>XGBoost (0.9621)</strong> vs. LightGBM (0.9501) vs. Random Forest (0.9364)</li>
+    <li><strong>Strongest Balanced Accuracy</strong>: <strong>XGBoost &amp; LightGBM (0.7000)</strong> vs. Random Forest (0.5000)</li>
+    <li><strong>Strongest Sensitivity</strong>: <strong>All Three Models Tied (1.0000)</strong></li>
+    <li><strong>Strongest Specificity</strong>: <strong>XGBoost &amp; LightGBM (0.4000)</strong> vs. Random Forest (0.0000)</li>
+    <li><strong>Strongest F1-Score</strong>: <strong>XGBoost &amp; LightGBM (0.9552)</strong> vs. Random Forest (0.9275)</li>
+    <li><strong>Lowest Probability Error</strong>: <strong>XGBoost (Log Loss = 0.3132, Brier = 0.0875)</strong></li>
+  </ul>
+
+  <!-- 16. Limitations -->
+  <h2>16. Limitations</h2>
+  <ol>
+    <li><strong>Small Overall Dataset</strong>: 185 total patients is a constrained sample for evaluating 42 complex predictors.</li>
+    <li><strong>Small Validation Cohort</strong>: 37 patients in validation causes wide binomial confidence intervals.</li>
+    <li><strong>Very Small Number of Minority Patients in Validation</strong>: Only 5 Class 0 patients in validation means individual errors shift specificity by 20 percentage points.</li>
+    <li><strong>Pronounced Class Imbalance</strong>: 88.1% positive prevalence creates strong natural bias toward majority predictions.</li>
+    <li><strong>Single Published Cohort</strong>: Data originates from a single center, limiting ethnic and institutional generalizability.</li>
+    <li><strong>No External Validation</strong>: Generalizability across external health systems remains unverified.</li>
+    <li><strong>No Prospective Clinical Validation</strong>: Models have not been evaluated in active clinical workflows.</li>
+    <li><strong>Baseline Architectures Only</strong>: Models represent unweighted initial baselines; hyperparameter tuning has not been performed.</li>
+    <li><strong>No Threshold Optimization</strong>: All metrics reflect an uncalibrated default 0.50 threshold.</li>
+    <li><strong>No Multimodal Fusion</strong>: Imaging series (MRI scans) and clinical text notes are not yet incorporated.</li>
+    <li><strong>Feature Importance Does Not Establish Causality</strong>: Gini decrease and split gain do not reflect disease mechanisms.</li>
+    <li><strong>Results Must Not Be Interpreted as Clinical Diagnostic Performance</strong>: The models classify phenotypes within confirmed Wilson disease patients, not general disease diagnosis.</li>
+  </ol>
+
+  <!-- 17. Next Steps -->
+  <h2>17. Next Steps</h2>
+  <p>The synDx research roadmap proceeds through structured phases:</p>
+  <ul>
+    <li><strong>Stage 1</strong>: Clinical preprocessing &amp; data partitioning &mdash; <strong>COMPLETE</strong></li>
+    <li><strong>Stage 2</strong>: XGBoost baseline development &mdash; <strong>COMPLETE</strong></li>
+    <li><strong>Stage 3</strong>: LightGBM baseline development &mdash; <strong>COMPLETE</strong></li>
+    <li><strong>Stage 4</strong>: Random Forest baseline development &mdash; <strong>COMPLETE</strong></li>
+    <li><strong>Stage 5</strong>: Compare independent models &mdash; <strong>COMPLETE (This Report)</strong></li>
+    <li><strong>Stage 6</strong>: SHAP / LIME explainability &amp; clinical auditing</li>
+    <li><strong>Stage 7</strong>: Multimodal fusion (integration of cranial imaging &amp; unstructured notes)</li>
+    <li><strong>Stage 8</strong>: Stacking / ensemble modeling with out-of-fold predictions</li>
+    <li><strong>Stage 9</strong>: Confidence routing &amp; referral logic</li>
+    <li><strong>Stage 10</strong>: Final sealed test evaluation</li>
+    <li><strong>Stage 11</strong>: External multi-center validation</li>
+  </ul>
+  <p><em>Note: No future stage beyond Stage 5 has commenced.</em></p>
+
+  <!-- 18. Final Conclusion -->
+  <h2>18. Final Conclusion</h2>
+  <p>This technical evaluation successfully validated three independent baseline machine-learning models for the classification of neurological symptom phenotypes in Wilson disease patients. <strong>XGBoost established the most robust preliminary validation performance</strong>, leading in ROC-AUC (0.7875), PR-AUC (0.9621), and probability calibration (Log Loss 0.3132), followed closely by LightGBM. Random Forest proved vulnerable to class imbalance at default decision thresholds.</p>
+  <p>These findings represent preliminary validation evidence derived from an internal holdout set and are not evidence of clinical deployment readiness. Subsequent phases will address probability calibration and ensemble formulation prior to unsealing the final test set.</p>
+
+  <footer>
+    <div class="seal-banner">Final test set status: SEALED &mdash; not evaluated.</div>
+    <p>synDx Clinical Machine Learning Research &bull; Department of Medical Informatics &bull; Technical Report</p>
+  </footer>
+
+</div>
+
+</body>
+</html>

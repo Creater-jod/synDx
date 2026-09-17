@@ -1,0 +1,5 @@
+Metric,Count
+True Negative (TN),2
+False Positive (FP),3
+False Negative (FN),0
+True Positive (TP),32

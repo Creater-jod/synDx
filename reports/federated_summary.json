@@ -1,0 +1,170 @@
+{
+  "status": "OPERATIONAL_SIMULATION",
+  "protocol": "Federated Averaging (FedAvg)",
+  "rounds_completed": 5,
+  "privacy_guarantee": {
+    "mechanism": "Differential Privacy (DP-SGD)",
+    "epsilon": 1.5,
+    "delta": 1e-05,
+    "clipping_norm": 1.0,
+    "patient_data_shared": "0 bytes (Weights and parameter gradients only)"
+  },
+  "final_global_performance": {
+    "validation_auc_roc": 0.5,
+    "validation_accuracy": 0.8649,
+    "features_aggregated": 42
+  },
+  "participating_clinics": [
+    {
+      "id": "clinic_north",
+      "name": "Metro General Hospital (Node 1)",
+      "samples": 37,
+      "weight": 0.333
+    },
+    {
+      "id": "clinic_central",
+      "name": "District Rare Disease Centre (Node 2)",
+      "samples": 37,
+      "weight": 0.333
+    },
+    {
+      "id": "clinic_south",
+      "name": "University Hepatology Institute (Node 3)",
+      "samples": 37,
+      "weight": 0.333
+    }
+  ],
+  "rounds_history": [
+    {
+      "round": 1,
+      "global_auc_roc": 0.5,
+      "global_accuracy": 0.8649,
+      "participating_nodes": 3,
+      "node_updates": [
+        {
+          "clinic_id": "clinic_north",
+          "clinic_name": "Metro General Hospital (Node 1)",
+          "samples": 37,
+          "local_accuracy": 0.8919
+        },
+        {
+          "clinic_id": "clinic_central",
+          "clinic_name": "District Rare Disease Centre (Node 2)",
+          "samples": 37,
+          "local_accuracy": 0.7838
+        },
+        {
+          "clinic_id": "clinic_south",
+          "clinic_name": "University Hepatology Institute (Node 3)",
+          "samples": 37,
+          "local_accuracy": 0.9189
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "global_auc_roc": 0.5,
+      "global_accuracy": 0.8649,
+      "participating_nodes": 3,
+      "node_updates": [
+        {
+          "clinic_id": "clinic_north",
+          "clinic_name": "Metro General Hospital (Node 1)",
+          "samples": 37,
+          "local_accuracy": 0.8919
+        },
+        {
+          "clinic_id": "clinic_central",
+          "clinic_name": "District Rare Disease Centre (Node 2)",
+          "samples": 37,
+          "local_accuracy": 0.8378
+        },
+        {
+          "clinic_id": "clinic_south",
+          "clinic_name": "University Hepatology Institute (Node 3)",
+          "samples": 37,
+          "local_accuracy": 0.9189
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "global_auc_roc": 0.5,
+      "global_accuracy": 0.8649,
+      "participating_nodes": 3,
+      "node_updates": [
+        {
+          "clinic_id": "clinic_north",
+          "clinic_name": "Metro General Hospital (Node 1)",
+          "samples": 37,
+          "local_accuracy": 0.2432
+        },
+        {
+          "clinic_id": "clinic_central",
+          "clinic_name": "District Rare Disease Centre (Node 2)",
+          "samples": 37,
+          "local_accuracy": 0.1892
+        },
+        {
+          "clinic_id": "clinic_south",
+          "clinic_name": "University Hepatology Institute (Node 3)",
+          "samples": 37,
+          "local_accuracy": 0.9189
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "global_auc_roc": 0.5,
+      "global_accuracy": 0.8649,
+      "participating_nodes": 3,
+      "node_updates": [
+        {
+          "clinic_id": "clinic_north",
+          "clinic_name": "Metro General Hospital (Node 1)",
+          "samples": 37,
+          "local_accuracy": 0.2162
+        },
+        {
+          "clinic_id": "clinic_central",
+          "clinic_name": "District Rare Disease Centre (Node 2)",
+          "samples": 37,
+          "local_accuracy": 0.8378
+        },
+        {
+          "clinic_id": "clinic_south",
+          "clinic_name": "University Hepatology Institute (Node 3)",
+          "samples": 37,
+          "local_accuracy": 0.9189
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "global_auc_roc": 0.5,
+      "global_accuracy": 0.8649,
+      "participating_nodes": 3,
+      "node_updates": [
+        {
+          "clinic_id": "clinic_north",
+          "clinic_name": "Metro General Hospital (Node 1)",
+          "samples": 37,
+          "local_accuracy": 0.8919
+        },
+        {
+          "clinic_id": "clinic_central",
+          "clinic_name": "District Rare Disease Centre (Node 2)",
+          "samples": 37,
+          "local_accuracy": 0.8378
+        },
+        {
+          "clinic_id": "clinic_south",
+          "clinic_name": "University Hepatology Institute (Node 3)",
+          "samples": 37,
+          "local_accuracy": 0.9189
+        }
+      ]
+    }
+  ],
+  "timestamp": "2026-09-10T10:39:56.055054"
+}

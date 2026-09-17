@@ -1,0 +1,30 @@
+{
+  "manifest_version": "1.0.0",
+  "generated_at": "2026-08-18T05:00:00Z",
+  "datasets": [
+    {
+      "dataset_id": "orphadata_rare_diseases",
+      "source": "Orphadata",
+      "source_url": "https://www.orphadata.com/data/xml/en_product4.xml",
+      "license": "CC BY 4.0",
+      "retrieved_at": "2026-08-18T10:37:55Z",
+      "raw_file": "data\\raw\\orphadata\\en_product4.xml",
+      "processed_file": "data\\processed\\diseases\\orphadata_diseases.json",
+      "sha256": "4f44e8a61201399911aa1ba44a293c0ccaa5ce11272c47d40862255cb72f6b32",
+      "record_count": 4357,
+      "status": "VALIDATED"
+    },
+    {
+      "dataset_id": "hpo_terms_and_annotations",
+      "source": "Human Phenotype Ontology",
+      "source_url": "https://purl.obolibrary.org/obo/hp.json",
+      "license": "CC BY 4.0",
+      "retrieved_at": "2026-08-18T10:38:29Z",
+      "raw_file": "data\\raw\\hpo\\hp.json",
+      "processed_file": "data\\processed\\phenotypes\\hpo_terms.json",
+      "sha256": "3b646565695329aa399e937883c68d5d424d0df5eaab2f22baa0e08d44fdbe87",
+      "record_count": 20413,
+      "status": "VALIDATED"
+    }
+  ]
+}
