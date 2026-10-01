@@ -37,7 +37,7 @@
     </span>
     
     <!-- Sync Queue: Icon + Word -->
-    <span class="status-pill status-verified" id="pwaSyncBadge" style="cursor: pointer;" onclick="PWAEngine.syncOfflineQueue()" title="Click to trigger manual sync of queued offline cases">
+    <span class="status-pill status-verified" id="pwaSyncBadge" style="cursor: pointer;" onclick="PWAEngine.openSyncModal()" title="Click to view and manage offline sync queue">
       <i data-lucide="refresh-cw" id="pwaSyncIcon"></i>
       <span id="pwaSyncCountText">0 Verified &amp; Synced</span>
     </span>
@@ -68,6 +68,18 @@
       <i data-lucide="user-check" style="width: 14px; height: 14px; color: var(--color-primary);"></i>
       <span id="pwaUserName">Dr. Reviewer</span>
     </button>
+  </div>
+</div>
+
+<!-- Local Draft Persistence Banner -->
+<div id="pwaDraftBanner" class="pwa-draft-banner" style="display: none;">
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <i data-lucide="file-edit" style="width: 16px; height: 16px; color: var(--color-copper-text);"></i>
+    <span id="pwaDraftMessage">Case review draft restored from local storage</span>
+  </div>
+  <div style="display: flex; gap: 8px;">
+    <button type="button" class="btn btn-secondary" style="min-height: 30px; padding: 2px 10px; font-size: 12px;" onclick="PWAEngine.saveCurrentDraft()">Save Draft</button>
+    <button type="button" class="btn btn-secondary" style="min-height: 30px; padding: 2px 10px; font-size: 12px;" onclick="PWAEngine.discardDraft()">Discard</button>
   </div>
 </div>
 
@@ -1126,6 +1138,45 @@
         <span>Set Active Session</span>
       </button>
     </form>
+  </div>
+</div>
+
+<!-- Offline Synchronization Queue Modal -->
+<div class="modal-backdrop" id="pwaSyncModal">
+  <div class="modal-card" style="max-width: 640px;">
+    <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: var(--border-width) solid var(--color-border); padding-bottom: 12px; margin-bottom: 16px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="brand-badge" style="width: 32px; height: 32px; font-size: 14px;">
+          <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+        </div>
+        <div>
+          <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--color-text-main);">Offline Sync Queue</h3>
+          <span class="text-secondary" style="font-size: 12px;">Idempotent Edge Queue • Client Mutation Ledger</span>
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary" onclick="PWAEngine.closeSyncModal()" style="min-height: 32px; padding: 4px 10px; font-size: 13px;">✕</button>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; background-color: var(--color-bg); padding: 8px 12px; border-radius: var(--radius-sm); border: var(--border-width) solid var(--color-border);">
+      <div style="font-size: 13px; font-weight: 600; color: var(--color-text-main);" id="syncQueueSummary">0 Queued • 0 Failed • 0 Synced</div>
+      <div style="display: flex; gap: 8px;">
+        <button type="button" class="btn btn-secondary" onclick="PWAEngine.retryFailedSync()" style="min-height: 32px; padding: 2px 10px; font-size: 12px;" title="Retry failed sync items">
+          <i data-lucide="rotate-ccw" style="width: 13px; height: 13px;"></i>
+          <span>Retry Failed</span>
+        </button>
+        <button type="button" class="btn btn-primary" onclick="PWAEngine.syncOfflineQueue()" style="min-height: 32px; padding: 2px 12px; font-size: 12px;">
+          <i data-lucide="upload-cloud" style="width: 13px; height: 13px;"></i>
+          <span>Sync Now</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="syncQueueList" style="max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+      <!-- Dynamic sync queue items rendered here -->
+      <div style="padding: 24px; text-align: center; color: var(--color-text-secondary); font-size: 13px;">
+        No pending offline items in queue. All cases synchronized.
+      </div>
+    </div>
   </div>
 </div>
 

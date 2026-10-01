@@ -112,6 +112,19 @@ function initDatabase() {
       )
     `);
 
+    // 5. Processed Mutations Table (Idempotent Sync Queue Deduplication)
+    db.run(`
+      CREATE TABLE IF NOT EXISTS processed_mutations (
+        mutation_id TEXT PRIMARY KEY,
+        case_id TEXT NOT NULL,
+        type TEXT NOT NULL,
+        status TEXT NOT NULL,
+        response_json TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+
     // Seed default users if empty
     db.get('SELECT COUNT(*) as count FROM users', [], (err, row) => {
       if (row && row.count === 0) {

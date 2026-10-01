@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "node tests/backend.test.js"
+    "test": "node tests/backend.test.js && node tests/sync_and_draft.test.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

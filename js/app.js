@@ -238,12 +238,93 @@ const PWAEngine = {
     this.initTheme();
     this.initOfflineTelemetry();
     this.loadOfflineQueue();
+    this.checkExistingDraft();
     this.initEventListeners();
     this.updateUserSessionUI();
     this.loadInitialInputs();
     fetchDoctorQueue();
     refreshIcons();
   },
+
+  // 1.1 Local Case Draft Persistence
+  saveCurrentDraft() {
+    this.collectCurrentInputs();
+    const draft = {
+      schema_version: '1.0.0',
+      activeCaseData: { ...state.activeCaseData },
+      currentView: state.currentView,
+      draft_saved_at: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem('syndx_case_draft', JSON.stringify(draft));
+      const banner = document.getElementById('pwaDraftBanner');
+      const msg = document.getElementById('pwaDraftMessage');
+      if (banner && msg) {
+        const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        msg.textContent = `Draft saved locally (${timeStr})`;
+        banner.style.display = 'flex';
+      }
+      showToast('Clinical case draft saved to local device storage.', 'success');
+      refreshIcons();
+    } catch (e) {
+      console.error('Failed to save draft to localStorage', e);
+    }
+  },
+
+  checkExistingDraft() {
+    try {
+      const stored = localStorage.getItem('syndx_case_draft');
+      if (stored) {
+        const draft = JSON.parse(stored);
+        const banner = document.getElementById('pwaDraftBanner');
+        const msg = document.getElementById('pwaDraftMessage');
+        if (banner && msg && draft.draft_saved_at) {
+          const timeStr = new Date(draft.draft_saved_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          msg.textContent = `In-progress draft restored from ${timeStr}`;
+          banner.style.display = 'flex';
+          refreshIcons();
+        }
+      }
+    } catch (e) {}
+  },
+
+  restoreDraft() {
+    try {
+      const stored = localStorage.getItem('syndx_case_draft');
+      if (stored) {
+        const draft = JSON.parse(stored);
+        if (draft.activeCaseData) {
+          state.activeCaseData = { ...state.activeCaseData, ...draft.activeCaseData };
+          this.loadInitialInputs();
+          showToast('Case draft successfully restored.', 'success');
+        }
+      }
+    } catch (e) {
+      console.warn('Could not restore draft:', e);
+    }
+  },
+
+  discardDraft() {
+    try {
+      localStorage.removeItem('syndx_case_draft');
+      const banner = document.getElementById('pwaDraftBanner');
+      if (banner) banner.style.display = 'none';
+      showToast('Draft discarded.', 'info');
+    } catch (e) {}
+  },
+
+  autoSaveDraft() {
+    this.collectCurrentInputs();
+    try {
+      const draft = {
+        schema_version: '1.0.0',
+        activeCaseData: { ...state.activeCaseData },
+        draft_saved_at: new Date().toISOString()
+      };
+      localStorage.setItem('syndx_case_draft', JSON.stringify(draft));
+    } catch (e) {}
+  },
+
 
   // Theme Management (Light Mode Default, Dark Mode for Doctor Review Console)
   initTheme() {
@@ -334,7 +415,7 @@ const PWAEngine = {
 
   loadOfflineQueue() {
     try {
-      const stored = localStorage.getItem('syndx_pwa_offline_queue');
+      const stored = localStorage.getItem('syndx_pwa_sync_queue');
       state.offlineQueue = stored ? JSON.parse(stored) : [];
     } catch (e) {
       state.offlineQueue = [];
@@ -344,28 +425,111 @@ const PWAEngine = {
 
   saveOfflineQueue() {
     try {
-      localStorage.setItem('syndx_pwa_offline_queue', JSON.stringify(state.offlineQueue));
+      localStorage.setItem('syndx_pwa_sync_queue', JSON.stringify(state.offlineQueue));
     } catch (e) {
       console.error('Failed to save offline queue to localStorage', e);
     }
     this.updateSyncBadge();
+    this.renderSyncQueueModal();
   },
 
   updateSyncBadge() {
     const syncText = document.getElementById('pwaSyncCountText');
     const badge = document.getElementById('pwaSyncBadge');
-    if (syncText) {
-      const count = state.offlineQueue.length;
-      syncText.textContent = count > 0 ? `${count} Pending Sync` : '0 Synced';
-      if (badge) {
-        badge.className = count > 0 ? 'status-pill status-tier-b' : 'status-pill status-verified';
-      }
+    if (!syncText) return;
+
+    const queuedCount = state.offlineQueue.filter(i => i.state === 'queued' || i.state === 'syncing').length;
+    const failedCount = state.offlineQueue.filter(i => i.state === 'failed').length;
+    const syncedCount = state.offlineQueue.filter(i => i.state === 'synced').length;
+
+    if (failedCount > 0) {
+      syncText.textContent = `${failedCount} Failed • ${queuedCount} Queued`;
+      if (badge) badge.className = 'status-pill status-sync-failed';
+    } else if (queuedCount > 0) {
+      syncText.textContent = `${queuedCount} Queued for Sync`;
+      if (badge) badge.className = 'status-pill status-sync-queued';
+    } else {
+      syncText.textContent = syncedCount > 0 ? `${syncedCount} Synced` : '0 Synced';
+      if (badge) badge.className = 'status-pill status-verified';
+    }
+    refreshIcons();
+  },
+
+  openSyncModal() {
+    const modal = document.getElementById('pwaSyncModal');
+    if (modal) {
+      modal.classList.add('active');
+      this.renderSyncQueueModal();
+      refreshIcons();
     }
   },
 
-  async syncOfflineQueue() {
+  closeSyncModal() {
+    const modal = document.getElementById('pwaSyncModal');
+    if (modal) modal.classList.remove('active');
+  },
+
+  renderSyncQueueModal() {
+    const summary = document.getElementById('syncQueueSummary');
+    const list = document.getElementById('syncQueueList');
+    if (!list) return;
+
+    const queued = state.offlineQueue.filter(i => i.state === 'queued').length;
+    const syncing = state.offlineQueue.filter(i => i.state === 'syncing').length;
+    const synced = state.offlineQueue.filter(i => i.state === 'synced').length;
+    const failed = state.offlineQueue.filter(i => i.state === 'failed').length;
+
+    if (summary) {
+      summary.textContent = `${queued} Queued • ${failed} Failed • ${synced} Synced`;
+    }
+
     if (state.offlineQueue.length === 0) {
-      showToast('Sync queue is currently empty.');
+      list.innerHTML = `
+        <div style="padding: 24px; text-align: center; color: var(--color-text-secondary); font-size: 13px;">
+          No items in sync queue. All cases synchronized.
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = state.offlineQueue.slice().reverse().map(item => {
+      let stateBadge = '';
+      if (item.state === 'queued') {
+        stateBadge = `<span class="status-pill status-sync-queued" style="font-size: 11px; min-height: 24px;"><i data-lucide="clock" style="width: 12px; height: 12px;"></i><span>Queued</span></span>`;
+      } else if (item.state === 'syncing') {
+        stateBadge = `<span class="status-pill status-sync-syncing" style="font-size: 11px; min-height: 24px;"><i data-lucide="loader-2" style="width: 12px; height: 12px;"></i><span>Syncing</span></span>`;
+      } else if (item.state === 'synced') {
+        stateBadge = `<span class="status-pill status-sync-synced" style="font-size: 11px; min-height: 24px;"><i data-lucide="check" style="width: 12px; height: 12px;"></i><span>Synced</span></span>`;
+      } else if (item.state === 'failed') {
+        stateBadge = `<span class="status-pill status-sync-failed" style="font-size: 11px; min-height: 24px;"><i data-lucide="alert-triangle" style="width: 12px; height: 12px;"></i><span>Failed (${item.attempts || 1})</span></span>`;
+      }
+
+      const caseId = item.case_id || (item.payload && item.payload.id) || 'CASE';
+      const cond = (item.payload && item.payload.condition) || item.type;
+      const errorText = item.last_error ? `<div style="font-size: 11px; color: var(--color-status-emergency-text); margin-top: 4px;">Error: ${item.last_error}</div>` : '';
+
+      return `
+        <div class="sync-item-card">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <strong style="font-family: var(--font-mono); font-size: 13px; color: var(--color-text-main);">${caseId}</strong>
+              <span class="code-pill" style="font-size: 10px;">${item.type}</span>
+            </div>
+            <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 2px;">${cond}</div>
+            ${errorText}
+          </div>
+          <div>${stateBadge}</div>
+        </div>
+      `;
+    }).join('');
+
+    refreshIcons();
+  },
+
+  async syncOfflineQueue() {
+    const pendingItems = state.offlineQueue.filter(i => i.state === 'queued' || i.state === 'failed');
+    if (pendingItems.length === 0) {
+      showToast('Sync queue is up to date.');
       return;
     }
 
@@ -374,46 +538,75 @@ const PWAEngine = {
       return;
     }
 
-    showToast(`Attempting sync of ${state.offlineQueue.length} queued case(s)...`);
-    const remaining = [];
-
-    for (const item of state.offlineQueue) {
-      try {
-        const res = await fetch('/api/cases', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(item)
-        });
-
-        if (res.ok) {
-          if (item.decision) {
-            await fetch(`/api/cases/${item.id}/decision`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                status: item.decision.status,
-                note: item.decision.note
-              })
-            });
-          }
-        } else {
-          remaining.push(item);
-        }
-      } catch (err) {
-        remaining.push(item);
-      }
-    }
-
-    const syncedCount = state.offlineQueue.length - remaining.length;
-    state.offlineQueue = remaining;
+    // Transition candidate items to 'syncing'
+    pendingItems.forEach(i => { i.state = 'syncing'; });
     this.saveOfflineQueue();
+    showToast(`Syncing ${pendingItems.length} queued item(s) to server...`);
 
-    if (syncedCount > 0) {
-      showToast(`Successfully synced ${syncedCount} offline case(s) to server database!`, 'success');
+    try {
+      const payload = {
+        items: pendingItems.map(i => ({
+          mutation_id: i.mutation_id,
+          type: i.type,
+          payload: i.payload
+        }))
+      };
+
+      const res = await fetch('/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server responded with HTTP ${res.status}`);
+      }
+
+      const data = await res.json();
+      const syncedIds = data.synced_ids || [];
+
+      pendingItems.forEach(item => {
+        const cId = item.case_id || (item.payload && item.payload.id);
+        if (syncedIds.includes(cId) || (data.mutations && data.mutations.some(m => m.mutation_id === item.mutation_id))) {
+          item.state = 'synced';
+          item.last_error = null;
+          item.updated_at = new Date().toISOString();
+        } else {
+          item.state = 'failed';
+          item.attempts = (item.attempts || 0) + 1;
+          item.last_error = 'Item not acknowledged by server';
+        }
+      });
+
+      this.saveOfflineQueue();
+      showToast(`Successfully synced ${data.processed || syncedIds.length} item(s)!`, 'success');
       await fetchDoctorQueue();
-    } else {
-      showToast('Sync attempt failed. Cases preserved in offline storage.', 'error');
+    } catch (err) {
+      console.warn('Sync failed:', err);
+      pendingItems.forEach(item => {
+        item.state = 'failed';
+        item.attempts = (item.attempts || 0) + 1;
+        item.last_error = err.message || 'Network communication error';
+        item.updated_at = new Date().toISOString();
+      });
+      this.saveOfflineQueue();
+      showToast('Sync attempt failed. Items marked for retry.', 'error');
     }
+  },
+
+  retryFailedSync() {
+    const failedItems = state.offlineQueue.filter(i => i.state === 'failed');
+    if (failedItems.length === 0) {
+      showToast('No failed items to retry.');
+      return;
+    }
+    failedItems.forEach(i => {
+      i.state = 'queued';
+      i.last_error = null;
+    });
+    this.saveOfflineQueue();
+    showToast(`Retrying ${failedItems.length} failed item(s)...`);
+    this.syncOfflineQueue();
   },
 
   // 3. User Session UI
@@ -496,6 +689,7 @@ const PWAEngine = {
     }
 
     this.updateFieldPhysioTag(inputId);
+    this.autoSaveDraft();
   },
 
   updateAllPhysioTags() {
@@ -1729,6 +1923,10 @@ DISCLAIMER: Decision support prototype. Not a cleared diagnostic device.
       stateHash: c.stateHash
     };
 
+    // Remove local draft upon formal submission
+    this.discardDraft();
+
+    const mutationId = 'mut_' + Date.now() + '_' + Math.random().toString(16).slice(2, 8);
     const isOnline = navigator.onLine && !state.isSimulatedOffline;
 
     if (isOnline) {
@@ -1736,7 +1934,7 @@ DISCLAIMER: Decision support prototype. Not a cleared diagnostic device.
         const createRes = await fetch('/api/cases', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(casePayload)
+          body: JSON.stringify({ ...casePayload, schema_version: '1.0.0', mutation_id: mutationId })
         });
 
         if (createRes.ok) {
@@ -1750,6 +1948,21 @@ DISCLAIMER: Decision support prototype. Not a cleared diagnostic device.
             })
           });
 
+          // Record in local sync queue as SYNCED
+          state.offlineQueue.push({
+            mutation_id: mutationId,
+            case_id: c.patientId,
+            type: 'CASE_CREATED',
+            schema_version: '1.0.0',
+            state: 'synced',
+            payload: casePayload,
+            attempts: 1,
+            last_error: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+          this.saveOfflineQueue();
+
           showToast(`Case ${c.patientId} signed, sealed & saved to server!`, 'success');
           await fetchDoctorQueue();
           navigateTo('doctor-console');
@@ -1760,10 +1973,21 @@ DISCLAIMER: Decision support prototype. Not a cleared diagnostic device.
       }
     }
 
-    // Offline Fallback: Queue locally in localStorage
-    state.offlineQueue.push(casePayload);
+    // Offline Fallback: Queue locally in localStorage with QUEUED state
+    state.offlineQueue.push({
+      mutation_id: mutationId,
+      case_id: c.patientId,
+      type: 'CASE_CREATED',
+      schema_version: '1.0.0',
+      state: 'queued',
+      payload: casePayload,
+      attempts: 0,
+      last_error: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    });
     this.saveOfflineQueue();
-    showToast(`Device offline. Case ${c.patientId} sealed locally in offline sync queue.`, 'warning');
+    showToast(`Device offline. Case ${c.patientId} queued for sync.`, 'warning');
     await fetchDoctorQueue();
     navigateTo('doctor-console');
   },
@@ -2093,7 +2317,27 @@ DISCLAIMER: Decision support prototype. Not a cleared diagnostic device.
       }
     }
 
-    showToast(`Case ${caseId} determination saved locally (offline mode).`, 'warning');
+    // Queue decision in offline sync queue
+    const mutationId = 'mut_' + Date.now() + '_' + Math.random().toString(16).slice(2, 8);
+    state.offlineQueue.push({
+      mutation_id: mutationId,
+      case_id: caseId,
+      type: 'DECISION_MADE',
+      schema_version: '1.0.0',
+      state: 'queued',
+      payload: {
+        id: caseId,
+        status: decision,
+        note: notes
+      },
+      attempts: 0,
+      last_error: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    });
+    this.saveOfflineQueue();
+
+    showToast(`Case ${caseId} determination saved locally (queued for sync).`, 'warning');
     renderDoctorQueueTable(state.activeCases);
     this.renderDoctorWorkstationQueue();
     this.selectWorkstationCase(caseId);

@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const caseRepository = require('../repositories/caseRepository');
 const auditRepository = require('../repositories/auditRepository');
+const { calculateCaseHash, calculateDiagnosisHash, SCHEMA_VERSION } = require('../models/caseSchema');
 
 class CaseService {
   async getAllCases() {
@@ -28,9 +29,15 @@ class CaseService {
     const vitals_json = JSON.stringify(data.vitals || {});
     const referral_json = JSON.stringify(data.referral || { name: 'District Referral Hospital', distance: '3.5 km', stock: 'yes' });
 
-    const case_hash = crypto.createHash('sha256').update(id + (data.condition || '') + Date.now()).digest('hex').substring(0, 16);
-    const diagnosis_hash = crypto.createHash('sha256').update((data.condition || '') + (data.confidence || '')).digest('hex').substring(0, 16);
-    const audit_json = JSON.stringify({ case_hash, diagnosis_hash, model: data.model || 'synDx-edge-nb-v1.0' });
+    // Cryptographic privacy-preserving hashes (strictly zero PII)
+    const case_hash = calculateCaseHash({ id, ...data });
+    const diagnosis_hash = calculateDiagnosisHash({ condition: data.condition, confidence: data.confidence, tier: data.tier });
+    const audit_json = JSON.stringify({
+      schema_version: data.schema_version || SCHEMA_VERSION,
+      case_hash,
+      diagnosis_hash,
+      model: data.model || 'synDx-edge-nb-v1.0'
+    });
 
     await caseRepository.create({
       id,
@@ -48,20 +55,24 @@ class CaseService {
       audit_json
     });
 
-    // Record audit event
+    // Record de-identified audit event
     const tx_hash = '0x' + crypto.randomBytes(16).toString('hex');
     await auditRepository.create({
       case_id: id,
       event_type: 'INFERENCE_GENERATED',
       case_hash,
       diagnosis_hash,
-      model_version: 'synDx-edge-nb-v1.0',
+      model_version: data.model || 'synDx-edge-nb-v1.0',
       tx_hash,
       block_number: 1849200 + Math.floor(Math.random() * 100),
       status: 'CONFIRMED'
     });
 
-    return { message: 'Case created successfully', id };
+    return {
+      message: 'Case created successfully',
+      id,
+      schema_version: data.schema_version || SCHEMA_VERSION
+    };
   }
 
   async recordDecision(id, status, note) {
@@ -76,12 +87,16 @@ class CaseService {
       ? 'DOCTOR_CONFIRMED'
       : (status === 'overridden' ? 'DOCTOR_OVERRIDDEN' : 'DOCTOR_MORE_TESTS');
 
+    // SHA-256 diagnosis hash without raw text
+    const case_hash = calculateCaseHash({ id });
+    const diagnosis_hash = crypto.createHash('sha256').update(status + (note ? note.length : '')).digest('hex').substring(0, 16);
     const tx_hash = '0x' + crypto.randomBytes(16).toString('hex');
+
     await auditRepository.create({
       case_id: id,
       event_type,
-      case_hash: id,
-      diagnosis_hash: status,
+      case_hash,
+      diagnosis_hash,
       model_version: 'synDx-edge-nb-v1.0',
       tx_hash,
       block_number: 1849210 + Math.floor(Math.random() * 50),
@@ -108,8 +123,8 @@ class CaseService {
     const caseId = patient_id || `SYN-PAT-${Math.floor(100000 + Math.random() * 900000)}`;
     const timestamp = new Date().toISOString();
 
-    // Calculate SHA-256 Ledger Hash
-    const blockData = `${caseId}|${patient_name}|${predicted_condition}|${confidence_score}|${timestamp}`;
+    // Calculate SHA-256 Ledger Hash (Excluding patient_name to preserve audit privacy)
+    const blockData = `${caseId}|${predicted_condition || 'Wilson Disease'}|${confidence_score || 95}|${timestamp}`;
     const blockHash = '0x' + crypto.createHash('sha256').update(blockData).digest('hex');
 
     await caseRepository.insertOrReplaceIntake({
@@ -126,7 +141,7 @@ class CaseService {
       vitals_json: JSON.stringify(vitals || {})
     });
 
-    // Record in audit ledger
+    // Record in de-identified audit ledger
     await auditRepository.create({
       case_id: caseId,
       event_type: 'PATIENT_V2_INTAKE',

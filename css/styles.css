@@ -263,6 +263,56 @@ small, .text-sm {
   border-color: var(--color-primary);
 }
 
+/* Sync Queue State Badges */
+.status-sync-queued {
+  color: var(--color-copper-text);
+  background-color: var(--color-copper-tint);
+  border-color: var(--color-copper);
+}
+
+.status-sync-syncing {
+  color: var(--color-status-tier-b-text);
+  background-color: var(--color-status-tier-b-bg);
+  border-color: var(--color-status-tier-b-text);
+}
+
+.status-sync-synced {
+  color: var(--color-status-tier-a-text);
+  background-color: var(--color-status-tier-a-bg);
+  border-color: var(--color-status-tier-a-text);
+}
+
+.status-sync-failed {
+  color: var(--color-status-emergency-text);
+  background-color: var(--color-status-emergency-bg);
+  border-color: var(--color-status-emergency-text);
+}
+
+/* Local Draft Banner */
+.pwa-draft-banner {
+  background-color: var(--color-copper-tint);
+  border-bottom: var(--border-width) solid var(--color-border);
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-copper-text);
+  font-weight: 600;
+  animation: viewFadeIn 0.2s ease-out;
+}
+
+.sync-item-card {
+  padding: 12px;
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
 /* Backward compatibility aliases */
 .status-badge {
   display: inline-flex;
