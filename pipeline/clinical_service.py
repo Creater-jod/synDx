@@ -274,8 +274,48 @@ def predict_clinical_phenotype(payload: ClinicalFeatures):
         if not models:
             raise HTTPException(status_code=500, detail="Clinical models not loaded.")
 
-    # Construct complete 42-feature row with defaults
+    # Input validation & physiological range checks
     raw_dict = payload.features
+    if not isinstance(raw_dict, dict) or len(raw_dict) == 0:
+        raise HTTPException(status_code=422, detail="Features payload must be a non-empty dictionary.")
+
+    for k, v in raw_dict.items():
+        if v is None or (isinstance(v, float) and (np.isnan(v) or np.isinf(v))):
+            raise HTTPException(status_code=422, detail=f"Feature '{k}' contains invalid NaN or Infinite value.")
+
+    if "Age" in raw_dict:
+        age_val = float(raw_dict["Age"])
+        if age_val < 0.0 or age_val > 120.0:
+            raise HTTPException(status_code=422, detail=f"Age out of plausible biological range (0-120): {age_val}")
+
+    if "Gender" in raw_dict:
+        gender_val = float(raw_dict["Gender"])
+        if gender_val not in (-1.0, 0.0, 1.0):
+            raise HTTPException(status_code=422, detail="Gender must be encoded as 1.0 (Male), -1.0 (Female), or 0.0 (Unspecified).")
+
+    if "24-hour urine copper" in raw_dict and float(raw_dict["24-hour urine copper"]) < 0.0:
+        raise HTTPException(status_code=422, detail="24-hour urine copper cannot be negative.")
+
+    if "CP" in raw_dict and float(raw_dict["CP"]) < 0.0:
+        raise HTTPException(status_code=422, detail="Ceruloplasmin (CP) cannot be negative.")
+
+    if "Psychiatric symptom score" in raw_dict:
+        psych_val = float(raw_dict["Psychiatric symptom score"])
+        if psych_val < 0.0 or psych_val > 10.0:
+            raise HTTPException(status_code=422, detail="Psychiatric symptom score must be between 0.0 and 10.0.")
+
+    if "Liver symptom score" in raw_dict:
+        liver_val = float(raw_dict["Liver symptom score"])
+        if liver_val < 0.0 or liver_val > 10.0:
+            raise HTTPException(status_code=422, detail="Liver symptom score must be between 0.0 and 10.0.")
+
+    for feat in FEATURE_NAMES:
+        if "(es/No)" in feat and feat in raw_dict:
+            bin_val = float(raw_dict[feat])
+            if bin_val not in (0.0, 1.0):
+                raise HTTPException(status_code=422, detail=f"Binary indicator '{feat}' must be 0 or 1, got {bin_val}")
+
+    # Construct complete 42-feature row with defaults
     row_data = {}
     for feat in FEATURE_NAMES:
         if feat in raw_dict:

@@ -1,0 +1,102 @@
+{
+  "pipeline_version": "1.0.0",
+  "model_version": "synDx-edge-nb-v1.0",
+  "dataset_provenance": {
+    "status": "VALIDATED",
+    "rows": 185,
+    "cols": 43,
+    "missing_cells": 0,
+    "duplicate_rows": 0,
+    "class_distribution": {
+      "1": 163,
+      "0": 22
+    }
+  },
+  "splits_integrity": {
+    "train_patients": 111,
+    "val_patients": 37,
+    "test_patients": 37,
+    "test_set_sealed": true,
+    "total_patients": 185
+  },
+  "validation_metrics": {
+    "XGBoost": {
+      "roc_auc": 0.7875,
+      "pr_auc": 0.962054824127038,
+      "accuracy": 0.918918918918919,
+      "balanced_accuracy": 0.7,
+      "sensitivity": 1.0,
+      "specificity": 0.4,
+      "precision": 0.9142857142857143,
+      "f1_score": 0.9552238805970149,
+      "log_loss": 0.3139561712741852,
+      "brier_score": 0.08725360780954361,
+      "confusion_matrix": {
+        "tn": 2,
+        "fp": 3,
+        "fn": 0,
+        "tp": 32
+      },
+      "threshold": 0.5
+    },
+    "LightGBM": {
+      "roc_auc": 0.75,
+      "pr_auc": 0.9500567041175401,
+      "accuracy": 0.918918918918919,
+      "balanced_accuracy": 0.7,
+      "sensitivity": 1.0,
+      "specificity": 0.4,
+      "precision": 0.9142857142857143,
+      "f1_score": 0.9552238805970149,
+      "log_loss": 0.3409725629483504,
+      "brier_score": 0.0909162603131245,
+      "confusion_matrix": {
+        "tn": 2,
+        "fp": 3,
+        "fn": 0,
+        "tp": 32
+      },
+      "threshold": 0.5
+    },
+    "Random Forest": {
+      "roc_auc": 0.7,
+      "pr_auc": 0.9364428786948042,
+      "accuracy": 0.8648648648648649,
+      "balanced_accuracy": 0.5,
+      "sensitivity": 1.0,
+      "specificity": 0.0,
+      "precision": 0.8648648648648649,
+      "f1_score": 0.927536231884058,
+      "log_loss": 0.3586646431046477,
+      "brier_score": 0.10566643181213213,
+      "confusion_matrix": {
+        "tn": 0,
+        "fp": 5,
+        "fn": 0,
+        "tp": 32
+      },
+      "threshold": 0.5
+    },
+    "Ensemble Average": {
+      "roc_auc": 0.725,
+      "pr_auc": 0.9418613417958231,
+      "accuracy": 0.918918918918919,
+      "balanced_accuracy": 0.7,
+      "sensitivity": 1.0,
+      "specificity": 0.4,
+      "precision": 0.9142857142857143,
+      "f1_score": 0.9552238805970149,
+      "log_loss": 0.3308013803044147,
+      "brier_score": 0.09263078854879989,
+      "confusion_matrix": {
+        "tn": 2,
+        "fp": 3,
+        "fn": 0,
+        "tp": 32
+      },
+      "threshold": 0.5
+    }
+  },
+  "preliminary_notice": "These findings are strictly preliminary and exploratory. Given the modest cohort size (n=185) and small minority class representation (n=5 in validation), metrics carry wide confidence intervals. Not validated for clinical diagnosis.",
+  "medical_disclaimer": "This dataset consists of Wilson-disease patients and the current label represents neurological-symptom phenotype classification, not Wilson disease versus healthy/control diagnosis. Therefore, performance from this experiment must not be interpreted as validated Wilson disease diagnostic performance or as evidence for clinical deployment. Given the cohort size (n=185), all findings are strictly exploratory and preliminary."
+}
