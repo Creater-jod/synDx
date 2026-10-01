@@ -38,9 +38,9 @@
 | **M13** | Referral Intelligence Engine | ⏳ Scheduled | Facility distance & capability matching algorithm. |
 | **M14** | Doctor Review Console | ⏳ Scheduled | Clinical verification interface with approval, rejection, and override workflows. |
 | **M15** | Offline Synchronization Engine | ⏳ Scheduled | Idempotent queue with automatic reconnect and conflict resolution. |
-| **M16** | Offline LLM Runtime | ⏳ Scheduled | Edge GGUF/llama.cpp runtime integration for natural language summaries. |
-| **M17** | Local Knowledge & RAG Index | ⏳ Scheduled | Offline vector store index built from official medical guidelines. |
-| **M18** | LLM Fine-Tuning Pipeline | ⏳ Scheduled | Version-controlled clinical instruction dataset and model registry. |
+| **M16** | Offline LLM & Voice/Text Structuring | 📋 Planned (Unbuilt) | Edge speech & text parser for schema-validated drafts only. Prohibited from diagnosing, assigning tiers, or overriding emergency rules. |
+| **M17** | Local Knowledge & RAG Index | 📋 Planned (Unbuilt) | Offline clinical guideline reference index. Strictly informative; no clinical classification authority. |
+| **M18** | LLM Safety & Prompt Firewall | 📋 Planned (Unbuilt) | Automated adversarial safety test suite verifying zero diagnostic injection or risk-tier mutation. |
 | **M19** | Blockchain Audit Ledger | ⏳ Scheduled | Hash-only smart contract verification on Polygon Amoy / local EVM network. |
 | **M20** | Federated Learning Pipeline | ⏳ Scheduled | Multi-clinic FedAvg simulation using Flower framework. |
 | **M21** | Dataset Automation | ⏳ Scheduled | Continuous source monitoring and dataset version management. |
@@ -51,3 +51,4 @@
 | **M26** | CI/CD Pipeline | ⏳ Scheduled | GitHub Actions workflow for linting, testing, and container build. |
 | **M27** | Staging Environment | ⏳ Scheduled | Staging deployment and integration smoke test verification. |
 | **M28** | Production Release | ⏳ Scheduled | Final deployment configuration, HTTPS, monitoring, and operational readiness. |
+| **M29** | Kayser-Fleischer (K-F) Image Grading | 📋 Planned (Unbuilt) | Auxiliary slit-lamp optical analysis. Decoupled from active prediction path until permitted multi-center dataset ($N \ge 500$) and ophthalmologist labels available. |

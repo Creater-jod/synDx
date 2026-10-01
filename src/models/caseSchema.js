@@ -88,7 +88,7 @@ function createDefaultCase(overrides = {}) {
     triage_result: {
       tier: overrides.triage_result?.tier || 'B',
       primary_condition: overrides.triage_result?.primary_condition || 'Suspected Inborn Error of Metabolism',
-      confidence: overrides.triage_result?.confidence || 80,
+      confidence: overrides.triage_result?.confidence !== undefined ? overrides.triage_result.confidence : 80,
       is_emergency: Boolean(overrides.triage_result?.is_emergency),
       emergency_triggers: overrides.triage_result?.emergency_triggers || [],
       needs_review: Boolean(overrides.triage_result?.needs_review),
@@ -135,7 +135,7 @@ function validateCaseSchema(caseObj) {
     return { valid: false, error: 'Case id is required.' };
   }
 
-  const validStatuses = ['pending', 'confirmed', 'more-tests', 'overridden'];
+  const validStatuses = ['pending', 'confirmed', 'more-tests', 'overridden', 'draft'];
   if (caseObj.status && !validStatuses.includes(caseObj.status)) {
     return { valid: false, error: `Invalid status: ${caseObj.status}. Must be one of: ${validStatuses.join(', ')}` };
   }

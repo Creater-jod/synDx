@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "node tests/backend.test.js && node tests/sync_and_draft.test.js && node tests/wilson_pipeline.test.js && node tests/offline_and_pwa.test.js",
+    "test": "node tests/backend.test.js && node tests/sync_and_draft.test.js && node tests/wilson_pipeline.test.js && node tests/offline_and_pwa.test.js && node tests/multimodal_interfaces.test.js",
     "eval:wilson": "node scripts/run_wilson_eval.js",
     "eval:clinical": "node scripts/run_wilson_eval.js"
   },

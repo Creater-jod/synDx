@@ -32,6 +32,8 @@ SynDx is transitioning from an initial prototype review console into a productio
 | **Blockchain Audit** | ✅ Operational | Cryptographic SHA-256 chained ledger with integrity verification tool | Active on `/api/blockchain/verify` |
 | **Federated Learning** | ✅ Operational | 3-clinic FedAvg simulation with differential privacy ($\varepsilon=1.5$) | Executed via `pipeline/federated_simulation.py` |
 | **Containerization** | ✅ Operational | Multi-stage Dockerfile and docker-compose configuration | Verified in `Dockerfile` & `docker-compose.yml` |
+| **K-F Image Grading** | 📋 Planned (Unbuilt) | Interface defined; decoupled from active prediction path until permitted slit-lamp dataset available | Documented in `docs/FUTURE_MULTIMODAL_INTERFACES.md` |
+| **Voice / Text Structuring** | 📋 Planned (Unbuilt) | Interface & safety sanitizer defined; schema-validated draft only, no diagnostic or triage authority | Documented in `docs/FUTURE_MULTIMODAL_INTERFACES.md` |
 
 ---
 
@@ -53,3 +55,5 @@ SynDx is transitioning from an initial prototype review console into a productio
 2. Build canonical SynDx schema mapping (Disease ID <-> HPO Phenotype IDs <-> Clinical Signs).
 3. Train baseline XGBoost/RandomForest model on canonical ontology-phenotype matrix.
 4. Calculate SHAP feature importances offline and export ONNX model artifact for zero-latency offline inference.
+5. **Kayser-Fleischer (K-F) Optical Grading (Planned):** Interface defined in `docs/FUTURE_MULTIMODAL_INTERFACES.md`. Kept strictly decoupled from active prediction path until ethically approved, multi-center slit-lamp dataset (N>=500) and triple-ophthalmologist consensus annotations are obtained.
+6. **Local Voice & Text Structuring (Planned):** Interface defined with strict LLM safety guardrails. A language model may produce ONLY a schema-validated draft; it cannot diagnose, assign risk tiers, generate confidence scores, or override deterministic emergency rules.
