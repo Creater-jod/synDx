@@ -24,21 +24,20 @@
 
 ## Synopsis / Executive Summary
 
-The diagnostic odyssey for rare and inborn metabolic disorders remains one of the most formidable public health challenges globally, with patients enduring an average latency of **five to seven years**, three to five misdiagnoses, and irreversible multi-system clinical deterioration. This crisis is acutely exacerbated in rural Primary Healthcare Centers (PHCs), Community Health Centers (CHCs), and peripheral dispensaries across developing regions, where medical geneticists, metabolic pediatricians, and advanced molecular/cytogenetic diagnostic laboratories are virtually non-existent. Compounding this challenge, conventional modern clinical decision support systems (CDSS) and machine learning models depend entirely on continuous high-speed cloud connectivity, which violates patient data privacy mandates, risks telemetry interception, and renders digital triage completely inoperable in remote, bandwidth-deprived geographies.
+The diagnostic odyssey for rare and inborn metabolic disorders remains one of the most formidable public health challenges globally, with patients enduring an average latency of **five to seven years**, three to five misdiagnoses, and irreversible multi-system clinical deterioration. This crisis is acutely exacerbated in rural Primary Healthcare Centers (PHCs), Community Health Centers (CHCs), and peripheral dispensaries across developing regions, where medical geneticists, metabolic pediatricians, and advanced molecular/cytogenetic diagnostic laboratories are virtually non-existent. Compounding this challenge, conventional cloud-hosted artificial intelligence platforms require continuous high-speed broadband, transmit sensitive clinical telemetry across external networks, and fail completely in bandwidth-deprived rural settings.
 
-To decisively resolve this systemic bottleneck, **SynDx (SynDx-S)** presents the design, architectural engineering, and clinical evaluation of an **Autonomous Rare Disease Triage and Edge Clinical Decision Intelligence Platform**. Engineered natively with an **offline-first, zero-trust architecture**, SynDx brings high-precision diagnostic and triage intelligence directly to local edge hardware (low-cost workstations, clinic desktops, tablets, and field-grade smartphones) without requiring internet connectivity or remote API calls.
+To address these challenges, **synDx** presents the design, architectural engineering, and clinical evaluation of an **Offline-First Clinical Decision Support Research Prototype**. Engineered with a human-in-the-loop, decision-support philosophy, synDx brings structured triage intelligence, deterministic vital sign safety interlocks, and idempotent synchronization to low-resource healthcare clinics.
 
-### Core Technical Pillars
+### Core Technical Pillars (Tested & Operational)
 
-1. **Edge Machine Learning Diagnostic Engine:** Grounded in official clinical ontologies including **Orphadata (4,357 validated disease entities)**, the **Human Phenotype Ontology (HPO: 20,413 terms)**, and **NIH GARD**, mapping standardized phenotype terms and basic rural lab biomarkers using a gradient-boosted decision tree ensemble (**XGBoost**, **LightGBM**, and **Random Forest**).
-2. **Deterministic Clinical Emergency Interlock Rules Engine:** An independent rule-based safety mechanism evaluating real-time vital signs (SpO2, Heart Rate, Blood Pressure, Temperature). Any acute physiological instability immediately bypasses standard ML triage to trigger instant Tier-A emergency escalation, preventing model underfitting from masking life-threatening shock or hypoxia.
-3. **Explainable Artificial Intelligence (XAI):** Integrating **SHAP (SHapley Additive exPlanations)** and **LIME** to compute exact feature attribution weights per patient prediction, providing transparent clinical justifications and eliminating "black-box" clinical skepticism.
-4. **Automated Specialist Referral & Memorandum Matcher:** A multi-criteria matching algorithm evaluating geographic proximity, clinical specialty alignment, real-time bed capacity, and specialized medication inventory to generate legally verifiable **Official Specialist Referral Authorization Memorandums**.
-5. **Cryptographic Proof-of-Authority (PoA) Blockchain Audit Ledger:** Immutable, SHA-256 chained audit trail logging case inputs, model versions, timestamped predictions, and physician review decisions with zero on-chain Protected Health Information (PHI).
-6. **Decentralized Privacy-Preserving Federated Learning (FedAvg):** A multi-node distributed simulation allowing independent healthcare nodes to train local models on proprietary patient data and exchange differential model weights using Differential Privacy ($\varepsilon=1.5, \delta=10^{-5}$) without exposing raw patient data.
-7. **Dual-Surface Clinical Interfaces:**
-   - **Web Doctor Review Console & Field Portal:** Built with Node.js Express, Python FastAPI, SQLite, and a dark-mode Liquid Glassmorphism UI utilizing Lucide clinical iconography and interactive 3D perspective tilt mechanics.
-   - **Native Android Field Application:** Engineered in Kotlin with Jetpack Compose, Room SQLite database, AndroidX WorkManager, Clean Architecture (Domain/Data/Presentation), Adverse Drug Reaction (ADR) reporting, and on-device Gemini AI integration.
+1. **Research Clinical Machine Learning Ensemble:** A supervised consensus classifier combining **XGBoost**, **LightGBM**, and **Random Forest** trained on a single-center research cohort of $n=185$ clinical Wilson disease cases (differentiating neurological vs. hepatic presentations per Leipzig criteria). Hosted server-side via a high-performance Python FastAPI microservice (`:8000`).
+2. **Deterministic Clinical Emergency Interlock Rules Engine:** An independent, non-probabilistic safety evaluator checking real-time bedside vital signs ($\text{SpO}_2$, Heart Rate, Blood Pressure, Temperature). Operates 100% on-device/offline. Any acute physiological instability immediately bypasses ML inference to trigger instant Tier-A emergency escalation.
+3. **Explainable Artificial Intelligence (XAI):** Utilizing **SHAP (SHapley Additive exPlanations)** feature attribution proxies and relative clinical deviations to display exactly which biomarkers and physical signs drove the model's output, eliminating "black-box" clinical skepticism.
+4. **Automated Specialist Referral & Facility Matcher:** A multi-criteria matching algorithm evaluating geographic proximity, clinical specialty alignment, ICU bed availability, and specialized medication inventory to generate verifiable specialist referral recommendations.
+5. **Cryptographic SHA-256 Chained Audit Ledger:** An internal SQLite audit trail linking case inputs, model versions, and physician decisions in an immutable SHA-256 hash chain with zero Protected Health Information (PHI) stored in audit blocks.
+6. **Decentralized Privacy-Preserving Federated Learning Simulation:** A 3-node distributed simulation script (`pipeline/federated_simulation.py`) demonstrating FedAvg aggregation with Differential Privacy ($\varepsilon=1.5, \delta=10^{-5}$) without raw patient data transmission.
+7. **Frontline Guided Clinical PWA:** An installable Progressive Web Application utilizing a high-contrast, warm-paper palette (`#F6F3EC`) engineered for readability on low-cost Android smartphones in bright sunlight. Features Service Worker v2 (`syndx-pwa-v2`) full app shell caching, LocalStorage draft recovery, and an idempotent sync manager.
+8. **Decoupled Future Multimodal Interfaces:** Kayser–Fleischer (K-F) slit-lamp image grading and local voice/text structuring are formally specified as planned, experimental modules (`docs/FUTURE_MULTIMODAL_INTERFACES.md`) and strictly isolated from the active prediction path.
 
 ---
 
@@ -94,18 +93,20 @@ In rural primary healthcare facilities, Community Health Officers (CHOs), nurses
 
 ## 1.4 Project Boundaries and Scope
 
-### In-Scope Functional Capabilities
-- **Ontology Ingestion:** Automated ETL pipelines ingesting and validating official datasets from Orphadata (XML) and HPO (JSON) with SHA-256 cryptographic verification.
-- **Offline ML Inference:** Local inference engine executing trained ensembles of XGBoost, LightGBM, and Random Forest on 42 clinical, biochemical, and imaging features.
-- **Deterministic Emergency Safety Layer:** Rule-based evaluator executing prior to ML inference to detect critical vital sign thresholds (SpO2, Heart Rate, Blood Pressure, Temperature).
+### In-Scope Functional Capabilities (Tested & Operational)
+- **Ontology Ingestion & Provenance:** Automated ETL pipelines ingesting and validating official datasets from Orphadata (XML, 4,357 records) and HPO (JSON, 20,413 terms) with SHA-256 cryptographic provenance verification. (Reference knowledge graph only; not a trained 4,000-disease classifier).
+- **Research ML Inference:** Python FastAPI microservice executing trained ensembles of XGBoost, LightGBM, and Random Forest on 42 clinical and biochemical features from the Wilson disease research cohort ($n=185$).
+- **Deterministic Emergency Safety Layer:** Rule-based evaluator executing prior to ML inference to detect critical vital sign thresholds (SpO2, Heart Rate, Blood Pressure, Temperature). Operates 100% on-device/offline.
 - **Automated Specialist Referral Matching:** Algorithmic scoring of tertiary medical centers based on distance, ICU availability, medication inventory, and clinical specialty matching.
-- **Legally Formatted Referral Memorandums:** Automatic generation of formal, printable specialist referral memorandums with digital clinician sign-off.
-- **Physician Review Console:** Role-based access control (RBAC) interface enabling attending doctors to Confirm, Override, or Request Further Diagnostic Testing with cryptographic logging.
-- **Cross-Platform Mobile Integration:** Native Android application built with Jetpack Compose, Room SQLite, WorkManager, and on-device Gemini AI integration.
+- **Physician Review Console:** Role-based access control (RBAC) interface enabling attending doctors to Confirm, Override, or Request Further Diagnostic Testing with cryptographic audit logging.
+- **Installable PWA Client:** Progressive Web App with Service Worker v2 offline caching, LocalStorage draft recovery, and idempotent sync queue.
 
-### Explicit Boundary Limitations
-- **Intra-Cohort Phenotypic Subtyping Disclaimer:** The trained supervised machine learning models evaluate clinical phenotype subtyping (e.g., neurological vs. hepatic presentation in confirmed Wilson disease patients); they do not differentiate Wilson disease from the general healthy population.
-- **Supportive Decision Intelligence:** SynDx is engineered exclusively as a clinical decision support system (CDSS) for trained medical professionals; it does not replace the autonomous clinical judgment of a licensed physician.
+### Explicit Boundary Limitations & Reality Inventory
+- **Single-Cohort Wilson Disease Research Scope:** The trained machine learning models evaluate clinical phenotype subtyping (neurological vs. hepatic presentation in confirmed Wilson disease patients, $n=185$); they do not constitute a general rare-disease diagnostic model for the general population.
+- **Supportive Decision Intelligence Only:** synDx is engineered exclusively as a clinical decision support system (CDSS) for trained medical professionals; it does not replace the autonomous clinical judgment of a licensed physician and is not certified as a diagnostic medical device (SaMD).
+- **Server-Side ML Hosting:** Machine learning inference executes server-side via the FastAPI microservice (`:8000`); it is not packaged on-device.
+- **Local SQLite Cryptographic Ledger:** Audit blocks are chained locally within SQLite using SHA-256 state hashes; no public blockchain smart contracts are deployed.
+- **Simulated & Planned Modules:** Federated learning is implemented as a 3-node evaluation simulation (`pipeline/federated_simulation.py`). Kayser-Fleischer image grading and voice/text structuring are planned future modules kept strictly out of active prediction paths.
 
 ---
 

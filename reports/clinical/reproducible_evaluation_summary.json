@@ -67,7 +67,7 @@
       "specificity": 0.0,
       "precision": 0.8648648648648649,
       "f1_score": 0.927536231884058,
-      "log_loss": 0.35866464310464763,
+      "log_loss": 0.35866464310464774,
       "brier_score": 0.10566643181213213,
       "confusion_matrix": {
         "tn": 0,
