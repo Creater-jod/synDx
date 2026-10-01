@@ -237,6 +237,7 @@ const PWAEngine = {
   init() {
     this.initTheme();
     this.initOfflineTelemetry();
+    this.initInstallPrompt();
     this.loadOfflineQueue();
     this.checkExistingDraft();
     this.initEventListeners();
@@ -244,6 +245,56 @@ const PWAEngine = {
     this.loadInitialInputs();
     fetchDoctorQueue();
     refreshIcons();
+  },
+
+  // 1.0 Install Prompt Handling
+  initInstallPrompt() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      this.deferredInstallPrompt = e;
+      const installBtn = document.getElementById('btnPwaInstall');
+      if (installBtn) installBtn.style.display = 'inline-flex';
+      refreshIcons();
+    });
+
+    window.addEventListener('appinstalled', () => {
+      this.deferredInstallPrompt = null;
+      const installBtn = document.getElementById('btnPwaInstall');
+      if (installBtn) installBtn.style.display = 'none';
+      showToast('synDx installed successfully as a PWA!', 'success');
+    });
+  },
+
+  promptInstall() {
+    if (this.deferredInstallPrompt) {
+      this.deferredInstallPrompt.prompt();
+      this.deferredInstallPrompt.userChoice.then((choice) => {
+        if (choice && choice.outcome === 'accepted') {
+          const installBtn = document.getElementById('btnPwaInstall');
+          if (installBtn) installBtn.style.display = 'none';
+        }
+        this.deferredInstallPrompt = null;
+      });
+    } else {
+      alert('To install synDx, open your browser menu (⋮ or Share) and select "Add to Home screen" or "Install App".');
+    }
+  },
+
+  openOfflineModal() {
+    const modal = document.getElementById('pwaOfflineMatrixModal');
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('active');
+      refreshIcons();
+    }
+  },
+
+  closeOfflineModal() {
+    const modal = document.getElementById('pwaOfflineMatrixModal');
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.remove('active');
+    }
   },
 
   // 1.1 Local Case Draft Persistence
