@@ -41,3 +41,10 @@ app/build/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Test reports & archive outputs
+playwright-report/
+test-results/
+*.tar.gz
+*.zip
+
